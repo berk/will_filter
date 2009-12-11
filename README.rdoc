@@ -6,15 +6,13 @@ If you ever had to build a page that displays a list of objects that can be filt
 various criteria, this plugin can make your life easier. Adding a filtered page can now be 
 a matter of adding a few lines to your controller and creating a view to display your data.
 
-Installation Instructions:
+== Installation Instructions
 
-$ script/plugin install git://github.com/berk/will_filter.git
+  $ script/plugin install git://github.com/berk/will_filter.git
+  $ rake will_filter:sync  
+  $ rake db:migrate 
 
-$ rake will_filter:sync  # this copies the necessary migrations, stylesheets, scripts and images to the main project
-
-$ rake db:migrate # this will create the model_filters table so you can save filters you create
-
-Examples:
+== Examples
 
 Here is an example of how a mode_filter gets created in your controller and then will_paginate 
 plugin is used to paginate through the results:
@@ -39,4 +37,8 @@ will_filter_examples project contains some samples that show you how to customiz
 
 If you have any questions, comments or suggestions, email me to theiceberk@gmail.com
 
-Michael.
+
+== Authors and credits
+
+Authors::                Michael Berkovich
+
