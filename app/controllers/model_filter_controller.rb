@@ -29,13 +29,12 @@ class ModelFilterController < ApplicationController
   end
 
   def load_filter
-    @model_filter = params[ModelFilter::HTML[:type]].constantize.load_filter(@own_profile, params[ModelFilter::HTML[:key]])
-    
+    @model_filter = params[:mf_type].constantize.load_filter(@own_profile, params[:mf_key])
     render :partial => 'filter_conditions', :layout=>false
   end
 
   def save_filter
-    params.delete(ModelFilter::HTML[:mf_id])
+    params.delete(:mf_id)
     
     @model_filter = ModelFilter.deserialize_from_params(params)
     @model_filter.validate!
@@ -52,8 +51,8 @@ class ModelFilterController < ApplicationController
   end
 
   def update_filter
-    @model_filter = ModelFilter.find_by_id(params[ModelFilter::HTML[:id]])
-    params.delete(ModelFilter::HTML[:id])
+    @model_filter = ModelFilter.find_by_id(:mf_id)
+    params.delete(:mf_id)
     
     @model_filter.deserialize_from_params(params)
     @model_filter.validate!
@@ -79,7 +78,7 @@ class ModelFilterController < ApplicationController
   end
 
   def delete_filter
-    filter = ModelFilter.find_by_id(params[ModelFilter::HTML[:id]])
+    filter = ModelFilter.find_by_id(:mf_id)
     filter.destroy if filter
 
     @model_filter = ModelFilter.deserialize_from_params(params)
@@ -141,14 +140,6 @@ class ModelFilterController < ApplicationController
   end
   
   def export_data
-    
-    # this is a hack - to verify security
-    # in the plugin, it should use a different mechanism
-    unless own_profile.superuser?
-      render :text => "Error: You don't have permission to export data"
-      return 
-    end
-
     @model_filter = ModelFilter.deserialize_from_params(params)
     
     if @model_filter.custom_format?

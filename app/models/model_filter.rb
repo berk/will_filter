@@ -507,7 +507,7 @@ class ModelFilter < ActiveRecord::Base
   
   def self.load_filter(profile, key)
     filter = load_predefined_filter(profile, key)
-    filter = self.find_by_id(key.to_i) unless filter
+    filter = ModelFilter.find_by_id(key.to_i) unless filter
     filter
   end
   
