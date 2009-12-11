@@ -43,9 +43,11 @@ This is a more complicated case where we are looking at a list of events that we
 
 http://www.theiceberk.com/projects/rails/will_filter/will_filter3.png
 
-will_filter_examples project contains some samples that show you how to customize filters, etc...
+will_filter_examples project contains some samples that show you how to customize filters and much more
 
-If you have any questions, comments or suggestions, email me to theiceberk@gmail.com
+  git://github.com/berk/will_filter_examples.git
+
+If you have any questions, comments or suggestions, email me at theiceberk@gmail.com
 
 
 == Authors and credits
