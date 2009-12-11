@@ -33,6 +33,11 @@ That's it. Now all you have to do is create a view for this action and add the f
 
 This will render a filter box with various conditions, operators and values for the model object you selected.
 
+Below is a screenshot of what the filter looks like on a page:
+
+!http://www.theiceberk.com/projects/rails/will_filter/will_filter1.png!
+
+
 will_filter_examples project contains some samples that show you how to customize filters, etc...
 
 If you have any questions, comments or suggestions, email me to theiceberk@gmail.com
