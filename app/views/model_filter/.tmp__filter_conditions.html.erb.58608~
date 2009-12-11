@@ -1,0 +1,81 @@
+<%= hidden_field_tag(:mf_id, @model_filter.id) %>
+<%= hidden_field_tag(:mf_name, @model_filter.name) %>
+<%= hidden_field_tag(:mf_model, @model_filter.model_class_name) %>
+<%= hidden_field_tag(:mf_identity_type, @model_filter.identity_type) %>
+<%= hidden_field_tag(:mf_identity_id, @model_filter.identity_id) %>
+
+<% if @model_filter.show_save_options? %>
+<table style="background-color:#efefef; width:100%; padding:0px; margin:0px; border-bottom:solid 1px #ccc;">
+	<tr>
+		<td style="text-align:left; padding:3px; ">
+			<% if @model_filter.saved_filters.size > 0 %>
+	      <%= select_tag(:mf_key, options_for_select(@model_filter.saved_filters, @model_filter.key), {:onChange=>"loadPredefinedFilter()"}) %>
+			<% end %>
+      <span id="mf_dirty" class="mf_dirty_msg" style="<%= (@model_filter.errors? ? 'display:inline;' : 'display:none;') %>">
+      	(filter has been modified and must be re-submitted before it can be saved)
+      </span>
+		</td>
+		<td style="text-align:right">
+				<input type="button" value="Save As New..." id="mf_btn_save" onClick="saveFilter()" class="mf_button">&nbsp;
+				<input type="button" value="Update Filter" id="mf_btn_update" onClick="updateFilter()" class="mf_button">&nbsp;
+				<input type="button" value="Delete Filter" id="mf_btn_delete" onClick="deleteFilter()" class="mf_button">&nbsp;
+		</td>
+	</tr>
+</table>
+<% end %>
+
+<div class="mf_match_header">
+Match
+<%= select_tag(:mf_match, options_for_select(@model_filter.match_options, @model_filter.match), {:onChange=>"markDirty()"}) %>
+of the following conditions:<br>
+</div>
+
+<% if @model_filter.errors[:filter] %>
+	<div style="padding-left:5px; padding-bottom:5px; color:red">
+		<%= @model_filter.errors[:filter] %>
+	</div>
+<% end %>
+
+<table width="100%" style="margin-top:5px; padding:0px;">
+
+<% if @model_filter.size == 0 %>	
+<tr>
+  <td style="font-style:italic; padding:5px; color: black">
+    You haven't added any filter conditions, so all of the results were returned. Use the "Add" button in the bottom left corner to add a new condition or select a predefined filter from a drop-down list above. 
+  </td>
+</tr>
+
+<% else %>
+<% 
+		0.upto(@model_filter.size-1) do |index| 
+  	 	condition = @model_filter.condition_at(index) 
+%>
+			<% if @model_filter.errors[index] %>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+				<td colspan="2" style="padding-left:5px; padding-bottom:5px; color:red">
+					<%= @model_filter.errors[index] %>
+				</td>
+			</tr> 
+			<% end %>
+			
+			<tr>
+				<td class="mf_condition">
+			    <%= select_tag "mf_c_#{index}", options_for_select(@model_filter.condition_options, condition.key.to_s), {:style=>"width:100%", :onChange=>"performFilterAction('changedConditionAt_#{index}')"} %>
+				</td>
+				<td class="mf_operator">
+			    <%= select_tag "mf_co_#{index}", options_for_select(@model_filter.operator_options_for(condition.key), condition.operator_key.to_s), {:style=>"width:100%", :onChange=>"performFilterAction('update')"} %>
+				</td>
+				<td class="mf_container">
+					<%= condition.container.render_html(index) %>
+				</td>
+				<td class="mf_condition_actions">
+					<input type="button" value="-" onClick="performFilterAction('removeConditionAt_<%=index%>')" class="mf_button" style="width:20px;">
+					<input type="button" value="+" onClick="performFilterAction('addConditionAfter_<%=index%>')" class="mf_button" style="width:20px;">
+				</td>
+			</tr>
+			
+	<% end %>
+<% end %>	
+	
+</table>	

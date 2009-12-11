@@ -1,0 +1,41 @@
+= WillFilter
+
+will_filter is a Rails plugin that makes it easy to add administration tools to your site.
+ 
+If you ever had to build a page that displays a list of objects that can be filtered using 
+various criteria, this plugin can make your life easier. Adding a filtered page can now be 
+a matter of adding a few lines to your controller and creating a view to display your data.
+
+Installation Instructions:
+
+
+rake will_filter:sync  # this copies the necessary migrations, stylesheets, scripts and images to the main project
+rake db:migrate
+
+
+Examples:
+
+Here is an example of how a mode_filter gets created in your controller and then will_paginate 
+plugin is used to paginate through the results:
+
+class ProfileController < ApplicationController
+  def index
+    @model_filter = ModelFilter.new("Profile", @own_profile).deserialize_from_params(params)    
+    @profiles = Profile.paginate(:order=>@model_filter.order_clause, :page=>params[:page], 
+                                 :per_page=>@model_filter.per_page, :conditions=>@model_filter.sql_conditions)
+  end
+end  
+
+Note: @own_profile is a user or any identity you want to save filters for
+
+That's it. Now all you have to do is create a view for this action and add the following partial where you want your filter to be rendered:
+
+<%= render :partial=> "/model_filter/filter" %>
+
+This will render a filter box with various conditions, operators and values for the model object you selected.
+
+will_filter_examples project contains some samples that show you how to customize filters, etc...
+
+If you have any questions, comments or suggestions, email me to theiceberk@gmail.com
+
+Michael.

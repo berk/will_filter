@@ -1,0 +1,59 @@
+<%= hidden_field_tag(DataFilter::HTML_FILTER_ID, @data_filter.id) %>
+<%= hidden_field_tag(DataFilter::HTML_FILTER_NAME, @data_filter.name) %>
+<%= hidden_field_tag(DataFilter::HTML_MODEL_NAME, @data_filter.model_class_name) %>
+
+<table width="98%" style="margin-left:5px;">
+	<tr>
+		<td style="text-align:left">
+			Match 
+			<%= select_tag DataFilter::HTML_FILTER_MATCH_TYPE, options_for_select(["all", "any"], @data_filter.match_type), {:onChange=>"markDirty()"} %>
+ 	    of the following conditions:<br>	
+		</td>		
+		<td style="text-align:right">
+			<% if @data_filter.saved_filters(@own_profile).size > 0 %>
+	      <%= select_tag(DataFilter::HTML_SELECTED_FILTER_KEY, options_for_select(@data_filter.saved_filters(@own_profile), @data_filter.selected_filter_key), {:onChange=>"loadPredefinedFilter()"}) %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+
+<table width="100%" style="margin-top:5px">
+<% if @data_filter.criteria_size > 0 %>	
+
+<% 
+		0.upto(@data_filter.criteria_size-1) do |index| 
+  	 	criteria = @data_filter.criteria_at(index) 
+%>
+			<% if @data_filter.errors[criteria.key] %>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+				<td colspan="2" style="padding-left:5px; padding-bottom:5px; color:red">
+					<%= @data_filter.errors[criteria.key] %>
+				</td>
+			</tr> 
+			<% end %>
+			
+			<tr>
+				<td width="25%" style="padding-left:5px; padding-bottom:5px;">
+			    <%= select_tag "#{DataFilter::HTML_FILTER_CRITERIA_PREFIX}_#{index}", options_for_select(@data_filter.criteria_options, criteria.key), {:style=>"width:100%", :onChange=>"performFilterAction('changedCriteriaAt_#{index}')"} %>
+				</td>
+				<td width="20%" style="padding-left:5px; padding-bottom:5px;">
+			    <%= select_tag "#{DataFilter::HTML_FILTER_OPERATOR_PREFIX}_#{index}", options_for_select(@data_filter.operator_options(criteria.key), criteria.operator), {:style=>"width:100%", :onChange=>"performFilterAction('update')"} %>
+				</td>
+				<td width="45%" style="padding-left:5px; padding-bottom:5px;">
+					<%= criteria.container.render_html(index) %>
+				</td>
+				<td width="10%" align="center" style="padding-left:5px; padding-bottom:5px; white-space:nowrap;">
+					<input type="button" value="-" onClick="performFilterAction('removeCriteriaAt_<%=index%>')" class="fb_button" style="width:20px">
+					<input type="button" value="+" onClick="performFilterAction('addCriteriaAfter_<%=index%>')" class="fb_button" style="width:20px">
+				</td>
+			</tr>
+			
+	<% end %>
+<% else %>
+<tr>
+	<td style="font-style:italic; padding:5px; color: #3b5998">You haven't added any filter conditions, so all your friends were returned. Use the <b>"Add"</b> button in the bottom left corner to add a new condition or <b>select a predefined filter</b> from a drop-down list in the top right corner.</td>
+</tr>
+<% end %>	
+	
+</table>	

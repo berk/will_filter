@@ -1,0 +1,60 @@
+<%= hidden_field_tag(ModelFilter::HTML[:id], @model_filter.id) %>
+<%= hidden_field_tag(ModelFilter::HTML[:name], @model_filter.name) %>
+<%= hidden_field_tag(ModelFilter::HTML[:model], @model_filter.model_class_name) %>
+
+<table width="98%" style="margin-left:5px;">
+	<tr>
+		<td style="text-align:left">
+			Найти анекдоты соответствующие 
+			<%= select_tag ModelFilter::HTML[:match], options_for_select([["всем", "all"], ["любым", "any"]], @model_filter.match), {:onChange=>"markDirty()"} %>
+			следующим критериям:<br>	
+		</td>		
+		<td style="text-align:right">
+			<% if @model_filter.saved_filters(@own_profile).size > 0 %>
+	      <%= select_tag(ModelFilter::HTML[:filter_key], options_for_select(@model_filter.saved_filters(@own_profile), @model_filter.filter_key), {:onChange=>"loadPredefinedFilter()"}) %>
+			<% end %>
+		</td>
+	</tr>
+</table>
+
+<table width="100%" style="margin-top:5px">
+<% if @model_filter.size > 0 %>	
+
+<% 
+		0.upto(@model_filter.size-1) do |index| 
+  	 	condition = @model_filter.condition_at(index) 
+%>
+			<% if @model_filter.errors[condition.key] %>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+				<td colspan="2" style="padding-left:5px; padding-bottom:5px; color:red">
+					<%= @model_filter.errors[condition.key] %>
+				</td>
+			</tr> 
+			<% end %>
+			
+			<tr>
+				<td width="25%" style="padding-left:5px; padding-bottom:5px;">
+			    <%= select_tag "#{ModelFilter::HTML[:condition]}_#{index}", options_for_select(@model_filter.condition_options, condition.key), {:style=>"width:100%", :onChange=>"performFilterAction('changedConditionAt_#{index}')"} %>
+				</td>
+				<td width="20%" style="padding-left:5px; padding-bottom:5px;">
+			    <%= select_tag "#{ModelFilter::HTML[:operator]}_#{index}", options_for_select(@model_filter.operator_options_for(condition.key), condition.operator_key.to_s), {:style=>"width:100%", :onChange=>"performFilterAction('update')"} %>
+				</td>
+				<td width="45%" style="padding-left:5px; padding-bottom:5px;">
+					<%= condition.container.render_html(index) %>
+				</td>
+				<td width="10%" align="center" style="padding-left:5px; padding-bottom:5px; white-space:nowrap;">
+					<input type="button" value="-" onClick="performFilterAction('removeConditionAt_<%=index%>')" class="fb_button" style="width:20px">
+					<input type="button" value="+" onClick="performFilterAction('addConditionAfter_<%=index%>')" class="fb_button" style="width:20px">
+				</td>
+			</tr>
+			
+	<% end %>
+<% else %>
+<tr>
+	<td style="font-style:italic; padding:5px; color: black">
+	Вы не добавили ни каких критерий к вашему поиску, по этому показали вам все анекдоты. Нажмите на кнопку <b>"Добавить"</b> в нижнем левом углу что бы добавить критерии поиска, или <b>выбирите сохранненый филтер</b> из опций в правом верхнем углу.</td>
+</tr>
+<% end %>	
+	
+</table>	

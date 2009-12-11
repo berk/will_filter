@@ -1,0 +1,80 @@
+<script>
+	function markDirty() {
+		$("filter_dirty").show();
+	}
+	
+	function toggleFilter() {
+		if ($("filter_container").style.display == "none") {
+			$("filter_container").show();
+			$("filter_toggler").innerHTML = "- Filter";
+		} else {
+			$("filter_container").hide();
+			$("filter_toggler").innerHTML = "+ Filter";
+		}
+	}
+	
+	function performFilterAction(action) {
+//		form_vals = $('filter_form').serialize();
+//		alert(form_vals);
+		
+		if (action=="submit") {
+			$('filter_form').submit();
+			return;			
+		}
+		
+		$("loader_icon").show();
+		markDirty();
+		
+		form_hash = $('filter_form').serialize(true);
+		form_hash["filter_action"] = action;
+		
+		new Ajax.Updater('filter', '/filter/update', {
+		  parameters: form_hash,
+			onComplete: function(transport) {
+				$("loader_icon").hide();
+			} 
+		});
+		
+	}
+</script>
+
+<% form_tag({:controller=>filter_controller, :action => filter_action}, :method => :get, :id => 'filter_form') do %>
+<input type="hidden" name="filter_type" value="<%=@filter.class.name%>">
+
+<fieldset style="border: #ccc solid 1px;">
+<legend style="font-weight:bold"> 
+	<a id="filter_toggler" href="javascript:toggleFilter()">- Filter</a>
+	<span id="filter_dirty" style="<%='display:none;' unless filter.errors? %> color:red">*</span> 
+</legend>
+<div id="filter_container">
+<span style="padding-left:5px">
+	Match <select name="filter_match_type" onChange="markDirty()">
+					<option value="all" <%= ('selected' if @filter.match_type=='all') %> >all</option>
+					<option value="any" <%= ('selected' if @filter.match_type=='any') %> >any</option>
+				</select> of the following rules:<br>
+</span>
+
+<div id="filter">
+<%= render :partial=> "/filter/filter_criteria" %>
+</div>
+
+<table width="100%">
+	<tr>
+		<td align="left" style="padding-left:5px; width:10%">
+			<input type="button" value="+" onClick="performFilterAction('addCriteriaLast')">
+			<input type="button" value="- all" onClick="performFilterAction('clear')">
+		</td>
+		<td>
+			<div id="loader_icon" style="display:none">
+				<%=image_tag "/images/spinner.gif" %>
+			</div>
+		</td>
+		<td align="right" style="padding:5px">
+			<input type="button" value="Submit" onClick="performFilterAction('submit')">
+		</td>
+	</tr>
+</table>
+
+</div>
+</fieldset>
+<% end %>

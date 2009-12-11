@@ -1,0 +1,294 @@
+<script>
+    <!--
+    function saveFilter(){
+				promptForFilterAction("save");				
+    }
+    
+    function updateFilter(){
+				promptForFilterAction("update");				
+    }
+    
+    function deleteFilter() {
+				promptForFilterAction("delete");
+    }
+    
+		function saveToProfileBox() {
+			var dialog = new Dialog().showChoice("Save to Profile Box", profile_dialog, 'Yes, please!', 'Cancel'); 
+
+ 		  $("profile_box_title").setValue($("filter_name").getValue());
+
+			dialog.onconfirm = function() { 
+        beginLoading();
+				disableControlButtons();
+
+			  $("filter_name").setValue($("profile_box_title").getValue());
+				
+        var form_hash = serializeFlter();
+        
+        var ajax = new Ajax();
+        ajax.responseType = Ajax.FBML;
+        ajax.ondone = function(data){
+            finishLoading();
+            enableControlButtons();
+						new Dialog().showMessage("Profile Updated", "Your profile has been updated!", 'Ok'); 
+        }
+
+        ajax.requireLogin = 0;
+        ajax.post('<%=DEFAULT_SERVER_URL%>/model_filter/set_to_profile', form_hash);
+			}; 
+			
+			dialog.oncancel = function() { 
+				
+			}; 			
+		}
+		
+    function toggleSQLConditions(){
+        if ($('sql_conditions').getStyle('display') == 'inline') {
+            $('sql_conditions').setStyle('display', 'none');
+        }
+        else {
+            $('sql_conditions').setStyle('display', 'inline');
+        }
+    }
+
+    function disableControlButtons(){
+        $("filterDeleteBtn").setDisabled(true);
+        $("filterUpdateBtn").setDisabled(true);
+        $("filterSaveAsBtn").setDisabled(true);
+    }
+    
+    function enableControlButtons(){
+        disableControlButtons();
+        
+        if ($("filter_id").getValue() != "") {
+            $("filterDeleteBtn").setDisabled(false);
+            $("filterUpdateBtn").setDisabled(false);
+        }
+        $("filterSaveAsBtn").setDisabled(false);
+    }
+    
+    function markDirty(){
+        if ($("selected_filter_key") && $("filter_id").getValue() == "") {
+            $("selected_filter_key").setValue("-1");
+        }
+        
+        disableControlButtons();
+        $("filter_dirty").setStyle('display', 'inline');
+    }
+    
+    function toggleFilter(){
+        if ($('filter_container').getStyle('display') == 'inline') {
+            $('filter_container').setStyle('display', 'none');
+            $("filter_toggler").setTextValue("+ Friends Filter");
+        }
+        else {
+            $('filter_container').setStyle('display', 'inline');
+            $("filter_toggler").setTextValue("- Friends Filter");
+        }
+    }
+    
+    function loadPredefinedFilter(){
+        if ($("selected_filter_key").getValue() == "-1" || $("selected_filter_key").getValue() == "-2") 
+            return; 
+						
+				beginLoading();
+				
+        var form_hash = serializeFlter();
+        
+        var ajax = new Ajax();
+        ajax.responseType = Ajax.FBML;
+        ajax.ondone = function(data){
+            $('filter').setInnerFBML(data);
+            $('filter_form').submit();
+        }
+				
+        ajax.requireLogin = 0;
+        ajax.post('<%=DEFAULT_SERVER_URL%>/model_filter/load_filter', form_hash);
+    }
+    
+    function serializeFlter(){
+        var filter_ajax = {};
+        if ($("selected_filter_key") != null) {
+            filter_ajax['selected_filter_key'] = $("selected_filter_key").getValue();
+        }
+        
+        filter_ajax['match']  = $("match").getValue();
+        filter_ajax['model']	= $("model").getValue();
+        filter_ajax['name'] 	= $("name").getValue();
+        filter_ajax['id'] 	  = $("id").getValue();
+        filter_ajax['type']   = $("type").getValue();
+        
+        i = 0
+        while ($("fc_" + i) != null) {
+            filter_ajax["fc_" + i] = $("fc_" + i).getValue();
+            filter_ajax["fco_" + i] = $("fco_" + i).getValue();
+            j = 0
+            while ($("fcv_" + i + "_" + j) != null) {
+                filter_ajax["fcv_" + i + "_" + j] = $("fcv_" + i + "_" + j).getValue();
+                j++;
+            }
+            i++;
+        }
+        return filter_ajax;
+    }
+    
+    function beginLoading(){
+        $('loader_icon').setStyle('display', 'inline');
+    }
+    
+    function finishLoading(){
+        $('loader_icon').setStyle('display', 'none');
+    }
+    
+    function performFilterAction(action){
+				alert(action);
+				
+        if (action == "submit") {
+            $('filter_form').submit();
+            return;
+        }
+        
+        beginLoading();
+        markDirty();
+        
+        var form_hash = serializeFlter();
+        form_hash["filter_action"] = action;
+        
+        var ajax = new Ajax();
+        ajax.responseType = Ajax.FBML;
+        ajax.ondone = function(data){
+            $('filter').setInnerFBML(data);
+            finishLoading();
+        }
+        
+        ajax.requireLogin = 0;
+        ajax.post('<%=DEFAULT_SERVER_URL%>/model_filter/update', form_hash);
+    }
+    
+    function promptForFilterAction(action){
+			var dialogTitle = "Save Filter";
+			var dialogContent = dialog_filter;
+			var dialogAction = "Save";
+			var postUrl = "<%=DEFAULT_SERVER_URL%>/model_filter/save_filter";
+			
+			if (action == "update") {
+		  	dialogTitle = "Update Filter";
+				dialogContent = dialog_filter;
+				dialogAction = "Update";
+		  	postUrl = "<%=DEFAULT_SERVER_URL%>/model_filter/update_filter";
+	  	} else if (action == "delete") {
+				dialogTitle = "Delete Filter";
+				dialogContent = "Are you sure you want to delete this filter?"
+				dialogAction = "Delete";
+				postUrl = "<%=DEFAULT_SERVER_URL%>/model_filter/delete_filter";
+	  	} else { 	
+				dialogTitle = "Save Filter";
+				dialogContent = dialog_filter;
+				dialogAction = "Save";
+				postUrl = "<%=DEFAULT_SERVER_URL%>/model_filter/save_filter";
+			}
+			
+			var dialog = new Dialog().showChoice(dialogTitle, dialogContent, dialogAction, 'Cancel'); 
+
+			if (action=="update") {
+				$("save_filter_name").setValue($("filter_name").getValue());
+			} else if (action=="save") {
+				$("save_filter_name").setValue("");
+			}
+			
+			dialog.onconfirm = function() { 
+        beginLoading();
+				disableControlButtons();
+				
+				if (action != "delete") {
+					$("filter_name").setValue($("save_filter_name").getValue());
+				}
+        
+        var form_hash = serializeFlter();
+        
+        var ajax = new Ajax();
+        ajax.responseType = Ajax.FBML;
+        ajax.ondone = function(data){
+            $('filter').setInnerFBML(data);
+						if (action=="delete") {
+ 						    $('filter_form').submit();
+						} else {
+	            finishLoading();
+	            enableControlButtons();
+						}
+        }
+
+        ajax.requireLogin = 0;
+  			ajax.post(postUrl, form_hash);
+			}; 
+			
+			dialog.oncancel = function() { 
+				
+			}; 
+    }
+
+    //--> 
+</script>
+
+<fb:js-string var="dialog_filter"> 
+<b>Name:</b> &nbsp;
+<input type="text" id="save_filter_name" value="" style="width:300px;">
+<br/> 
+</fb:js-string> 
+
+<fieldset class="fieldset">
+		<legend>
+			<b>Поиск Анекдотов</b>	
+		  <span id="filter_dirty" style="<%='display:none;' unless @model_filter.errors? %> color:red; font-size:9px;">(filter was modified and must be resubmitted before it can be saved)</span>
+		</legend>
+
+		<% form_tag({:controller=>:filter, :action=>:index}, {:method => :get, :name=>'filter_form', :id => 'filter_form'}) do %>
+		<%=hidden_field_tag(ModelFilter::HTML[:type], @model_filter.class.name) %>
+		<div>
+		  <div id="filter_container" style="display:inline">
+		      <div id="filter">
+		          <%= render :partial=> "/model_filter/filter_conditions" %>
+		      </div>
+		      <table width="100%">
+		          <tr>
+		              <td align="left" style="padding:5px;">
+		                  <input type="button" value="Добавить" id="addBtn" onClick="performFilterAction('addConditionLast')" class="fb_button">
+											<input type="button" value="Удалить Все" id="clearBtn" onClick="performFilterAction('clear')" class="fb_button">
+											&nbsp;&nbsp;
+		                  <div id="loader_icon" style="display:none; font-size:10px;">
+		                      <%=image_tag "/images/spinner.gif", {:style=>"vertical-align:middle"} %> Loading...
+		                  </div>
+		              </td>
+		              <td style="padding:5px;text-align:right">
+											<% if @own_profile.admin? %>
+		                    <%=link_to_function("FQL Conditions", "toggleSQLConditions()", :style=>"font-size:9px") %>
+											<% end %>	
+		                  &nbsp;&nbsp;
+											
+		                  <input type="button" value="Удалить" id="filterDeleteBtn" onClick="deleteFilter()" class="fb_button" style="width:80px">
+											<input type="button" value="Изменить" id="filterUpdateBtn" onClick="updateFilter()" class="fb_button" style="width:80px">
+											<input type="button" value="Сохранить.." id="filterSaveAsBtn" onClick="saveFilter()" class="fb_button" style="width:80px">
+											<input type="button" value="Искать" onClick="performFilterAction('submit')" class="fb_button" style="width:80px">&nbsp;
+		              </td>
+		          </tr>
+		      </table>
+		      <div id="sql_conditions" style="display:none;">
+		          <table style="border:1px solid black; width:100%">
+		              <tr>
+		                  <td style="font-size:10px; padding:5px">
+		                      <%= @model_filter.debug_sql_conditions %>
+		                  </td>
+		              </tr>
+		          </table>
+		      </div>
+		  </div>
+		</div>
+		<% end %>
+</fieldset>
+
+<script>
+    disableControlButtons();
+    <% unless @model_filter.errors? %>
+    		enableControlButtons();
+    <% end %>
+</script>

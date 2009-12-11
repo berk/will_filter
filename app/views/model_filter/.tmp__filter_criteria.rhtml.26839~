@@ -1,0 +1,32 @@
+<table width="100%">
+<% 
+		0.upto(@filter.criteria_size-1) do |index| 
+  	 	criteria = @filter.criteria_at(index) 
+%>
+			<% if @filter.errors[criteria.key] %>
+			<tr>
+				<td colspan="2">&nbsp;</td>
+				<td colspan="2" style="padding-left:5px; padding-bottom:5px; color:red">
+					<%= @filter.errors[criteria.key] %>
+				</td>
+			</tr> 
+			<% end %>
+			
+			<tr>
+				<td width="20%" style="padding-left:5px; padding-bottom:5px;">
+			    <%= select_tag "filter_criteria_key_#{index}", options_for_select(@filter.criteria_options, criteria.key), {:style=>"width:100%", :onChange=>"performFilterAction('update')"} %>
+				</td>
+				<td width="20%" style="padding-left:5px; padding-bottom:5px;">
+			    <%= select_tag "filter_criteria_operator_#{index}", options_for_select(@filter.operator_options(criteria.key), criteria.operator), {:style=>"width:100%", :onChange=>"performFilterAction('update')"} %>
+				</td>
+				<td width="52%" style="padding-left:5px; padding-bottom:5px;">
+					<%= criteria.container.render_html(index) %>
+				</td>
+				<td width="8%" align="center" style="padding-left:5px; padding-bottom:5px;">
+					<input type="button" value="+" onClick="performFilterAction('addCriteriaAfter_<%=index%>')">
+					<input type="button" value="-" onClick="performFilterAction('removeCriteriaAt_<%=index%>')">
+				</td>
+			</tr>
+			
+	<% end %>
+</table>	
