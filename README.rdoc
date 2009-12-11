@@ -1,6 +1,6 @@
 = WillFilter
 
-will_filter is a Rails plugin that makes it easy to add administration tools to your site.
+will_filter is a Rails engine plugin that makes it easy to add administration tools to your site.
  
 If you ever had to build a page that displays a list of objects that can be filtered using 
 various criteria, this plugin can make your life easier. Adding a filtered page can now be 
@@ -10,8 +10,8 @@ Installation Instructions:
 
 
 rake will_filter:sync  # this copies the necessary migrations, stylesheets, scripts and images to the main project
-rake db:migrate
 
+rake db:migrate # this will create the model_filters table so you can save filters you create
 
 Examples:
 
