@@ -25,7 +25,7 @@ plugin is used to paginate through the results:
     end
   end  
 
-Note: @own_profile is a user or any identity you want to save filters for
+Note: 'Profile' is a Rails ActiveRecord model and @own_profile is a user or any identity you want to save filters for
 
 That's it. Now all you have to do is create a view for this action and add the following partial where you want your filter to be rendered:
 
