@@ -49,6 +49,7 @@ will_filter_examples project contains some samples that show you how to customiz
 
 If you have any questions, comments or suggestions, email me at theiceberk@gmail.com
 
+
 == Authors and credits
 
 Authors::                Michael Berkovich
