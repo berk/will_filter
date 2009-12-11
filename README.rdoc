@@ -35,10 +35,13 @@ This will render a filter box with various conditions, operators and values for 
 
 Below are a couple of screenshot of what the filter looks like when it is rendered on a page:
 
-http://www.theiceberk.com/projects/rails/will_filter/will_filter1.png
+This is a simple profiles filter that filters users who are male and their first name starts with Steven
 
-http://www.theiceberk.com/projects/rails/will_filter/will_filter2.png
+  http://www.theiceberk.com/projects/rails/will_filter/will_filter1.png
 
+This is a more complicated case where we are looking at a list of events that were created by users filtered using the preveous example.
+
+  http://www.theiceberk.com/projects/rails/will_filter/will_filter3.png
 
 will_filter_examples project contains some samples that show you how to customize filters, etc...
 
