@@ -20,7 +20,7 @@
 }
 
 .mf_header {
-  background-color:#f5f5f5; 
+  background-color:#efefef; 
   width:100%; 
   padding:1px; 
   margin:0px; 
@@ -28,6 +28,7 @@
 }
 
 .mf_header_presets {
+  padding: 5px;
   text-align: left;
   vertical-align: middle;
 }
@@ -35,6 +36,7 @@
 .mf_header_actions {
   text-align: right;
   vertical-align: middle;
+  padding: 3px;
 }
 
 .mf_footer {

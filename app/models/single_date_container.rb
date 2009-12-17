@@ -9,7 +9,7 @@ class SingleDateContainer < ModelFilterContainer
     html << "<td width='99%'><input type='text' #{html_mark_dirty} style='width:99%' #{html_input_name(index, 0)} #{html_input_value}>"
     html << "</td>"
     html << "<td width='1%'><a href=\"#\" onclick=\"selectDate('#{html_input_id(index, 0)}', this); return false;\">"
-    html << "<img align=\"top\" alt=\"select date\" border=\"0\" src=\"/images/calendar_icon.png\" />"
+    html << "<img align=\"top\" alt=\"select date\" border=\"0\" src=\"/images/mf_calendar.png\" />"
     html << "</a>"
     html << "</td>"
     html << "</tr></table>"
