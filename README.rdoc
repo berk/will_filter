@@ -1,6 +1,5 @@
 = WillFilter
 
-
 will_filter is a Rails engine plugin that makes it easy to add administration tools to your site.
  
 If you ever had to build a page that displays a list of objects that can be filtered using 
