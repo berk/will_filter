@@ -13,7 +13,7 @@ class ModelFilter < ActiveRecord::Base
     ["bigint", "numeric", "smallint", "integer", "int", "double"]   => [:nil, :numeric, :numeric_range, :numeric_delimited],
     ["timestamp", "datetime"]                             => [:nil, :date_time, :date_time_range, :single_date],
     ["date"]                                              => [:nil, :date, :date_range],
-    ["character", "varchar", "text", "text[]"]            => [:nil, :text, :text_delimited],
+    ["character", "varchar", "text", "text[]", "bytea"]   => [:nil, :text, :text_delimited],
     ["text"]                                              => [:nil, :text],
     ["boolean", "tinyint"]                                => [:nil, :boolean],
   }
