@@ -1,5 +1,8 @@
 <% form_tag({:controller=>params["controller"], :action => params["action"]}, {:method => :get, :name=>'mf_form', :id => 'mf_form', :class => 'mf_form' }) do %>
-<%=hidden_field_tag(:mf_type, @model_filter.class.name) %>
+<%= hidden_field_tag(:mf_type, @model_filter.class.name) %>
+<%= hidden_field_tag(:mf_fields, "") %>
+<%= hidden_field_tag(:mf_format, "") %>
+
 <div class="model_filter">
   <div id="mf_filter_conditions" class="mf_filter_conditions">
       <%= render :partial=> "/model_filter/filter_conditions" %>
@@ -34,7 +37,8 @@
 </div>
 <% end %>
 
-<div id="mf_calendar" style="display:none"></div>
+<div id="mf_calendar_dialog" class="mf_calendar_dialog" style="display:none; z-index:99;"></div>
+<div id="mf_export_dialog" class="mf_export_dialog" style="display:none; z-index:99;"></div>
 
 <script>
     // disableControlButtons();

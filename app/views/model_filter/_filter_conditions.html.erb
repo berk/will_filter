@@ -13,9 +13,12 @@
 			<% end %>
 		</td>
 		<td class='mf_header_actions'>
-		    <%=link_to_function("<span>Save As New...</span>", "saveFilter()", :class => "grey-button pcb") %>
-        <%=link_to_function("<span>Update</span>", "updateFilter()", :class => "grey-button pcb") %>
-        <%=link_to_function("<span>Delete</span>", "deleteFilter()", :class => "grey-button pcb") %>
+		    <%=link_to_function("<span>Save As New...</span>", "saveFilter()", :id => "mf_save_action", :class => "grey-button pcb") %>
+        <%=link_to_function("<span>Update</span>", "updateFilter()", :id => "mf_update_action", :class => "grey-button pcb") %>
+        <%=link_to_function("<span>Delete</span>", "deleteFilter()", :id => "mf_delete_action", :class => "grey-button pcb") %>
+        <% if @model_filter.exportable? %>
+          <%=link_to_function("<span>Export Data...</span>", "exportFilter(this)", :id => "mf_export_action", :class => "grey-button pcb") %>
+        <% end %>
 		</td>
 	</tr>
 </table>

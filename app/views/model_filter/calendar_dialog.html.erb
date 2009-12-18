@@ -49,18 +49,26 @@
 </table>
 
 <% if @show_time %>
-	<center>
-	<br>
+<div style="text-align:center; width:100%; padding:3px;">
 	Time: &nbsp; 
 	<%= select_tag("mf_cal_hour", options_for_select(@hour_options, @hour)) %>
 	:
 	<%= select_tag("mf_cal_minute", options_for_select(@minute_options, @minute)) %>
 	:
 	<%= select_tag("mf_cal_second", options_for_select(@second_options, @second)) %>
-	<br><br>
-	<%=link_to_function "SET", "setDateTime();", :style => "font-size:14px;" %>
-	<br>
-	</center>
+</div>
+
+<div style="text-align:center; width:100%; padding:3px;">
+  <%=link_to_function("<span>Set Custom</span>", "setDateTime();", :class => "grey-button pcb") %>
+  <%=link_to_function("<span>Set Now</span>", "selectDateValue(null, '#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}'); setDate();", :class => "grey-button pcb") %>
+  <%=link_to_function("<span>Cancel</span>", "$('mf_calendar_dialog').hide();", :class => "grey-button pcb") %>
+</div>
+<% else %>
+
+<div style="text-align:center; width:100%; padding:3px;">
+  <%=link_to_function("<span>Set Today</span>", "selectDateValue(null, '#{Date.today.to_s}'); setDate();", :class => "grey-button pcb") %>
+  <%=link_to_function("<span>Cancel</span>", "$('mf_calendar_dialog').hide();", :class => "grey-button pcb") %>
+</div>
 <% end %>
 
 <% end %>

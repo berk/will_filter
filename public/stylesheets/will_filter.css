@@ -142,7 +142,7 @@
   font-size:10px;
 }
 
-#mf_calendar {
+.mf_export_dialog {
   background-color:white;
   position:absolute;
   width:230px;
@@ -151,7 +151,16 @@
   font-size:10px;
 }
 
-#mf_calendar input {
+.mf_calendar_dialog {
+  background-color:white;
+  position:absolute;
+  width:230px;
+  border: 1px solid gray;
+  padding: 2px;
+  font-size:10px;
+}
+
+.mf_calendar_dialog input {
   font-size:8px;
 }
 

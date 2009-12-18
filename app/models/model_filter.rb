@@ -18,7 +18,7 @@ class ModelFilter < ActiveRecord::Base
     ["boolean", "tinyint"]                                => [:nil, :boolean],
   }
   
-  FORMATS = [:html, :table, :csv, :xml, :json]
+  FORMATS = [:table, :csv, :xml, :json]
   
   HTML = {
     :condition      => 'mf_c',

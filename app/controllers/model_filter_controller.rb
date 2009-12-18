@@ -23,6 +23,9 @@ class ModelFilterController < ApplicationController
       vals = params[:filter_action].split('_')
       condition = @model_filter.condition_at(vals[1].to_i)
       condition.container.reset_values
+      
+    elsif params[:filter_action] == 'export'
+      
     end
     
     render :partial => 'filter_conditions', :layout=>false
@@ -51,7 +54,7 @@ class ModelFilterController < ApplicationController
   end
 
   def update_filter
-    @model_filter = ModelFilter.find_by_id(:mf_id)
+    @model_filter = ModelFilter.find_by_id(params[:mf_id])
     params.delete(:mf_id)
     
     @model_filter.deserialize_from_params(params)
@@ -78,7 +81,7 @@ class ModelFilterController < ApplicationController
   end
 
   def delete_filter
-    filter = ModelFilter.find_by_id(:mf_id)
+    filter = ModelFilter.find_by_id(params[:mf_id])
     filter.destroy if filter
 
     @model_filter = ModelFilter.deserialize_from_params(params)
@@ -89,7 +92,7 @@ class ModelFilterController < ApplicationController
     render :partial => 'filter_conditions', :layout=>false
   end
   
-  def calendar
+  def calendar_dialog
     @months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     @days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
     
@@ -135,6 +138,12 @@ class ModelFilterController < ApplicationController
     @days_in_month = ((Date.new(@year, 12, 31).to_date<<(12 - @month)).day)
     @start_date = Date.new(@year, @month, 1)
     @end_date = Date.new(@year, @month, @days_in_month)
+    
+    render :layout => false
+  end
+  
+  def export_dialog
+    @model_filter = ModelFilter.deserialize_from_params(params)
     
     render :layout => false
   end
