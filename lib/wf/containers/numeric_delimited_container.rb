@@ -21,17 +21,24 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::NumericDelimitedContainer < Wf::FilterContainer
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  NUMERIC_DELIMITER = ","
+
+  def self.operators
+    [:is_in]
   end
-  
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+
+  def validate
+    return "Values must be provided. Separate values with '#{NUMERIC_DELIMITER}'" if value.blank?
+  end
+
+  def split_values
+    value.split(NUMERIC_DELIMITER).collect{|v| v.strip.to_i}
+  end
+
+  def sql_condition
+    return [" #{condition.key} in (?) ", split_values] if operator == :is_in
+  end
+
 end

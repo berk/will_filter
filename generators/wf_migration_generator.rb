@@ -21,17 +21,10 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
-
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+class WfMigrationGenerator < Rails::Generator::Base
+  def manifest
+    record do |m|
+      m.migration_template "migrate/create_wf_tables.rb", "db/migrate", :migration_file_name => "create_wf_tables"
+    end
   end
-  
-  ApplicationHelper.send(:include, Wf::HelperMethods)
 end

@@ -21,17 +21,26 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::NumericContainer < Wf::FilterContainer
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.operators
+    [:is, :is_not, :is_less_than, :is_greater_than]
   end
-  
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+
+  def numeric_value
+    value.to_i
+  end
+
+  def validate
+    return "Value must be provided" if value.blank?
+    return "Value must be numeric" if numeric_value == 0
+  end
+
+  def sql_condition
+    return [" #{condition.key} = ? ",   numeric_value]    if operator == :is
+    return [" #{condition.key} <> ? ",  numeric_value]    if operator == :is_not
+    return [" #{condition.key} < ? ",   numeric_value]    if operator == :is_less_than
+    return [" #{condition.key} > ? ",   numeric_value]    if operator == :is_greater_than
+  end
+
 end

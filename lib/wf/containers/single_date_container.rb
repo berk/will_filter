@@ -21,17 +21,41 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::SingleDateContainer < Wf::FilterContainer
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.operators
+    [:is_on]
   end
-  
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+
+  def render_html(index)
+    html = "<table class='wf_values_table' cellspacing='0px' cellpadding='0px'><tr>"
+    html << "<td width='99%'><input type='text' style='width:99%' #{html_input_attributes(index)}>"
+    html << "</td><td width='1%'>"
+    html << html_date_selector(index)
+    html << "</td>"
+    html << "</tr></table>"
+    html
+  end
+
+  def validate
+    return "Value must be provided" if value.blank?
+    return "Value must be a valid date (2008-01-01)" if start_date_time == nil
+  end
+
+  def start_date_time
+    Date.parse(value).to_time
+  rescue ArgumentError
+    nil
+  end
+
+  def end_date_time
+    (start_date_time + 1.day)
+  rescue ArgumentError
+    nil
+  end
+
+  def sql_condition
+    return [" #{condition.key} >= ? and  #{condition.key} < ? ", start_date_time, end_date_time]  if operator == :is_on
+  end
+
 end

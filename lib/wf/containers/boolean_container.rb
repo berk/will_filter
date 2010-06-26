@@ -21,17 +21,31 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::BooleanContainer < Wf::FilterContainer
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.operators
+    [:is]
+  end
+
+  def selected?
+    value=="1"
+  end
+
+  def selected_text(val)
+    return "checked" if value==val
+  end
+
+  def render_html(index)
+    html = "<span>"
+    html << "<input type='radio' #{html_input_attributes(index, 0, '1')} #{selected_text("1")}> True"
+    html << "&nbsp;&nbsp;"
+    html << "<input type='radio' #{html_input_attributes(index, 0, '0')} #{selected_text("0")}> False"
+    html << "</span>"
+    html
+  end
+
+  def sql_condition
+    return [" #{condition.key} = ? ", (selected? ? true : false)] if operator == :is
   end
   
-  ApplicationHelper.send(:include, Wf::HelperMethods)
 end

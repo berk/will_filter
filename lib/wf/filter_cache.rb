@@ -21,17 +21,17 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
-
-Rails.configuration.after_initialize do
+class Wf::FilterCache
   
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.activate(data)
+    @instance = ModelFilterCache.new(data) 
   end
   
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+  def self.active
+    @instance
+  end
+  
+  def initialize(data)
+    @data = data
+  end  
 end

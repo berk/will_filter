@@ -1,0 +1,84 @@
+.wf_container                           {padding:0px; background:#f1f4f9; margin:0px; font-size: 12px; font-family: Arial; width: 100%; border:solid 1px #e8e8e8;border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
+.wf_container input                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_container select                    {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_container .header                   {background-color:#f5f5f5; width:100%; padding:1px; margin:0px; border-bottom:solid 1px #ccc; }
+.wf_container .footer                   {padding:5px;}
+.wf_container .spinner                  {font-size: 10px;}
+.wf_container .debug                    {font-size:10px; border-top:1px solid #ccc; width:100%; margin-top:3px;}
+.wf_container table                     {border:0px; width:100%; margin:0px; padding:0px;}
+.wf_container a                         {text-decoration:none; color:#16b; outline:none; border:0px;}
+.wf_container img                       {border:0px;}
+.wf_container .conditions               {padding:0px; margin:0px; }
+.wf_container_panel                     {padding-top:5px; padding-bottom:5px; margin-right:2px; margin-left:2px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa;}
+.wf_debugger                            {padding:5px; margin:2px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa; font-size:10px; color: #777;}
+
+.wf_input                               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+
+.wf_header                              {height:25px; padding:5px; }
+.wf_action                              {border: 0px; vertical-align:middle; }
+.wf_match_header                        {margin:5px; }
+
+.wf_footer                              {margin-top:3px; width:100%; border-top: 1px solid #ccc; }
+.wf_footer td                           {padding:5px; }
+
+.wf_conditions_table                    {border:0px; width:100%; margin:0px; padding:0px; }
+.wf_conditions_table td                 {vertical-align:top; padding: 0px; margin: 0px; white-space:nowrap; }
+
+.wf_condition                           {padding-left:5px; padding-right:2px; padding-bottom:0px; width:20%; white-space:nowrap; vertical-align: top; }
+.wf_condition_error                     {padding-left:5px; padding-bottom:2px; color:red; font-size: 10px; font-family: Arial; }
+.wf_operator                            {padding-right:2px; padding-bottom:0px; width:15%; white-space:nowrap; vertical-align: top; }
+.wf_values                              {padding-right:2px; width:55%; margin:0px; vertical-align:top; }
+
+.wf_values_table                        {border:0px; width:100%; margin:0px; padding:0px; }
+.wf_values_table td                     {vertical-align:top; padding: 0px; margin: 0px; }
+.wf_values_table td input               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_values_table td select              {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+
+.wf_condition_actions                   {padding-right:5px; padding-bottom:2px; white-space:nowrap; text-align:right; width:10%; vertical-align: top; }
+.wf_button                              {text-align:center; padding: 0px; margin: 0px; }
+.wf_dirty_msg                           {color:red; font-size:10px;}
+
+.wf_calendar_trigger                    {border:0px; padding-left:2px; padding-right:2px;}
+
+.wf_calendar                            {background-color:#eee; position:absolute; width:230px; padding: 2px; font-size:10px; border:solid 1px #e8e8e8; border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
+.wf_calendar_container                  {background-color:white; padding: 1px; margin: 1px; font-size:10px; border:solid 1px #bababa; border-color:#bababa #e8e8e8 #e8e8e8 #bababa; }
+.wf_calendar img                        {border: 0px;}
+.wf_calendar input                      {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_calendar select                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_calendar_cells                      {width:100%; }
+.wf_calendar_cells td                   {padding:2px; text-align:center; font-size:10px; color:black; background-color:white; cursor:pointer; } 
+.wf_calendar_cells td.today             {background-color:lightblue; } 
+.wf_calendar_cells td.selected          {background-color:#ccc; } 
+.wf_calendar_cells td.date_cell:hover   {background-color:#ccc; } 
+
+.wf_exporter                            {background-color:#eee; position:absolute; width:230px; padding: 2px; font-size:10px; border:solid 1px #e8e8e8; border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
+.wf_exporter_container                  {background-color:white; padding: 1px; margin: 1px; font-size:10px; border:solid 1px #bababa; border-color:#bababa #e8e8e8 #e8e8e8 #bababa; }
+.wf_exporter img                        {border: 0px;}
+.wf_exporter input                      {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_exporter select                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+
+
+/*
+  Pure CSS Buttons.
+  Learn more ~ http://www.halmatferello.com/lab/pure-css-buttons/
+
+  Licensed under GPL and MIT.
+*/
+.pcb, .pcb span                                     {background: url('/wf/images/buttons.png') no-repeat; height: 23px; line-height: 23px; padding: 3px 0 7px 0; }
+.pcb, a.pcb:link, a.pcb:visited                     {color: #333; font-size: 11px; padding-left: 14px; text-decoration: none !important; }
+
+/* ie 6 hack */
+* html div#frame .pcb                               {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
+
+/* ie 7 hack */
+*:first-child+html .pcb                             {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
+
+.pcb span                                           {background-position: right -326px; padding-right: 14px; }
+a.grey-button                                       {background-position: left -219px; padding-top: 3px; }
+a.grey-button span                                  {background-position: right -545px; padding-top: 3px;}
+a.grey-button:hover                                 {background-position: left -246px; }
+a.grey-button:hover span                            {background-position: right -572px; }
+a.grey-button:active, .grey-active-button           {background-position: left -273px; }
+a.grey-button:active span, .grey-active-button span {background-position: right -599px; }
+body .grey-disabled-button                          {background-position: left -300px; color: #bbb !important;}
+body .grey-disabled-button span                     {background-position: right -626px;}

@@ -21,17 +21,30 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::FilterCondition
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  attr_accessor :filter, :key, :operator, :container
+
+  def initialize(filter, key, operator, container_class, values)
+    @filter     = filter
+    @key        = key
+    @operator   = operator
+    @container  = Wf::Config.containers[container_class].constantize.new(filter, self, operator, values)
+  end
+
+  def validate
+    container.validate
+  end
+
+  def serialize_to_params(params, index)
+    params["wf_c#{index}"] = key
+    params["wf_o#{index}"] = operator
+    container.serialize_to_params(params, index)
+    params
   end
   
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+  def to_s
+    key
+  end
+
 end

@@ -21,17 +21,23 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
-
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+class CreateWfTables < ActiveRecord::Migration
+  def self.up
+    create_table :wf_filters do |t|
+      t.string      :type
+      t.string      :name
+      t.text        :data
+      t.string      :identity_type
+      t.integer     :identity_id
+      t.string      :model_class_name
+      
+      t.timestamps
+    end
+    
+    add_index :wf_filters, [:identity_type, :identity_id]
   end
   
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+  def self.down
+    drop_table :wf_filters
+  end
 end

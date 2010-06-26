@@ -21,17 +21,14 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class ActiveRecord::Base
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def wf_filter=(new_filter)
+    @wf_filter = new_filter
   end
   
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+  def wf_filter
+    @wf_filter
+  end
+
 end

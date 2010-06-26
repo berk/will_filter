@@ -21,17 +21,23 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::TextContainer < Wf::FilterContainer
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.operators
+    [:is, :is_not, :contains, :does_not_contain, :starts_with, :ends_with]
   end
-  
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+
+  def validate
+    # always valid, even when it is empty
+  end
+
+  def sql_condition
+    return [" #{condition.key} = ? ", value]                 if operator == :is
+    return [" #{condition.key} <> ? ", value]                if operator == :is_not
+    return [" #{condition.key} like ? ", "%#{value}%"]       if operator == :contains
+    return [" #{condition.key} not like ? ", "%#{value}%"]   if operator == :does_not_contain
+    return [" #{condition.key} like ? ", "#{value}%"]        if operator == :starts_with
+    return [" #{condition.key} like ? ", "%#{value}"]        if operator == :ends_with
+  end
+
 end

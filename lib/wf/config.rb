@@ -21,17 +21,31 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
-
-Rails.configuration.after_initialize do
+class Wf::Config
   
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.load_yml(file_path)
+    yml = YAML.load_file("#{RAILS_ROOT}#{file_path}")[RAILS_ENV]
+    HashWithIndifferentAccess.new(yml)
   end
   
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+  def self.config
+    @config ||= load_yml("/config/will_filter_config.yml")
+  end
+  
+  def self.containers
+    config[:containers]
+  end
+
+  def self.mapping
+    config[:mapping]
+  end
+  
+  def self.operator_order
+    config[:operator_order]
+  end
+
+  def self.export_formats
+    config[:export_formats]
+  end
+  
 end

@@ -8,9 +8,15 @@ a matter of adding a few lines to your controller and creating a view to display
 
 == Installation Instructions
 
+To install, configure and initialize will_filter engine, run the following commands: 
+
   $ script/plugin install git://github.com/berk/will_filter.git
   $ rake will_filter:sync  
+
+  $ script/generate will_filter_migration
   $ rake db:migrate 
+
+  $ cd public; ln -s ../vendor/plugins/will_filter/public/wf wf
 
 == Examples
 
@@ -19,7 +25,7 @@ plugin is used to paginate through the results:
 
   class ProfileController < ApplicationController
     def index
-      @model_filter = ModelFilter.new("Profile", @own_profile).deserialize_from_params(params)    
+      @model_filter = Wf::Filter.new("Profile", @own_profile).deserialize_from_params(params)    
       @profiles = Profile.paginate(:order=>@model_filter.order_clause, :page=>params[:page], 
                                    :per_page=>@model_filter.per_page, :conditions=>@model_filter.sql_conditions)
     end

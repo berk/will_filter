@@ -21,17 +21,23 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::NilContainer < Wf::FilterContainer
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.operators
+    [:is_provided, :is_not_provided]
   end
-  
-  ApplicationHelper.send(:include, Wf::HelperMethods)
+
+  def render_html(index)
+    ""
+  end
+
+  def validate
+    # no validation is necessary
+  end
+
+  def sql_condition
+    return [" #{condition.key} is not null "]  if operator == :is_provided
+    return [" #{condition.key} is null "]      if operator == :is_not_provided
+  end
+
 end

@@ -21,17 +21,37 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-# Include hook code here
+class Wf::DateContainer < Wf::FilterContainer
 
-Rails.configuration.after_initialize do
-  
-  ["lib/core_ext/**",
-   "lib/wf",
-   "lib/wf/containers"].each do |dir|
-      Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-        require_or_load file
-      end
+  def self.operators
+    [:is, :is_not, :is_after, :is_before]
+  end
+
+  def render_html(index)
+    html = "<table class='wf_values_table' cellspacing='0px' cellpadding='0px'><tr>"
+    html << "<td width='99%'><input type='text' style='width:99%' #{html_input_attributes(index)}>"
+    html << "</td><td width='1%'>"
+    html << html_date_selector(index)
+    html << "</td></tr>"
+    html << "</table>"
+  end
+
+  def validate
+    return "Value must be provided" if value.blank?
+    return "Value must be a valid date (2008-01-01)" if date == nil
+  end
+
+  def date
+    Date.parse(value)
+  rescue ArgumentError
+    nil
+  end
+
+  def sql_condition
+    return [" #{condition.key} = ? ", date]  if operator == :is
+    return [" #{condition.key} <> ? ", date] if operator == :is_not
+    return [" #{condition.key} > ? ", date]  if operator == :is_after
+    return [" #{condition.key} < ? ", date]  if operator == :is_before
   end
   
-  ApplicationHelper.send(:include, Wf::HelperMethods)
 end

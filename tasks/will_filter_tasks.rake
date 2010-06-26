@@ -1,7 +1,8 @@
 namespace :will_filter do
-  desc "Sync extra files from blogify plugin."
+
+  desc "Sync extra files from will_filter plugin."
   task :sync do
-    system "rsync -ruv vendor/plugins/will_filter/db/migrate db"
-    system "rsync -ruv vendor/plugins/will_filter/public ."
+    system "rsync -ruv vendor/plugins/will_filter/config ."
   end
+  
 end
