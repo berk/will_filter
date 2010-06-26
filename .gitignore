@@ -1,0 +1,4 @@
+db/schema.rb*
+.DS_Store
+.tmp*~
+*.log
