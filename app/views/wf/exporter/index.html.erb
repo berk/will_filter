@@ -22,7 +22,7 @@
 	        <td colspan="3">
 	            <hr>
 	        </td>
-	    </tr><% @model_filter.model_class.columns.each_with_index do |col, index| %>
+	    </tr><% @wf_filter.model_class.columns.each_with_index do |col, index| %>
 	    <tr>
 	        <td>
 	            <input type="checkbox" id="wf_fld_chk_<%=index%>" onClick="wfExporter.selectField(this);"><input type="hidden" id="wf_fld_name_<%=index%>" value="<%=col.name%>">
@@ -38,7 +38,7 @@
 	</table>
 	<hr>
 	<div style="text-align:center; width:100%; padding:3px;">
-	  Format: <%= select_tag("wf_export_format_selector", options_for_select(@model_filter.export_formats,  @model_filter.format)) %>
+	  Format: <%= select_tag("wf_export_format_selector", options_for_select(@wf_filter.export_formats,  @wf_filter.format)) %>
 	</div>
 	<div style="text-align:center; width:100%; padding:3px;">
 	    <%=link_to_function("<span>Export</span>", "wfExporter.exportFilter()", :class => "grey-button pcb") %>

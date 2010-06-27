@@ -23,6 +23,7 @@ defaults: &defaults
     text:               Wf::TextContainer
     text_delimited:     Wf::TextDelimitedContainer
     boolean:            Wf::BooleanContainer
+    list:               Wf::ListContainer
     
   mapping:
     bigint:             [nil, numeric, numeric_range, numeric_delimited]

@@ -27,11 +27,13 @@ class Wf::Filter < ActiveRecord::Base
   belongs_to  :identity, :polymorphic => :subclass
   serialize   :data
   
-  def initialize(new_model_class_name = nil, new_identity = nil)
+  def initialize(new_model_class_name = nil, params = {}, new_identity = nil)
     super()
     
     self.model_class_name = new_model_class_name
     self.identity = new_identity
+    
+    deserialize_from_params(params)
   end
   
   def exportable?
@@ -312,13 +314,10 @@ class Wf::Filter < ActiveRecord::Base
     end
     
     if params[:wf_type] == 'Wf::Filter'
-      filter = params[:wf_type].constantize.new(params[:wf_model], identity)
-    else
-      filter = params[:wf_type].constantize.new(identity)
+      return params[:wf_type].constantize.new(params[:wf_model], params, identity)
     end
     
-    filter.deserialize_from_params(params)
-    filter
+    params[:wf_type].constantize.new(params, identity)
   end
   
   def deserialize_from_params(params)
@@ -328,6 +327,7 @@ class Wf::Filter < ActiveRecord::Base
     self.model_class_name = params[:wf_model]       if params[:wf_model]
     
     @per_page             = params[:wf_per_page]    || default_per_page
+    @page                 = params[:page]           || 1
     @order_type           = params[:wf_order_type]  || default_order_type
     @order                = params[:wf_order]       || default_order
     
@@ -526,5 +526,9 @@ class Wf::Filter < ActiveRecord::Base
   
   def process_custom_format
     ""
+  end
+  
+  def results
+    @results ||= model_class.paginate(:order => order_clause, :page => page, :per_page => per_page, :conditions => sql_conditions)
   end
 end

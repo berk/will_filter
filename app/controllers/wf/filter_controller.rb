@@ -24,92 +24,90 @@
 class Wf::FilterController < ApplicationController
 
   def update_condition
-    @wf_filter = Wf::Filter.deserialize_from_params(params)
-    condition = @wf_filter.condition_at(params[:at_index].to_i)
+    wf_filter = Wf::Filter.deserialize_from_params(params)
+    condition = wf_filter.condition_at(params[:at_index].to_i)
     condition.container.reset_values
-    render :partial => '/wf/filter/conditions', :layout=>false
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def remove_condition
-    @wf_filter = Wf::Filter.deserialize_from_params(params)
-    @wf_filter.remove_condition_at(params[:at_index].to_i)
-    render :partial => '/wf/filter/conditions', :layout=>false
+    wf_filter = Wf::Filter.deserialize_from_params(params)
+    wf_filter.remove_condition_at(params[:at_index].to_i)
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def add_condition
-    @wf_filter = Wf::Filter.deserialize_from_params(params)
+    wf_filter = Wf::Filter.deserialize_from_params(params)
     index = params[:after_index].to_i
     if index == -1
-      @wf_filter.add_default_condition_at(@wf_filter.size)
+      wf_filter.add_default_condition_at(wf_filter.size)
     else
-      @wf_filter.add_default_condition_at(params[:after_index].to_i + 1)
+      wf_filter.add_default_condition_at(params[:after_index].to_i + 1)
     end
-    render :partial => '/wf/filter/conditions', :layout=>false
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def remove_all_conditions
-    @wf_filter = Wf::Filter.deserialize_from_params(params)
-    @wf_filter.remove_all
-    render :partial => '/wf/filter/conditions', :layout=>false
+    wf_filter = Wf::Filter.deserialize_from_params(params)
+    wf_filter.remove_all
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def load_filter
-    @wf_filter = params[:wf_type].constantize.load_filter(@own_profile, params[:wf_key])
-    render :partial => '/wf/filter/conditions', :layout=>false
+    wf_filter = params[:wf_type].constantize.load_filter(@own_profile, params[:wf_key])
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def save_filter
     params.delete(:wf_id)
     
-    @wf_filter = Wf::Filter.deserialize_from_params(params)
-    @wf_filter.validate!
+    wf_filter = Wf::Filter.deserialize_from_params(params)
+    wf_filter.validate!
     
-    unless @wf_filter.errors?
-      @wf_filter.id = nil
-      @wf_filter.identity = @own_profile
-      @wf_filter.save
+    unless wf_filter.errors?
+      wf_filter.id = nil
+      wf_filter.save
     end
     
-    @wf_filter.key= @wf_filter.id.to_s 
+    wf_filter.key= wf_filter.id.to_s 
     
-    render :partial => '/wf/filter/conditions', :layout=>false
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def update_filter
-    @wf_filter = Wf::Filter.find_by_id(params.delete(:wf_id))
-    @wf_filter.deserialize_from_params(params)
-    @wf_filter.validate!
+    wf_filter = Wf::Filter.find_by_id(params.delete(:wf_id))
+    wf_filter.deserialize_from_params(params)
+    wf_filter.validate!
     
-    unless @wf_filter.errors?
-      @wf_filter.identity = @own_profile
-      @wf_filter.save
+    unless wf_filter.errors?
+      wf_filter.save
     end
     
-    @wf_filter.key= @wf_filter.id.to_s 
+    wf_filter.key= wf_filter.id.to_s 
     
-    render :partial => '/wf/filter/conditions', :layout=>false
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def change_filter_model
-    @wf_filter = Wf::Filter.deserialize_from_params(params)
-    @wf_filter.remove_all
+    wf_filter = Wf::Filter.deserialize_from_params(params)
+    wf_filter.remove_all
     
-    @wf_filter.id = nil
-    @wf_filter.key = nil
+    wf_filter.id = nil
+    wf_filter.key = nil
     
-    render :partial => '/wf/filter/conditions', :layout=>false
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
   def delete_filter
-    filter = Wf::Filter.find_by_id(params[:wf_id])
-    filter.destroy if filter
+    wf_filter = Wf::Filter.find_by_id(params[:wf_id])
+    wf_filter.destroy if wf_filter
 
-    @wf_filter = Wf::Filter.deserialize_from_params(params)
-    @wf_filter.id=nil
-    @wf_filter.key=nil
-    @wf_filter.remove_all
+    wf_filter = Wf::Filter.deserialize_from_params(params)
+    wf_filter.id=nil
+    wf_filter.key=nil
+    wf_filter.remove_all
     
-    render :partial => '/wf/filter/conditions', :layout=>false
+    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
 end

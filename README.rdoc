@@ -20,14 +20,11 @@ To install, configure and initialize will_filter engine, run the following comma
 
 == Examples
 
-Here is an example of how a mode_filter gets created in your controller and then will_paginate 
-plugin is used to paginate through the results:
+Here is an example of how a mode_filter gets created in your controller:
 
   class ProfileController < ApplicationController
     def index
-      @model_filter = Wf::Filter.new("Profile", @own_profile).deserialize_from_params(params)    
-      @profiles = Profile.paginate(:order=>@model_filter.order_clause, :page=>params[:page], 
-                                   :per_page=>@model_filter.per_page, :conditions=>@model_filter.sql_conditions)
+      @profiles_filter = Wf::Filter.new("Profile", params, current_user)    
     end
   end  
 
@@ -35,7 +32,7 @@ Note: 'Profile' is a Rails ActiveRecord model and @own_profile is a user or any 
 
 That's it. Now all you have to do is create a view for this action and add the following partial where you want your filter to be rendered:
 
-  <%= render :partial=> "/model_filter/filter" %>
+  <%= will_filter(@profiles_filter) %>
 
 This will render a filter box with various conditions, operators and values for the model object you selected.
 

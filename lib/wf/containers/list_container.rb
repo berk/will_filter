@@ -28,8 +28,8 @@ class Wf::ListContainer < Wf::FilterContainer
   end
 
   def render_html(index)
-    html = "<select style='width:99%' #{html_input_name(index)} #{html_mark_dirty}>"
-    filter.value_options_for(condition_key).each do |item|
+    html = "<select style='width:100%' #{html_input_attributes(index)}>"
+    filter.value_options_for(condition.key).each do |item|
       if item.is_a?(Array)
         opt_name = item.first.to_s
         opt_value = item.last.to_s
@@ -39,18 +39,14 @@ class Wf::ListContainer < Wf::FilterContainer
       end
 
       next if opt_name.strip == ""
-      
-      selected = ""
-      selected = "selected" if opt_value == value
 
+      selected = (opt_value == value ? "selected" : "") 
       opt_html = "<option #{selected} value=\"#{ERB::Util.html_escape(opt_value)}\">"
       opt_html << ERB::Util.html_escape(opt_name)
       opt_html << "</option>"
-
       html << opt_html
     end
     html << "</select>"
-    html
   end
 
   def sql_condition

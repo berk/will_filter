@@ -27,8 +27,8 @@ module Wf::HelperMethods
     render(:partial => "/wf/common/scripts")
   end
   
-  def will_filter
-    render(:partial => "/wf/filter/container")
+  def will_filter(filter)
+    render(:partial => "/wf/filter/container", :locals => {:wf_filter => filter})
   end
   
 end

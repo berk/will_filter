@@ -26,7 +26,7 @@ require 'csv'
 class Wf::ExporterController < ApplicationController
 
   def index
-    @model_filter = Wf::Filter.deserialize_from_params(params)
+    @wf_filter = Wf::Filter.deserialize_from_params(params)
     
     render :layout => false
   end

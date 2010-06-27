@@ -4,7 +4,7 @@
 <div class="wf_container">
 
     <div id="wf_filter_conditions" class="conditions">
-        <%= render :partial=> "/wf/filter/conditions" %>
+        <%= render :partial=> "/wf/filter/conditions", :locals => {:wf_filter => wf_filter} %>
     </div>
 		
 		<div class="footer">
@@ -12,10 +12,10 @@
         <%=link_to_function("Toggle Conditions", "wfFilter.toggleDebugger()", :style=>"font-size:9px") %>
         &nbsp;&nbsp;
         Order: 
-        <%= select_tag(:wf_order, options_for_select(@wf_filter.condition_options, @wf_filter.order), {:onChange=>"markDirty()"}) %>
-        <%= select_tag(:wf_order_type, options_for_select(@wf_filter.order_type_options, @wf_filter.order_type), {:onChange=>"markDirty()"}) %>
+        <%= select_tag(:wf_order, options_for_select(wf_filter.condition_options, wf_filter.order), {:onChange=>"markDirty()"}) %>
+        <%= select_tag(:wf_order_type, options_for_select(wf_filter.order_type_options, wf_filter.order_type), {:onChange=>"markDirty()"}) %>
         Per Page: 
-				<%= select_tag(:wf_per_page, options_for_select(@wf_filter.per_page_options, @wf_filter.per_page), {:onChange=>"markDirty()"}) %>
+				<%= select_tag(:wf_per_page, options_for_select(wf_filter.per_page_options, wf_filter.per_page), {:onChange=>"markDirty()"}) %>
         &nbsp;&nbsp;<%=link_to_function("<span>Submit Filter</span>", "wfFilter.submit()", :class => "grey-button pcb") %>
 		  </div>
 			<div>
@@ -26,7 +26,7 @@
 		</div>
 
     <div id="wf_debugger" class="wf_debugger" style="display:none;">
-        <%= @wf_filter.debug_sql_conditions %>
+        <%= wf_filter.debug_sql_conditions %>
     </div>
 </div>
 <% end %>
