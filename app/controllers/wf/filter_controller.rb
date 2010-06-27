@@ -22,13 +22,7 @@
 #++
 
 class Wf::FilterController < ApplicationController
-  
-  before_filter :debug
-  
-  def debug
-    pp params
-  end
-  
+
   def update_condition
     @wf_filter = Wf::Filter.deserialize_from_params(params)
     condition = @wf_filter.condition_at(params[:at_index].to_i)
@@ -82,9 +76,7 @@ class Wf::FilterController < ApplicationController
   end
 
   def update_filter
-    @wf_filter = Wf::Filter.find_by_id(:wf_id)
-    params.delete(:wf_id)
-    
+    @wf_filter = Wf::Filter.find_by_id(params.delete(:wf_id))
     @wf_filter.deserialize_from_params(params)
     @wf_filter.validate!
     
@@ -109,7 +101,7 @@ class Wf::FilterController < ApplicationController
   end
 
   def delete_filter
-    filter = Wf::Filter.find_by_id(:wf_id)
+    filter = Wf::Filter.find_by_id(params[:wf_id])
     filter.destroy if filter
 
     @wf_filter = Wf::Filter.deserialize_from_params(params)

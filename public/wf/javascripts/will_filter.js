@@ -58,7 +58,14 @@ Wf.Filter = Class.create({
   },
   deleteFilter: function() {
 		if (!confirm("Are you sure you want to delete this filter?")) return;
-		$('wf_form').submit();
+		
+    this.showSpinner();
+    new Ajax.Updater('wf_filter_conditions', '/wf/filter/delete_filter', {
+      parameters: $('wf_form').serialize(true),
+      onComplete: function(transport) {
+        wfFilter.hideSpinner();
+      } 
+    });
   },
   updateConditionAt: function(index) {
     this.showSpinner();

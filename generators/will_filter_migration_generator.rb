@@ -21,10 +21,10 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class WfMigrationGenerator < Rails::Generator::Base
+class WillFilterMigrationGenerator < Rails::Generator::Base
   def manifest
     record do |m|
-      m.migration_template "migrate/create_wf_tables.rb", "db/migrate", :migration_file_name => "create_wf_tables"
+      m.migration_template "migrate/create_will_filter_tables.rb", "db/migrate", :migration_file_name => "create_will_filter_tables"
     end
   end
 end

@@ -1,70 +1,3 @@
-<<<<<<< HEAD:app/models/model_filter.rb
-class ModelFilter < ActiveRecord::Base
-  
-  OPERATOR_ORDER = [  :is, :is_not, :is_on, :is_in, 
-                      :is_provided,     :is_not_provided,
-                      :is_after,        :is_before,       :is_in_the_range,
-                      :contains,        :does_not_contain, 
-                      :starts_with,     :ends_with, 
-                      :is_greater_than, :is_less_than,
-                      :is_filtered_by, 
-  ]
-  
-  CONTAINERS_BY_SQL_TYPE = {
-    ["bigint", "numeric", "smallint", "integer", "int", "double"]   => [:nil, :numeric, :numeric_range, :numeric_delimited],
-    ["timestamp", "datetime"]                             => [:nil, :date_time, :date_time_range, :single_date],
-    ["date"]                                              => [:nil, :date, :date_range],
-    ["character", "varchar", "text", "text[]", "bytea"]   => [:nil, :text, :text_delimited],
-    ["text"]                                              => [:nil, :text],
-    ["boolean", "tinyint"]                                => [:nil, :boolean],
-  }
-  
-  FORMATS = [:table, :csv, :xml, :json]
-  
-  HTML = {
-    :condition      => 'mf_c',
-    :operator       => 'mf_co',
-    :value          => 'mf_cv',
-    :match          => 'mf_match',
-    :type           => 'mf_type',
-    :name           => 'mf_name',
-    :format         => 'mf_format',
-    :fields         => 'mf_fields',
-    :model          => 'mf_model',
-    :id             => 'mf_id',
-    :key            => 'mf_key',
-    :order          => 'mf_order',
-    :order_type     => 'mf_order_type',
-    :per_page       => 'mf_per_page',
-    :identity_type  => 'mf_identity_type',
-    :identity_id    => 'mf_identity_id',
-  }
-  
-  DEFAULT_HTML_LABELS = {
-    :title                => "Filter Conditions",
-    :order                => "Sort By:",
-    :per_page             => "Page Size:",
-    :msg_empty            => "You haven't added any filter conditions, so all of the results were returned. Use the \"Add\" button in the bottom left corner to add a new condition or select a predefined filter from a drop-down list above. ", 
-    :msg_loading          => "Loading...",
-    :msg_filter_changed   => "(filter has been modified and must be re-submitted before it can be saved)",
-    :msg_match_before     => "Match",
-    :msg_match_after      => "of the following conditions:",
-    
-    :msg_predefined_filters  => "-- Select Predefined Filter --",
-    :msg_saved_filters       => "-- Select Saved Filter --",
-    
-    :msg_prompt_name      => "Please provide the name for the filter:",
-    :msg_prompt_delete    => "Are you sure you want to delete this filter?",
-    
-    :btn_add_condition    => "+ Add",
-    :btn_clear            => "- Clear",
-    :btn_delete           => "Delete Filter",
-    :btn_update           => "Update Filter",
-    :btn_save             => "Save As New...",
-    :btn_search           => "Submit Filter",
-  }
-  
-=======
 #--
 # Copyright (c) 2010 Michael Berkovich, Geni Inc
 #
@@ -91,43 +24,42 @@ class ModelFilter < ActiveRecord::Base
 class Wf::Filter < ActiveRecord::Base
   set_table_name :wf_filters
 
->>>>>>> major refactoring and code changes:app/models/wf/filter.rb
   belongs_to  :identity, :polymorphic => :subclass
-  
   serialize   :data
-  
-  attr_accessor :conditions, :match, :key, :errors
-  attr_accessor :per_page
-  attr_accessor :order, :order_type
-  attr_accessor :fields, :format
   
   def initialize(new_model_class_name = nil, new_identity = nil)
     super()
     
     self.model_class_name = new_model_class_name
     self.identity = new_identity
-    
-    @conditions   = []
-    @match        = :all
-    @key          = ''
-    @errors       = {}
-    
-    @per_page     = default_per_page
-    @page         = 1
-    @order_type   = default_order_type
-    @order        = default_order
-    
-    @exportable   = true
-    @format       = :html
-    @fields       = []
   end
   
   def exportable?
-    @exportable
+    true
   end
 
   def show_save_options?
     true
+  end
+
+  def match 
+    @match ||= :all
+  end
+
+  def key 
+    @key ||= ''
+  end
+
+  def errors 
+    @errors ||= {}
+  end
+  
+  def format
+    @format ||= :html
+  end
+
+  def fields
+    @fields ||= []
   end
   
   def valid_format?
@@ -302,13 +234,33 @@ class Wf::Filter < ActiveRecord::Base
   def default_order_type
     'desc'
   end
-  
+
   def default_per_page
-    '30'
+    30
+  end
+  
+  def per_page
+    @per_page ||= default_per_page
+  end
+
+  def page
+    @page ||= 1
+  end
+  
+  def order
+    @order ||= default_order
+  end
+  
+  def order_type
+    @order_type ||= default_order_type
+  end
+  
+  def conditions
+    @conditions ||= []
   end
   
   def condition_at(index)
-    @conditions[index]
+    conditions[index]
   end
   
   def condition_by_key(key)
@@ -382,17 +334,17 @@ class Wf::Filter < ActiveRecord::Base
     self.id   =  params[:wf_id].to_i  unless params[:wf_id].blank?
     self.name =  params[:wf_name]     unless params[:wf_name].blank?
     
-    self.fields = []
+    @fields = []
     unless params[:wf_export_fields].blank?
       params[:wf_export_fields].split(",").each do |fld|
-        self.fields << fld.to_sym
+        @fields << fld.to_sym
       end
     end
 
     if params[:wf_export_format].blank?
-      self.format = :html
+      @format = :html
     else  
-      self.format = params[:wf_export_format].to_sym
+      @format = params[:wf_export_format].to_sym
     end
     
     i = 0

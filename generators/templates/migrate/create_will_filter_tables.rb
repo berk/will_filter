@@ -21,7 +21,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class CreateWfTables < ActiveRecord::Migration
+class CreateWillFilterTables < ActiveRecord::Migration
   def self.up
     create_table :wf_filters do |t|
       t.string      :type
