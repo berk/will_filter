@@ -70,7 +70,7 @@ class Wf::DateTimeRangeContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" (#{condition.key} >= ? and #{condition.key} <= ?) ", start_time, end_time] if operator == :is_in_the_range
+    return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", start_time, end_time] if operator == :is_in_the_range
   end
 
 end

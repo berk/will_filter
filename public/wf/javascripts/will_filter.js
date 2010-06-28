@@ -156,6 +156,8 @@ Wf.Filter = Class.create({
 Wf.Calendar = Class.create({
   initialize: function() {
     var e = Prototype.emptyFunction;
+		this.trigger = null;
+		this.last_selected_cell = null;
     this.options = Object.extend({
     }, arguments[0] || { });
 
@@ -169,15 +171,22 @@ Wf.Calendar = Class.create({
       this.hide();
       return;
     }
-    
+
+    this.trigger = trigger;
+		
+    var form_hash = {};
+		form_hash["wf_calendar_selected_date"] = $(fld_id).value;
+    form_hash["wf_calendar_show_time"] = show_time;
+		
     this.selected_field_id = fld_id;
     new Ajax.Updater('wf_calendar', '/wf/calendar', {
-      parameters:{'date':$(fld_id).value, 'show_time':show_time},
+      parameters: form_hash,
       onComplete: function(transport) {
-          var trigger_position = Position.cumulativeOffset(trigger);
+          var trigger_position = Position.cumulativeOffset(wfCalendar.trigger);
           var fld_left = trigger_position[0] - 237;
           var fld_top = trigger_position[1];
-          $("wf_calendar").setStyle({"left":(fld_left+"px"), "top":(fld_top+"px")});
+					
+          $("wf_calendar").setStyle({"width":"230px", "left":(fld_left+"px"), "top":(fld_top+"px")});
 					new Effect.Appear("wf_calendar", {duration: 0.25});
       } 
     });
@@ -188,16 +197,36 @@ Wf.Calendar = Class.create({
   selectDateTime: function(fld_id, trigger){
     this.openCalendar(fld_id, trigger, true);
   },
-	goToDate: function(date, show_time) {
-	  var skip_date = false;
-	  if (date == '') {
-	    date = $("wf_cal_year").value + "-" + $("wf_cal_month").value + "-01";
-	    skip_date = true;
-	  }
+	changeMode: function(mode) {
+    var form_hash = $('wf_calendar_form').serialize(true);
+    form_hash["wf_calendar_mode"] = mode;
+		
+    if (mode == 'annual')
+      form_hash["wf_calendar_start_date"] = $("wf_calendar_year").value + "-01-01";
+		
+    new Ajax.Updater('wf_calendar', '/wf/calendar', {
+      parameters: form_hash,
+      onComplete: function(transport) {
+          var trigger_position = Position.cumulativeOffset(wfCalendar.trigger);
+					var width = 400;
+					if (mode=='annual') width = 680;
+					
+          var fld_left = trigger_position[0] - width - 7;
+          var fld_top = trigger_position[1];
+          $("wf_calendar").setStyle({"width":(width+"px"), "left":(fld_left+"px"), "top":(fld_top+"px")});
+      } 
+    });
+	},
+	goToStartDate: function(start_date) {
+    var form_hash = $('wf_calendar_form').serialize(true);
+		if (start_date == '')
+      form_hash["wf_calendar_start_date"] = $("wf_calendar_year").value + "-" + $("wf_calendar_month").value + "-01";
+		else
+			form_hash["wf_calendar_start_date"] = start_date;
+		
 	  new Ajax.Updater('wf_calendar', '/wf/calendar', {
-	    parameters:{'date':date, 'show_time':show_time, 'skip_date':skip_date},
+	    parameters: form_hash,
 	    onComplete: function(transport) {
-	      
 	    } 
 	  });
 	},
@@ -209,16 +238,16 @@ Wf.Calendar = Class.create({
 	  this.selected_field_id = null;
 	},
 	selectDateValue: function(elem_id, date) {
-	  for (i = 0; i < 31; i++) {
-	    if ($("wf_cal_cell_" + i)) {
-	      $("wf_cal_cell_" + i).removeClassName("selected");
-	    }
-	  }
-	  $("wf_cal_cell_" + elem_id).addClassName('selected'); 
-	  $("wf_selected_date").value = date;
+		if (this.last_selected_cell)
+      $(this.last_selected_cell).removeClassName("selected");
+			
+	  $(elem_id).addClassName('selected'); 
+		this.last_selected_cell = elem_id;
+		
+	  $("wf_calendar_selected_date").value = date;
 	},
 	setDate: function() {
-	  this.setSelectedFieldValue($("wf_selected_date").value);
+	  this.setSelectedFieldValue($("wf_calendar_selected_date").value);
     this.hide();
 	},
 	prepandZero: function(val) {
@@ -228,10 +257,10 @@ Wf.Calendar = Class.create({
 	  return ("0" + val);
 	},
 	setDateTime: function() {
-	  var val = $("wf_selected_date").value;
-	  val += " " + this.prepandZero($("wf_cal_hour").value);
-	  val += ":" + this.prepandZero($("wf_cal_minute").value);
-	  val += ":" + this.prepandZero($("wf_cal_second").value);
+	  var val = $("wf_calendar_selected_date").value;
+	  val += " " + this.prepandZero($("wf_calendar_hour").value);
+	  val += ":" + this.prepandZero($("wf_calendar_minute").value);
+	  val += ":" + this.prepandZero($("wf_calendar_second").value);
 	  
 	  this.setSelectedFieldValue(val);
 	  this.hide();

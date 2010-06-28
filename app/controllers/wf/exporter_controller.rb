@@ -27,11 +27,13 @@ class Wf::ExporterController < ApplicationController
 
   def index
     @wf_filter = Wf::Filter.deserialize_from_params(params)
-    
     render :layout => false
   end
 
   def export
+    params[:page] = 1
+    params[:per_page] = 10000 # mas export limit
+
     @wf_filter = Wf::Filter.deserialize_from_params(params)
     
     if @wf_filter.custom_format?
@@ -44,18 +46,16 @@ class Wf::ExporterController < ApplicationController
       return     
     end
     
-    @objects = @wf_filter.model_class.find(:all, :conditions => @wf_filter.sql_conditions, :order => @wf_filter.order_clause)
-    
     if @wf_filter.format == :xml
-      return send_xml_data(@wf_filter, @objects)
+      return send_xml_data(@wf_filter)
     end  
 
     if @wf_filter.format == :json
-      return send_json_data(@wf_filter, @objects)
+      return send_json_data(@wf_filter)
     end  
     
     if @wf_filter.format == :csv
-      return send_csv_data(@wf_filter, @objects)
+      return send_csv_data(@wf_filter)
     end  
 
     render :layout => false
@@ -63,16 +63,16 @@ class Wf::ExporterController < ApplicationController
 
 private
 
-  def send_xml_data(model_filter, objects)
-    class_name = model_filter.model_class_name.underscore
+  def send_xml_data(wf_filter)
+    class_name = wf_filter.model_class_name.underscore
     
     result = ""
     xml = Builder::XmlMarkup.new(:target => result, :indent => 1)
     xml.instruct!
     xml.tag!(class_name.pluralize) do
-      objects.each do |obj|
+      wf_filter.results.each do |obj|
         xml.tag!(class_name.underscore) do
-          model_filter.fields.each do |field|
+          wf_filter.fields.each do |field|
             xml.tag!(field.to_s, obj.send(field).to_s) 
           end    
         end
@@ -82,12 +82,12 @@ private
     send_data(result, :type => 'text/xml', :charset => 'utf-8')
   end  
 
-  def send_json_data(model_filter, objects)
+  def send_json_data(wf_filter)
     result = []
     
-    objects.each do |obj|
+    wf_filter.results.each do |obj|
       hash = {}
-      model_filter.fields.each do |field|
+      wf_filter.fields.each do |field|
         hash[field] = obj.send(field).to_s 
       end  
       result << hash
@@ -96,13 +96,13 @@ private
     send_data(result.to_json, :type => 'text', :charset => 'utf-8')
   end  
   
-  def send_csv_data(model_filter, objects)
+  def send_csv_data(wf_filter)
     result = StringIO.new
     CSV::Writer.generate(result) do |csv|
-      csv << model_filter.fields
-      objects.each do |obj|
+      csv << wf_filter.fields
+      wf_filter.results.each do |obj|
         row = []
-        model_filter.fields.each do |field|
+        wf_filter.fields.each do |field|
           row << obj.send(field).to_s 
         end    
         csv << row

@@ -38,7 +38,7 @@ class Wf::NumericDelimitedContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} in (?) ", split_values] if operator == :is_in
+    return [" #{condition.full_key} in (?) ", split_values] if operator == :is_in
   end
 
 end

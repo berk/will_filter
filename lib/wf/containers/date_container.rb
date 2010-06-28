@@ -48,10 +48,10 @@ class Wf::DateContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} = ? ", date]  if operator == :is
-    return [" #{condition.key} <> ? ", date] if operator == :is_not
-    return [" #{condition.key} > ? ", date]  if operator == :is_after
-    return [" #{condition.key} < ? ", date]  if operator == :is_before
+    return [" #{condition.full_key} = ? ", date]  if operator == :is
+    return [" #{condition.full_key} <> ? ", date] if operator == :is_not
+    return [" #{condition.full_key} > ? ", date]  if operator == :is_after
+    return [" #{condition.full_key} < ? ", date]  if operator == :is_before
   end
   
 end

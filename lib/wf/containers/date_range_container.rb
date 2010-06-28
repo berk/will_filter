@@ -61,7 +61,7 @@ class Wf::DateRangeContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" (#{condition.key} >= ? and #{condition.key} <= ?) ", date(@start_date), date(@end_date)] if operator == :is_in_the_range
+    return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", date(@start_date), date(@end_date)] if operator == :is_in_the_range
   end
   
 end

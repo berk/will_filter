@@ -45,7 +45,7 @@ class Wf::BooleanContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} = ? ", (selected? ? true : false)] if operator == :is
+    return [" #{condition.full_key} = ? ", (selected? ? true : false)] if operator == :is
   end
   
 end

@@ -43,6 +43,10 @@ class Wf::FilterCondition
     params
   end
   
+  def full_key
+    "#{filter.table_name}.#{key}"
+  end
+  
   def to_s
     key
   end

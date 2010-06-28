@@ -32,20 +32,18 @@ class Wf::FilterListContainer < Wf::FilterContainer
   end
 
   def render_html(index)
-    html = "<select style='width:99%' #{html_input_name(index)} #{html_mark_dirty}>"
-    if condition == :id
+    html = "<select style='width:99%' #{html_input_attributes(index)}>"
+    if condition.key == :id
       model_class_name = filter.model_class_name
     else
-      model_class_name = condition.to_s[0..-4].camelcase
+      model_class_name = condition.key.to_s[0..-4].camelcase
     end
-    identity_filters = ModelFilter.new(model_class_name, filter.identity).saved_filters(false)
+    identity_filters = Wf::Filter.new(model_class_name, {}, filter.identity).saved_filters(false)
     identity_filters.each do |filter|
       opt_name = filter[0]
       opt_value = filter[1]
 
-      selected = ""
-      selected = "selected" if opt_value == value
-
+      selected = (opt_value == value ? "selected" : "") 
       opt_html = "<option #{selected} value=\"#{opt_value}\">"
       opt_html << opt_name
       opt_html << "</option>"
@@ -58,11 +56,10 @@ class Wf::FilterListContainer < Wf::FilterContainer
 
   def sql_condition
     return nil unless operator == :is_filtered_by
-    
-    sub_filter = ModelFilter.find_by_id(value)
+    sub_filter = Wf::Filter.find_by_id(value)
     sub_conds = sub_filter.sql_conditions
-    sub_sql = "SELECT id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}"
-    sub_conds[0] = " #{condition.key} IN (#{sub_sql}) "
+    sub_sql = "SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}"
+    sub_conds[0] = " #{condition.full_key} IN (#{sub_sql}) "
     sub_conds
   end
 

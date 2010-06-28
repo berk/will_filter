@@ -55,7 +55,7 @@ class Wf::SingleDateContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} >= ? and  #{condition.key} < ? ", start_date_time, end_date_time]  if operator == :is_on
+    return [" #{condition.full_key} >= ? and  #{condition.full_key} < ? ", start_date_time, end_date_time]  if operator == :is_on
   end
 
 end

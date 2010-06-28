@@ -10,6 +10,10 @@
 #############################################################################
 
 defaults: &defaults
+  saving_enabled:       true
+  exporting_enabled:    true
+  identity_enabled:     true
+  
   containers:
     nil:                Wf::NilContainer
     numeric:            Wf::NumericContainer
@@ -24,6 +28,7 @@ defaults: &defaults
     text_delimited:     Wf::TextDelimitedContainer
     boolean:            Wf::BooleanContainer
     list:               Wf::ListContainer
+    filter_list:        Wf::FilterListContainer
     
   mapping:
     bigint:             [nil, numeric, numeric_range, numeric_delimited]

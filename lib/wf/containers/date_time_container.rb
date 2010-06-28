@@ -48,10 +48,10 @@ class Wf::DateTimeContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} = ? ",   time]     if operator == :is
-    return [" #{condition.key} <> ? ",  time]     if operator == :is_not
-    return [" #{condition.key} > ? ",   time]     if operator == :is_after
-    return [" #{condition.key} < ? ",   time]     if operator == :is_before
+    return [" #{condition.full_key} = ? ",   time]     if operator == :is
+    return [" #{condition.full_key} <> ? ",  time]     if operator == :is_not
+    return [" #{condition.full_key} > ? ",   time]     if operator == :is_after
+    return [" #{condition.full_key} < ? ",   time]     if operator == :is_before
   end
 
 end

@@ -24,12 +24,24 @@
 class Wf::Config
   
   def self.load_yml(file_path)
-    yml = YAML.load_file("#{RAILS_ROOT}#{file_path}")[RAILS_ENV]
+    yml = YAML.load_file("#{Rails.root}#{file_path}")[Rails.env]
     HashWithIndifferentAccess.new(yml)
   end
   
   def self.config
     @config ||= load_yml("/config/will_filter_config.yml")
+  end
+
+  def self.saving_enabled?
+    config[:saving_enabled]
+  end
+
+  def self.exporting_enabled?
+    config[:exporting_enabled]
+  end
+
+  def self.identity_enabled?
+    config[:identity_enabled]
   end
   
   def self.containers

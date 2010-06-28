@@ -4,7 +4,7 @@
 	    <%=link_to_function("<span>Save As New...</span>", "wfFilter.saveFilter()", :class => "grey-button pcb") %>
 	    <%=link_to_function("<span>Update</span>", "wfFilter.updateFilter()", :class => "grey-button pcb") %>
 	    <%=link_to_function("<span>Delete</span>", "wfFilter.deleteFilter()", :class => "grey-button pcb") %>
-      <% if wf_filter.exportable? %>
+      <% if wf_filter.show_export_options? %>
         <%=link_to_function("<span>Export Data...</span>", "wfExporter.show(this)", :class => "grey-button pcb") %>
       <% end %>
 		</div>
@@ -17,16 +17,16 @@
 </div>
 
 <div class="wf_container_panel">
+  <% if wf_filter.errors[:filter] %>
+    <div class="wf_filter_error">
+      <%= wf_filter.errors[:filter] %>
+    </div>
+  <% end %>
+
 	<div style="padding:5px">
 		Match <%= select_tag(:wf_match, options_for_select(wf_filter.match_options, wf_filter.match), {:onChange=>"wfFilter.markDirty()"}) %>
 		of the following conditions:
 	</div>
-	
-	<% if wf_filter.errors[:filter] %>
-		<div style="padding-left:5px; padding-bottom:5px; color:red">
-			<%= wf_filter.errors[:filter] %>
-		</div>
-	<% end %>
 	
 	<% if wf_filter.size == 0 %> 
 	  <div style="font-style:italic; padding:5px; color: black">

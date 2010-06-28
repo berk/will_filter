@@ -36,8 +36,8 @@ class Wf::NilContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} is not null "]  if operator == :is_provided
-    return [" #{condition.key} is null "]      if operator == :is_not_provided
+    return [" #{condition.full_key} is not null "]  if operator == :is_provided
+    return [" #{condition.full_key} is null "]      if operator == :is_not_provided
   end
 
 end

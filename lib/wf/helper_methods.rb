@@ -23,12 +23,30 @@
 
 module Wf::HelperMethods
 
+  def will_filter(filter)
+    render(:partial => "/wf/filter/container", :locals => {:wf_filter => filter})
+  end
+
   def will_filter_scripts_tag
     render(:partial => "/wf/common/scripts")
   end
   
-  def will_filter(filter)
-    render(:partial => "/wf/filter/container", :locals => {:wf_filter => filter})
+  def will_filter_table_tag(filter, fields = [])
+    html = "<table cellspacing='1px' cellpadding='1px'>"
+    html <<  "<tr>"
+    filter.fields.each do |field|
+      html << "<th>" << field.to_s << "</th>"
+    end
+    html <<  "</tr>"
+    
+    filter.results.each do |obj|
+      html <<  "<tr>"
+      filter.fields.each do |field|
+        html << "<td>" << obj.send(field).to_s << "</td>"
+      end
+      html <<  "</tr>"
+    end  
+    html <<  "</table>"  
   end
   
 end

@@ -34,14 +34,35 @@ class Wf::Filter < ActiveRecord::Base
     self.identity = new_identity
     
     deserialize_from_params(params)
+    validate!
   end
   
-  def exportable?
-    true
+  def dup
+    super.tap {|ii| ii.conditions = self.conditions.dup}
+  end
+  
+  def before_save
+    self.data = serialize_to_params
+    self.type = self.class.name
+  end
+  
+  def after_find
+    @errors = {}
+    deserialize_from_params(self.data)
+  end
+  
+  #############################################################################
+  # 
+  # Defaults 
+  # 
+  #############################################################################
+  
+  def show_export_options?
+    Wf::Config.exporting_enabled?
   end
 
   def show_save_options?
-    true
+    Wf::Config.saving_enabled?
   end
 
   def match 
@@ -64,12 +85,10 @@ class Wf::Filter < ActiveRecord::Base
     @fields ||= []
   end
   
-  def valid_format?
-    Wf::Config.export_formats.include?(format.to_s)
-  end
-  
-  def dup
-    super.tap {|ii| ii.conditions = self.conditions.dup}
+  # a list of indexed fields where at least one of them has to be in a query
+  # otherwise the filter may hang the database
+  def required_condition_keys
+    []
   end
   
   def model_class
@@ -156,12 +175,17 @@ class Wf::Filter < ActiveRecord::Base
     "#{order} #{order_type}"
   end
   
+  # Can be overloaded for custom titles
+  def condition_title_for(key)
+    key.to_s.capitalize.gsub('_', ' ').gsub('.', ' - ')
+  end
+  
   # Condition Options
   def condition_options
     @condition_options ||= begin
       opts = []
       definition.keys.each do |cond|
-        opts << [cond.to_s.capitalize.gsub('_', ' ').gsub('.', ' - '), cond.to_s]
+        opts << [condition_title_for(cond), cond.to_s]
       end
       opts.sort_by{ |i| i[0] }
     end
@@ -266,14 +290,14 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   def condition_by_key(key)
-    @conditions.each do |c|
+    conditions.each do |c|
       return c if c.key==key
     end
     nil
   end
   
   def size
-    @conditions.size
+    conditions.size
   end
   
   def add_default_condition_at(index)
@@ -281,12 +305,18 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   def remove_condition_at(index)
-    @conditions.delete_at(index)
+    conditions.delete_at(index)
   end
   
   def remove_all
     @conditions = []
   end
+
+  #############################################################################
+  # 
+  # Serialization 
+  # 
+  #############################################################################
 
   def serialize_to_params
     params = {}
@@ -364,12 +394,29 @@ class Wf::Filter < ActiveRecord::Base
     return self
   end
   
+  #############################################################################
+  # 
+  # Validations 
+  # 
+  #############################################################################
+
   def errors?
    (@errors and @errors.size > 0)
   end
   
   def empty?
     size == 0
+  end
+
+  def valid_format?
+    Wf::Config.export_formats.include?(format.to_s)
+  end
+
+  def required_conditions_met?
+    return true if required_condition_keys.blank?
+    sconditions = conditions.collect{|c| c.key.to_s}
+    rconditions = required_condition_keys.collect{|c| c.to_s}
+    not (sconditions & rconditions).empty?
   end
   
   def validate!
@@ -380,20 +427,31 @@ class Wf::Filter < ActiveRecord::Base
       @errors[index] = err if err
     end
     
+    unless required_conditions_met?
+      @errors[:filter] = "Filter must contain at least one of the following conditions: #{required_condition_keys.join(", ")}"
+    end
+    
     errors?
   end
+  
+  #############################################################################
+  # 
+  # SQL Conditions 
+  # 
+  #############################################################################
   
   def sql_conditions
     @sql_conditions  ||= begin
       validate!
       
-      if errors?
+      if errors? 
         all_sql_conditions = [" 1 = 2 "] 
       else
         all_sql_conditions = [""]
         0.upto(size - 1) do |index|
           condition = condition_at(index)
           sql_condition = condition.container.sql_condition
+          
           unless sql_condition
             raise Exception.new("Unsupported operator #{condition.operator_key} for container #{condition.container.class.name}")
           end
@@ -445,6 +503,12 @@ class Wf::Filter < ActiveRecord::Base
     debug_conditions(sql_conditions)
   end
 
+  #############################################################################
+  # 
+  # Saved Filters 
+  # 
+  #############################################################################
+
   def saved_filters(include_predefined = true)
     @saved_filters ||= begin
       filters = []
@@ -456,7 +520,7 @@ class Wf::Filter < ActiveRecord::Base
         end
       end
 
-      if identity
+      if identity and Wf::Config.identity_enabled?
         identity_filters = Wf::Filter.find(:all, :conditions=>["identity_type = ? AND identity_id = ? AND model_class_name = ?", identity.class.name, identity.id, self.model_class_name])
       else
         identity_filters = Wf::Filter.find(:all, :conditions=>["model_class_name = ?", self.model_class_name])
@@ -487,16 +551,12 @@ class Wf::Filter < ActiveRecord::Base
     filter = Wf::Filter.find_by_id(key.to_i) unless filter
     filter
   end
-  
-  def before_save
-    self.data = serialize_to_params
-    self.type = self.class.name
-  end
-  
-  def after_find
-    @errors = {}
-    deserialize_from_params(self.data)
-  end
+
+  #############################################################################
+  # 
+  # Export Filter Data
+  # 
+  #############################################################################
 
   def export_formats
     formats = []
@@ -531,4 +591,5 @@ class Wf::Filter < ActiveRecord::Base
   def results
     @results ||= model_class.paginate(:order => order_clause, :page => page, :per_page => per_page, :conditions => sql_conditions)
   end
+  
 end

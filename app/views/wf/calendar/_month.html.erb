@@ -1,0 +1,39 @@
+<table class="wf_calendar_cells">
+  <tr>
+    <% Wf::Calendar.days.each_with_index do |day, index| %>
+      <td style="text-align:center;color:grey;font-size:10px;">
+          <b><%= day %></b>
+      </td>       
+    <% end %>
+  </tr>
+  <tr>
+    <% index = 0 %>
+    <% current_date = calendar.start_date %>
+		
+    <% while current_date <= calendar.end_date do %> 
+	      <% if current_date.wday == 0 %>
+	        </tr><tr>
+	      <% end %>
+				
+	      <% 0.upto(6) do |i| %>
+	        <td valign="top" style="width:100px;border:1px solid #ccc;">
+	          <% if current_date.wday == i and current_date <= calendar.end_date %>
+	            <% today = (current_date==Date.today) ? "today" : "" %>
+	            <% selected = (current_date == calendar.selected_date.to_date and current_date!=Date.today) ? "selected" : "" %>
+							<% selected = "" # for now %>
+	            <% set_date = calendar.show_time? ? "" : "wfCalendar.setDate();" %>
+	            <table cellpadding="0px" cellspacing="0px" style="width:100%; background-color:white;">
+	              <tr>
+	                <td id="wf_calendar_cell_<%=current_date.year%>_<%=current_date.month%>_<%=current_date.day%>" class="date_cell <%=today%> <%=selected%>" onClick="wfCalendar.selectDateValue(this, '<%=current_date%>'); <%=set_date%>">
+	                 <%=current_date.day %>
+	                </td>
+	              </tr>
+	            </table>
+	            <% current_date += 1.day %>
+	            <% index += 1 %>
+	          <% end %> 
+	        </td>
+	      <% end %>
+    <% end %>   
+  </tr>
+</table>

@@ -61,7 +61,7 @@ class Wf::NumericRangeContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" (#{condition.key} >= ? and #{condition.key} <= ?) ", numeric_start_value, numeric_end_value] if operator == :is_in_the_range
+    return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", numeric_start_value, numeric_end_value] if operator == :is_in_the_range
   end
   
 end

@@ -25,7 +25,6 @@
 .wf_conditions_table td                 {vertical-align:top; padding: 0px; margin: 0px; white-space:nowrap; }
 
 .wf_condition                           {padding-left:5px; padding-right:2px; padding-bottom:0px; width:20%; white-space:nowrap; vertical-align: top; }
-.wf_condition_error                     {padding-left:5px; padding-bottom:2px; color:red; font-size: 10px; font-family: Arial; }
 .wf_operator                            {padding-right:2px; padding-bottom:0px; width:15%; white-space:nowrap; vertical-align: top; }
 .wf_values                              {padding-right:2px; width:55%; margin:0px; vertical-align:top; }
 
@@ -40,7 +39,7 @@
 
 .wf_calendar_trigger                    {border:0px; padding-left:2px; padding-right:2px;}
 
-.wf_calendar                            {background-color:#eee; position:absolute; width:230px; padding: 2px; font-size:10px; border:solid 1px #e8e8e8; border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
+.wf_calendar                            {background-color:#eee; position:absolute; padding: 2px; font-size:10px; border:solid 1px #e8e8e8; border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
 .wf_calendar_container                  {background-color:white; padding: 1px; margin: 1px; font-size:10px; border:solid 1px #bababa; border-color:#bababa #e8e8e8 #e8e8e8 #bababa; }
 .wf_calendar img                        {border: 0px;}
 .wf_calendar input                      {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
@@ -56,6 +55,9 @@
 .wf_exporter img                        {border: 0px;}
 .wf_exporter input                      {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
 .wf_exporter select                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+
+.wf_filter_error                        {background-color: #ffeded; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e; padding:5px; margin-left:3px; margin-right:3px; }
+.wf_condition_error                     {padding-left:10px; padding-right:10px; font-size: 10px; background-color: #ffeded; font-family: Arial; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e;}
 
 
 /*

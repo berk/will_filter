@@ -37,10 +37,10 @@ class Wf::NumericContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} = ? ",   numeric_value]    if operator == :is
-    return [" #{condition.key} <> ? ",  numeric_value]    if operator == :is_not
-    return [" #{condition.key} < ? ",   numeric_value]    if operator == :is_less_than
-    return [" #{condition.key} > ? ",   numeric_value]    if operator == :is_greater_than
+    return [" #{condition.full_key} = ? ",   numeric_value]    if operator == :is
+    return [" #{condition.full_key} <> ? ",  numeric_value]    if operator == :is_not
+    return [" #{condition.full_key} < ? ",   numeric_value]    if operator == :is_less_than
+    return [" #{condition.full_key} > ? ",   numeric_value]    if operator == :is_greater_than
   end
 
 end

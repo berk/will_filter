@@ -24,21 +24,6 @@
     </style>
   </head>
   <body>
-    <table cellspacing="1px" cellpadding="1px">
-      <tr>
-        <% @wf_filter.fields.each do |field| %>
-        <th><%=field%></th>
-        <% end %>
-      </tr>
-  
-      <% @objects.each do |obj| %>
-      <tr>
-        <% @wf_filter.fields.each do |field| %>
-        <td><%=obj.send(field).to_s %></td>
-        <% end %>
-      </tr>
-      <% end %>  
-    </table>  
-    
+  	<%= will_filter_table_tag(@wf_filter) %>
   </body>
 </html>

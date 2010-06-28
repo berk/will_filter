@@ -32,12 +32,12 @@ class Wf::TextContainer < Wf::FilterContainer
   end
 
   def sql_condition
-    return [" #{condition.key} = ? ", value]                 if operator == :is
-    return [" #{condition.key} <> ? ", value]                if operator == :is_not
-    return [" #{condition.key} like ? ", "%#{value}%"]       if operator == :contains
-    return [" #{condition.key} not like ? ", "%#{value}%"]   if operator == :does_not_contain
-    return [" #{condition.key} like ? ", "#{value}%"]        if operator == :starts_with
-    return [" #{condition.key} like ? ", "%#{value}"]        if operator == :ends_with
+    return [" #{condition.full_key} = ? ", value]                 if operator == :is
+    return [" #{condition.full_key} <> ? ", value]                if operator == :is_not
+    return [" #{condition.full_key} like ? ", "%#{value}%"]       if operator == :contains
+    return [" #{condition.full_key} not like ? ", "%#{value}%"]   if operator == :does_not_contain
+    return [" #{condition.full_key} like ? ", "#{value}%"]        if operator == :starts_with
+    return [" #{condition.full_key} like ? ", "%#{value}"]        if operator == :ends_with
   end
 
 end
