@@ -4,11 +4,13 @@ will_filter is a Rails engine plugin that makes it easy to add administration to
  
 If you ever had to build a page that displays a list of objects that can be filtered using 
 various criteria, this plugin can make your life easier. Adding a filtered page can now be 
-a matter of adding a few lines to your controller and creating a view to display your data.
+a matter of adding a line of code to your controller and creating a view to display your data.
 
 == Installation Instructions
 
 To install, configure and initialize will_filter engine, run the following commands: 
+
+  $ script/plugin install git://github.com/mislav/will_paginate.git
 
   $ script/plugin install git://github.com/berk/will_filter.git
   $ rake will_filter:sync  
@@ -20,19 +22,21 @@ To install, configure and initialize will_filter engine, run the following comma
 
 == Examples
 
-Here is an example of how a mode_filter gets created in your controller:
+Here is an example of how objects can be filtered in your controller:
 
   class ProfileController < ApplicationController
+  
     def index
-      @profiles_filter = Wf::Filter.new("Profile", params, current_user)    
+      @profiles = Profile.filter(:params => params)    
     end
+    
   end  
 
-Note: 'Profile' is a Rails ActiveRecord model and @own_profile is a user or any identity you want to save filters for
+Note: 'Profile' is a Rails ActiveRecord model 
 
-That's it. Now all you have to do is create a view for this action and add the following partial where you want your filter to be rendered:
+That's it. Now all you have to do is create a view for this action and add the following tag where you want your filter to be rendered:
 
-  <%= will_filter(@profiles_filter) %>
+  <%= will_filter(@profiles) %>
 
 This will render a filter box with various conditions, operators and values for the model object you selected.
 
@@ -50,7 +54,7 @@ will_filter_examples project contains some samples that show you how to customiz
 
   git://github.com/berk/will_filter_examples.git
 
-If you have any questions, comments or suggestions, email me at theiceberk@gmail.com
+If you have any questions, comments or suggestions, email me at michael@geni.com
 
 
 == Authors and credits
