@@ -137,7 +137,7 @@ Wf.Filter = Class.create({
 	  new Ajax.Updater('wf_filter_conditions', '/wf/filter/load_filter', {
 	    parameters: form_hash,
 	    onComplete: function(transport) {
-	      $('wf_form').submit();
+				wfFilter.submit();
 	    } 
 	  });
 	},
@@ -145,6 +145,7 @@ Wf.Filter = Class.create({
     if (this.original_form_action != "") 
         $('wf_form').action = this.original_form_action;
 		
+    $('wf_submitted').value = 'true';
     $('wf_form').submit();
 	}
 });
@@ -209,7 +210,7 @@ Wf.Calendar = Class.create({
       onComplete: function(transport) {
           var trigger_position = Position.cumulativeOffset(wfCalendar.trigger);
 					var width = 400;
-					if (mode=='annual') width = 680;
+					if (mode=='annual') width = 700;
 					
           var fld_left = trigger_position[0] - width - 7;
           var fld_top = trigger_position[1];

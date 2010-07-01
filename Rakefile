@@ -21,12 +21,36 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
+require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
-desc 'Default: run unit tests.'
-task :default => :test
+begin
+ require 'jeweler'
+ Jeweler::Tasks.new do |s|
+   s.name = "will_filter"
+   s.summary = %Q{Filtering framework for Rails models.}
+   s.email = "michael@geni.com"
+   s.homepage = "http://github.com/berk/will_filter"
+   s.description = "Filtering framework for Rails models"
+   s.authors = ["Michael Berkovich"]
+ end
+ Jeweler::GemcutterTasks.new
+rescue LoadError
+ puts "Jeweler not available. Install it with: sudo gem install jeweler"
+end
+
+begin
+ require 'rcov/rcovtask'
+ Rcov::RcovTask.new do |t|
+   t.libs << 'test'
+   t.test_files = FileList['test/**/*_test.rb']
+   t.verbose = true
+ end
+rescue LoadError
+end
 
 desc 'Test the blogify plugin.'
 Rake::TestTask.new(:test) do |t|
@@ -44,3 +68,6 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
+
+desc 'Default: run unit tests.'
+task :default => :test

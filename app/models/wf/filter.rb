@@ -24,17 +24,17 @@
 class Wf::Filter < ActiveRecord::Base
   set_table_name :wf_filters
 
-  belongs_to  :identity, :polymorphic => :subclass
   serialize   :data
   
-  def initialize(new_model_class_name = nil, params = {}, new_identity = nil)
+  #############################################################################
+  # 
+  # Basics 
+  # 
+  #############################################################################
+  
+  def initialize(model_class)
     super()
-    
-    self.model_class_name = new_model_class_name
-    self.identity = new_identity
-    
-    deserialize_from_params(params)
-    validate!
+    self.model_class_name = model_class.to_s
   end
   
   def dup
@@ -93,7 +93,7 @@ class Wf::Filter < ActiveRecord::Base
   
   def model_class
     return nil unless model_class_name
-    model_class_name.constantize
+    @model_class ||= model_class_name.constantize
   end
   
   def table_name
@@ -119,8 +119,8 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   def container_by_sql_type(type)
-    raise Exception.new("Unsupported data type #{type}") unless Wf::Config.mapping[type]
-    Wf::Config.mapping[type]
+    raise Wf::FilterException.new("Unsupported data type #{type}") unless Wf::Config.data_types[type]
+    Wf::Config.data_types[type]
   end
   
   def default_condition_definition_for(name, sql_data_type)
@@ -128,7 +128,7 @@ class Wf::Filter < ActiveRecord::Base
     containers = container_by_sql_type(type)
     operators = {}
     containers.each do |c|
-      raise Excpetion.new("Unsupported container implementation for #{c}") unless Wf::Config.containers[c]
+      raise Wf::FilterException.new("Unsupported container implementation for #{c}") unless Wf::Config.containers[c]
       container_klass = Wf::Config.containers[c].constantize
       container_klass.operators.each do |o|
         operators[o] = c
@@ -149,7 +149,7 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   def sorted_operators(opers)
-    (Wf::Config.operator_order.collect{|o| o.to_s}) & (opers.keys.collect{|o| o.to_s}).sort
+    (Wf::Config.operator_order & opers.keys.collect{|o| o.to_s})
   end
   
   def first_sorted_operator(opers)
@@ -196,7 +196,7 @@ class Wf::Filter < ActiveRecord::Base
     condition_key = condition_key.to_sym if condition_key.is_a?(String)
     
     opers = definition[condition_key]
-    raise Exception.new("Invalid condition #{condition_key} for filter #{self.class.name}") unless opers
+    raise Wf::FilterException.new("Invalid condition #{condition_key} for filter #{self.class.name}") unless opers
     sorted_operators(opers).collect{|o| [o.to_s.gsub('_', ' '), o]}
   end
   
@@ -209,7 +209,7 @@ class Wf::Filter < ActiveRecord::Base
     condition_key = condition_key.to_sym if condition_key.is_a?(String)
 
     opers = definition[condition_key]
-    raise Exception.new("Invalid condition #{condition_key} for filter #{self.class.name}") unless opers
+    raise Wf::FilterException.new("Invalid condition #{condition_key} for filter #{self.class.name}") unless opers
     oper = opers[operator_key]
     
     # if invalid operator_key was passed, use first operator
@@ -281,6 +281,10 @@ class Wf::Filter < ActiveRecord::Base
     @order_type ||= default_order_type
   end
   
+  def conditions=(new_conditions) 
+    @conditions = new_conditions
+  end
+  
   def conditions
     @conditions ||= []
   end
@@ -335,19 +339,9 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   # allows to create a filter from params only
-  # used for dynamic filter selector
   def self.deserialize_from_params(params)
     params[:wf_type] = self.name unless params[:wf_type]
-    identity = nil
-    unless params[:mf_identity_type].blank?
-      identity = params[:mf_identity_type].constantize.find(params[:wf_identity_id])
-    end
-    
-    if params[:wf_type] == 'Wf::Filter'
-      return params[:wf_type].constantize.new(params[:wf_model], params, identity)
-    end
-    
-    params[:wf_type].constantize.new(params, identity)
+    params[:wf_type].constantize.new(params[:wf_model]).deserialize_from_params(params)
   end
   
   def deserialize_from_params(params)
@@ -391,6 +385,12 @@ class Wf::Filter < ActiveRecord::Base
       add_condition(conditon_key, operator_key.to_sym, values)
     end
 
+    handle_empty_filter!
+
+    if params[:wf_submitted] == 'true'
+      validate!
+    end
+
     return self
   end
   
@@ -399,7 +399,6 @@ class Wf::Filter < ActiveRecord::Base
   # Validations 
   # 
   #############################################################################
-
   def errors?
    (@errors and @errors.size > 0)
   end
@@ -409,7 +408,7 @@ class Wf::Filter < ActiveRecord::Base
   end
 
   def valid_format?
-    Wf::Config.export_formats.include?(format.to_s)
+    Wf::Config.default_export_formats.include?(format.to_s)
   end
 
   def required_conditions_met?
@@ -442,8 +441,7 @@ class Wf::Filter < ActiveRecord::Base
   
   def sql_conditions
     @sql_conditions  ||= begin
-      validate!
-      
+
       if errors? 
         all_sql_conditions = [" 1 = 2 "] 
       else
@@ -453,7 +451,7 @@ class Wf::Filter < ActiveRecord::Base
           sql_condition = condition.container.sql_condition
           
           unless sql_condition
-            raise Exception.new("Unsupported operator #{condition.operator_key} for container #{condition.container.class.name}")
+            raise Wf::FilterException.new("Unsupported operator #{condition.operator_key} for container #{condition.container.class.name}")
           end
           
           if all_sql_conditions[0].size > 0
@@ -509,27 +507,29 @@ class Wf::Filter < ActiveRecord::Base
   # 
   #############################################################################
 
-  def saved_filters(include_predefined = true)
+  def saved_filters(include_default = true)
     @saved_filters ||= begin
       filters = []
     
-      if include_predefined
-        filters = predefined_filters(identity)
+      if include_default
+        filters = default_filters
         if (filters.size > 0)
-          filters.insert(0, ["-- Select Predefined Filter --", "-1"])
+          filters.insert(0, ["-- Select Default Filter --", "-1"])
         end
       end
 
-      if identity and Wf::Config.identity_enabled?
-        identity_filters = Wf::Filter.find(:all, :conditions=>["identity_type = ? AND identity_id = ? AND model_class_name = ?", identity.class.name, identity.id, self.model_class_name])
-      else
-        identity_filters = Wf::Filter.find(:all, :conditions=>["model_class_name = ?", self.model_class_name])
-      end
+#      if identity and Wf::Config.identity_enabled?
+#        identity_filters = Wf::Filter.find(:all, :conditions=>["identity_type = ? AND identity_id = ? AND model_class_name = ?", identity.class.name, identity.id, self.model_class_name])
+#      else
+#        identity_filters = Wf::Filter.find(:all, :conditions=>["model_class_name = ?", self.model_class_name])
+#      end
       
-      if identity_filters.size > 0
-        filters << ["-- Select Saved Filter --", "-2"] if include_predefined
+      user_filters = Wf::Filter.find(:all, :conditions=>["model_class_name = ?", self.model_class_name])
+      
+      if user_filters.size > 0
+        filters << ["-- Select Saved Filter --", "-2"] if include_default
         
-        identity_filters.each do |filter|
+        user_filters.each do |filter|
           filters << [filter.name, filter.id.to_s]
         end
       end
@@ -537,18 +537,53 @@ class Wf::Filter < ActiveRecord::Base
       filters
     end
   end
+  
+  # overload this method if you don't want to allow empty filters
+  def default_filter_if_empty
+    nil
+  end
     
-  def predefined_filters(identity)
+  def handle_empty_filter!
+    return unless empty?
+    return if default_filter_if_empty.nil?
+    load_filter!(default_filter_if_empty)
+  end
+  
+  def default_filters
+    []
+  end
+
+  def default_filter_conditions(key)
     []
   end
   
-  def self.load_predefined_filter(identity, key)
-    nil
+  def load_default_filter(key)
+    default_conditions = default_filter_conditions(key)
+    return if default_conditions.nil? or default_conditions.empty?
+    
+    unless default_conditions.first.is_a?(Array)
+      add_condition(*default_conditions)
+      return
+    end
+    
+    default_conditions.each do |default_condition|
+      add_condition(*default_condition)
+    end
   end
   
-  def self.load_filter(profile, key)
-    filter = load_predefined_filter(profile, key)
-    filter = Wf::Filter.find_by_id(key.to_i) unless filter
+  def reset!
+    remove_all
+    @page =  1
+  end
+  
+  def load_filter!(key_or_id)
+    reset!
+    @key = key_or_id.to_s
+    load_default_filter(key)
+    return self unless empty?
+    
+    filter = Wf::Filter.find_by_id(key_or_id.to_i)
+    raise Wf::FilterException.new("Invalid filter key #{key_or_id.to_s}") if filter.nil?
     filter
   end
 
@@ -561,7 +596,7 @@ class Wf::Filter < ActiveRecord::Base
   def export_formats
     formats = []
     formats << ["-- Generic Formats --", -1]
-    Wf::Config.export_formats.each do |frmt|
+    Wf::Config.default_export_formats.each do |frmt|
       formats << [frmt, frmt]
     end
     if custom_formats.size > 0
@@ -588,8 +623,16 @@ class Wf::Filter < ActiveRecord::Base
     ""
   end
   
+  def joins
+    nil
+  end
+  
   def results
-    @results ||= model_class.paginate(:order => order_clause, :page => page, :per_page => per_page, :conditions => sql_conditions)
+    @results ||= begin
+      recs = model_class.paginate(:order => order_clause, :page => page, :per_page => per_page, :conditions => sql_conditions, :joins => joins)
+      recs.wf_filter = self
+      recs
+    end
   end
   
 end

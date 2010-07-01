@@ -18,7 +18,7 @@
     <%= hidden_field_tag :wf_calendar_mode, @calendar.mode %>
     <%= hidden_field_tag :wf_calendar_show_time, @calendar.show_time? %>
 		
-		<center>
+	  <div style="padding:5px;text-align:center; margin-bottom:5px; border-bottom: 1px solid #ccc;"> 
 			  &nbsp; 				
 		  	<%=link_to_function("&laquo;", "wfCalendar.goToStartDate('#{@calendar.previous_start_date}')", :style=>"font-size:16px;")%>	
 			  &nbsp;&nbsp;&nbsp; 			
@@ -28,13 +28,13 @@
 		 		<%= select_tag("year", options_for_select(Wf::Calendar.year_options, @calendar.year), {:id => "wf_calendar_year",:onChange=>"wfCalendar.goToStartDate('')"}) %>
 			  &nbsp;&nbsp;&nbsp; 				
 		  	<%=link_to_function("&raquo", "wfCalendar.goToStartDate('#{@calendar.next_start_date}')", :style=>"font-size:16px;")%>	
-			  &nbsp; 				
-		</center>
+			  &nbsp; 	
+		</div>					
 		
     <%= render :partial => @calendar.mode, :locals => {:calendar => @calendar} %>
 		
 		<% if @calendar.show_time? %>
-		  <div style="text-align:center; width:100%; padding:3px;">
+		  <div style="text-align:center; margin-top:10px; padding:5px; border-top:1px solid #ccc;">
  	        <div style="margin:5px;">
 				      Time: &nbsp; 
 				      <%= select_tag("wf_calendar_hour", options_for_select(Wf::Calendar.hour_options, @calendar.hour)) %>

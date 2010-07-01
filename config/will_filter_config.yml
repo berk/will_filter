@@ -10,47 +10,69 @@
 #############################################################################
 
 defaults: &defaults
-  saving_enabled:       true
-  exporting_enabled:    true
-  identity_enabled:     true
-  
-  containers:
-    nil:                Wf::NilContainer
-    numeric:            Wf::NumericContainer
-    numeric_range:      Wf::NumericRangeContainer
-    numeric_delimited:  Wf::NumericDelimitedContainer
-    date_time_range:    Wf::DateTimeRangeContainer
-    single_date:        Wf::SingleDateContainer
-    date:               Wf::DateContainer
-    date_time:          Wf::DateTimeContainer
-    date_range:         Wf::DateRangeContainer
-    text:               Wf::TextContainer
-    text_delimited:     Wf::TextDelimitedContainer
-    boolean:            Wf::BooleanContainer
-    list:               Wf::ListContainer
-    filter_list:        Wf::FilterListContainer
-    
-  mapping:
-    bigint:             [nil, numeric, numeric_range, numeric_delimited]
-    numeric:            [nil, numeric, numeric_range, numeric_delimited]
-    smallint:           [nil, numeric, numeric_range, numeric_delimited]
-    integer:            [nil, numeric, numeric_range, numeric_delimited]
-    int:                [nil, numeric, numeric_range, numeric_delimited]
-    double:             [nil, numeric, numeric_range, numeric_delimited]
-    timestamp:          [nil, date_time, date_time_range, single_date]
-    datetime:           [nil, date_time, date_time_range, single_date]
-    date:               [nil, date, date_range]
-    character:          [nil, text, text_delimited]
-    varchar:            [nil, text, text_delimited]
-    text:               [nil, text, text_delimited]
-    text[]:             [nil, text, text_delimited]
-    bytea:              [nil, text, text_delimited]
-    boolean:            [nil, boolean]
-    tinyint:            [nil, boolean]
+  save_options: 
+    enabled:              true
+    user_filters_enabled: false   # if set to false, the filters will be private
+    user_class_name:      User 
+    current_user_method:  current_user 
 
-  operator_order:       [is, is_not, is_on, is_in, is_provided, is_not_provided, is_after, is_before, is_in_the_range, contains, does_not_contain, starts_with, ends_with, is_greater_than, is_less_than, is_filtered_by] 
-  export_formats:       [table, csv, xml, json]
+  export_options:         
+    enabled:              true
+    default_formats:      [table, csv, xml, json]
   
+  containers:             # container implementation mapping
+    nil:                  Wf::NilContainer
+    numeric:              Wf::NumericContainer
+    numeric_range:        Wf::NumericRangeContainer
+    numeric_delimited:    Wf::NumericDelimitedContainer
+    date_time_range:      Wf::DateTimeRangeContainer
+    single_date:          Wf::SingleDateContainer
+    date:                 Wf::DateContainer
+    date_time:            Wf::DateTimeContainer
+    date_range:           Wf::DateRangeContainer
+    text:                 Wf::TextContainer
+    text_delimited:       Wf::TextDelimitedContainer
+    boolean:              Wf::BooleanContainer
+    list:                 Wf::ListContainer
+    filter_list:          Wf::FilterListContainer
+    
+  data_types:             # mapping between data types and containers   
+    bigint:               [nil, numeric, numeric_range, numeric_delimited]
+    numeric:              [nil, numeric, numeric_range, numeric_delimited]
+    smallint:             [nil, numeric, numeric_range, numeric_delimited]
+    integer:              [nil, numeric, numeric_range, numeric_delimited]
+    int:                  [nil, numeric, numeric_range, numeric_delimited]
+    double:               [nil, numeric, numeric_range, numeric_delimited]
+    timestamp:            [nil, date_time, date_time_range, single_date]
+    datetime:             [nil, date_time, date_time_range, single_date]
+    date:                 [nil, date, date_range]
+    character:            [nil, text, text_delimited]
+    varchar:              [nil, text, text_delimited]
+    text:                 [nil, text, text_delimited]
+    text[]:               [nil, text, text_delimited]
+    bytea:                [nil, text, text_delimited]
+    boolean:              [nil, boolean]
+    tinyint:              [nil, boolean]
+
+  operators:              # operators precedence
+    is:                   100
+    is_not:               200
+    is_on:                300
+    is_in:                400
+    is_provided:          500
+    is_not_provided:      600 
+    is_after:             700
+    is_before:            800
+    is_in_the_range:      900
+    contains:             1000
+    does_not_contain:     1100
+    starts_with:          1200
+    ends_with:            1300
+    is_greater_than:      1400
+    is_less_than:         1500
+    is_filtered_by:       1600
+    
+    
 #############################################################################
 # Environment Settings
 # You can overload any feature defined in the defaults for any environment

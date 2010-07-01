@@ -1,11 +1,8 @@
-.wf_container                           {padding:0px; background:#f1f4f9; margin:0px; font-size: 12px; font-family: Arial; width: 100%; border:solid 1px #e8e8e8;border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
+.wf_container                           {padding:0px; background:#f1f4f9; margin:0px; margin-bottom:10px; font-size: 12px; font-family: Arial; width: 100%; border:solid 1px #e8e8e8;border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
 .wf_container input                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
 .wf_container select                    {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
-.wf_container .header                   {background-color:#f5f5f5; width:100%; padding:1px; margin:0px; border-bottom:solid 1px #ccc; }
-.wf_container .footer                   {padding:5px;}
 .wf_container .spinner                  {font-size: 10px;}
 .wf_container .debug                    {font-size:10px; border-top:1px solid #ccc; width:100%; margin-top:3px;}
-.wf_container table                     {border:0px; width:100%; margin:0px; padding:0px;}
 .wf_container a                         {text-decoration:none; color:#16b; outline:none; border:0px;}
 .wf_container img                       {border:0px;}
 .wf_container .conditions               {padding:0px; margin:0px; }
@@ -14,41 +11,45 @@
 
 .wf_input                               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
 
-.wf_header                              {height:25px; padding:5px; }
-.wf_action                              {border: 0px; vertical-align:middle; }
-.wf_match_header                        {margin:5px; }
+.wf_header                              {margin:0px; height:25px; padding:5px;}
+.wf_action                              {border: 0px; vertical-align:middle;}
+.wf_match_header                        {margin:5px;}
 
-.wf_footer                              {margin-top:3px; width:100%; border-top: 1px solid #ccc; }
-.wf_footer td                           {padding:5px; }
+.wf_footer                              {padding:5px; margin-top:3px;}
 
 .wf_conditions_table                    {border:0px; width:100%; margin:0px; padding:0px; }
-.wf_conditions_table td                 {vertical-align:top; padding: 0px; margin: 0px; white-space:nowrap; }
+.wf_conditions_table td                 {vertical-align:top; padding-right: 3px; padding-bottom: 1px; white-space:nowrap; }
 
 .wf_condition                           {padding-left:5px; padding-right:2px; padding-bottom:0px; width:20%; white-space:nowrap; vertical-align: top; }
 .wf_operator                            {padding-right:2px; padding-bottom:0px; width:15%; white-space:nowrap; vertical-align: top; }
-.wf_values                              {padding-right:2px; width:55%; margin:0px; vertical-align:top; }
+.wf_values                              {padding-right:2px; width:70%; margin:0px; vertical-align:top; }
 
 .wf_values_table                        {border:0px; width:100%; margin:0px; padding:0px; }
-.wf_values_table td                     {vertical-align:top; padding: 0px; margin: 0px; }
+.wf_values_table td                     {vertical-align:top; padding: 2px; margin: 0px; }
 .wf_values_table td input               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
 .wf_values_table td select              {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
 
-.wf_condition_actions                   {padding-right:5px; padding-bottom:2px; white-space:nowrap; text-align:right; width:10%; vertical-align: top; }
+.wf_condition_actions                   {padding-right:5px; padding-bottom:2px; white-space:nowrap; text-align:right; width:100px; vertical-align: top; }
 .wf_button                              {text-align:center; padding: 0px; margin: 0px; }
 .wf_dirty_msg                           {color:red; font-size:10px;}
 
 .wf_calendar_trigger                    {border:0px; padding-left:2px; padding-right:2px;}
 
 .wf_calendar                            {background-color:#eee; position:absolute; padding: 2px; font-size:10px; border:solid 1px #e8e8e8; border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
+.wf_calendar_table                      {width:100%;}
+.wf_calendar_table td                   {padding:2px; margin:2px; text-align:center; vertical-align:top;}
 .wf_calendar_container                  {background-color:white; padding: 1px; margin: 1px; font-size:10px; border:solid 1px #bababa; border-color:#bababa #e8e8e8 #e8e8e8 #bababa; }
 .wf_calendar img                        {border: 0px;}
 .wf_calendar input                      {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
 .wf_calendar select                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
-.wf_calendar_cells                      {width:100%; }
-.wf_calendar_cells td                   {padding:2px; text-align:center; font-size:10px; color:black; background-color:white; cursor:pointer; } 
-.wf_calendar_cells td.today             {background-color:lightblue; } 
-.wf_calendar_cells td.selected          {background-color:#ccc; } 
-.wf_calendar_cells td.date_cell:hover   {background-color:#ccc; } 
+.wf_calendar_cells                      {border:1px dotted #ccc; width:100%; padding:2px; margin:0px; }
+.wf_calendar_cells td                   {border: 0px; text-align:center; vertical-align:middle; font-size:10px; color:black; background-color:white;} 
+
+.wf_calendar_date_cell                  {width:11px; border: 1px solid #ccc; padding:2px; margin:1px; cursor:pointer; vertical-align:middle; text-align:center;}
+.wf_calendar_date_cell.today            {background-color:lightblue; } 
+.wf_calendar_date_cell.selected         {background-color:#ccc; } 
+.wf_calendar_date_cell:hover            {background-color:#ccc; } 
+
 
 .wf_exporter                            {background-color:#eee; position:absolute; width:230px; padding: 2px; font-size:10px; border:solid 1px #e8e8e8; border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
 .wf_exporter_container                  {background-color:white; padding: 1px; margin: 1px; font-size:10px; border:solid 1px #bababa; border-color:#bababa #e8e8e8 #e8e8e8 #bababa; }
@@ -57,7 +58,7 @@
 .wf_exporter select                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
 
 .wf_filter_error                        {background-color: #ffeded; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e; padding:5px; margin-left:3px; margin-right:3px; }
-.wf_condition_error                     {padding-left:10px; padding-right:10px; font-size: 10px; background-color: #ffeded; font-family: Arial; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e;}
+.wf_condition_error                     {padding-left:10px; padding-right:10px; margin-bottom:2px; font-size: 10px; background-color: #ffeded; font-family: Arial; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e;}
 
 
 /*

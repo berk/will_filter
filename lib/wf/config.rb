@@ -23,6 +23,18 @@
 
 class Wf::Config
   
+  def self.init(site_current_user)
+    Thread.current[:current_user] = site_current_user
+  end
+  
+  def self.current_user
+    Thread.current[:current_user]
+  end
+  
+  def self.reset!
+    Thread.current[:current_user] = nil
+  end
+  
   def self.load_yml(file_path)
     yml = YAML.load_file("#{Rails.root}#{file_path}")[Rails.env]
     HashWithIndifferentAccess.new(yml)
@@ -32,32 +44,55 @@ class Wf::Config
     @config ||= load_yml("/config/will_filter_config.yml")
   end
 
-  def self.saving_enabled?
-    config[:saving_enabled]
+  def self.save_options
+    config[:save_options]
   end
 
-  def self.exporting_enabled?
-    config[:exporting_enabled]
+  def self.export_options
+    config[:export_options]
   end
 
-  def self.identity_enabled?
-    config[:identity_enabled]
-  end
-  
   def self.containers
     config[:containers]
   end
 
-  def self.mapping
-    config[:mapping]
-  end
-  
-  def self.operator_order
-    config[:operator_order]
+  def self.data_types
+    config[:data_types]
   end
 
-  def self.export_formats
-    config[:export_formats]
+  def self.operators
+    config[:operators]
+  end
+
+  def self.operator_order
+    @operator_order ||= begin
+      keys = operators.keys
+      keys.sort! { |a,b| operators[a] <=> operators[b] }
+      keys
+    end
+  end
+
+  def self.saving_enabled?
+    save_options[:enabled]
+  end
+
+  def self.user_filters_enabled?
+    save_options[:user_filters_enabled]
+  end
+
+  def self.user_class_name
+    save_options[:user_class_name]
   end
   
+  def self.current_user_method
+    save_options[:current_user_method]
+  end
+
+  def self.exporting_enabled?
+    export_options[:enabled]
+  end
+
+  def self.default_export_formats
+    export_options[:default_formats]
+  end
 end

@@ -21,31 +21,26 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::BooleanContainer < Wf::FilterContainer
+class ActiveRecord::Base
 
-  def self.operators
-    [:is]
-  end
+  def self.filter(opts = {})
+    if ActiveRecord::Base == self.class
+      raise Wf::FilterException.new("Cannot apply filter to the ActiveRecord::Base object")
+    end
 
-  def selected?
-    value=="1"
-  end
-
-  def selected_text(val)
-    return "checked" if value==val
-  end
-
-  def render_html(index)
-    html = "<div style='vertical-align:middle; text-align:left; padding-top:4px;'>"
-    html << "<input type='radio' #{html_input_attributes(index, 0, '1')} #{selected_text("1")}> True"
-    html << "&nbsp;&nbsp;"
-    html << "<input type='radio' #{html_input_attributes(index, 0, '0')} #{selected_text("0")}> False"
-    html << "</div>"
-    html
-  end
-
-  def sql_condition
-    return [" #{condition.full_key} = ? ", (selected? ? true : false)] if operator == :is
+    params = opts[:params] || {}
+    
+    if opts[:filter]
+      case opts[:filter].class.name
+        when "String" then filter_class = opts[:filter].constantize
+        when "Symbol" then filter_class = opts[:filter].to_s.camelcase.constantize
+        else filter_class = opts[:filter]
+      end
+    else
+      filter_class = Wf::Filter
+    end
+  
+    filter_class.new(self).deserialize_from_params(params).results
   end
   
 end

@@ -23,8 +23,8 @@
 
 module Wf::HelperMethods
 
-  def will_filter(filter)
-    render(:partial => "/wf/filter/container", :locals => {:wf_filter => filter})
+  def will_filter(results)
+    render(:partial => "/wf/filter/container", :locals => {:wf_filter => results.wf_filter})
   end
 
   def will_filter_scripts_tag

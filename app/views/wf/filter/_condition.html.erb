@@ -1,13 +1,15 @@
 <% if wf_filter.errors[index] %>
   <tr>
-  	<td colspan="2">
+    <td colspan="2">
     </td> 
-  	<td class="wf_condition_error">
-      <%= wf_filter.errors[index] %>		
-  	</td>
-		<td>
-		</td>
-  </tr>	
+    <td>
+      <div class="wf_condition_error">
+        <%= wf_filter.errors[index] %>  
+      </div>
+    </td>
+    <td>
+    </td>
+  </tr> 
 <% end %>
 
 <tr>
@@ -25,4 +27,4 @@
     <%=link_to_function("<span>+</span>", "wfFilter.addConditionAfter('#{index}')", :class => "grey-button pcb") %>
   </td>
 </tr>
-			
+      

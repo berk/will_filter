@@ -21,14 +21,26 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class ActiveRecord::Base
+module Wf::CommonMethods
 
-  def wf_filter=(new_filter)
-    @wf_filter = new_filter
+  def self.included(base)
+    if 'ApplicationController' == base.name
+      base.append_before_filter :init_will_filter
+    end
+  end
+
+  def init_will_filter
+    # only if the filters need to be  
+    return unless Wf::Config.user_filters_enabled?
+    
+    wf_current_user = nil
+    begin
+      wf_current_user = eval(Wf::Config.current_user_method)
+    rescue Exception => ex
+      raise Wf::Exception.new("will_filter cannot be initialized because #{Wf::Config.current_user_method} failed with: #{ex.message}")
+    end
+    
+    Wf::Config.init(wf_current_user)
   end
   
-  def wf_filter
-    @wf_filter
-  end
-
 end

@@ -54,7 +54,8 @@ class Wf::FilterController < ApplicationController
   end
 
   def load_filter
-    wf_filter = params[:wf_type].constantize.load_filter(@own_profile, params[:wf_key])
+    wf_filter = Wf::Filter.deserialize_from_params(params)
+    wf_filter = wf_filter.load_filter!(params[:wf_key])
     render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end
 
