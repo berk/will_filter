@@ -26,8 +26,8 @@
 
 .wf_values_table                        {border:0px; width:100%; margin:0px; padding:0px; }
 .wf_values_table td                     {vertical-align:top; padding: 2px; margin: 0px; }
-.wf_values_table td input               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
-.wf_values_table td select              {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_values_table td input               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:16px;}
+.wf_values_table td select              {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:20px; }
 
 .wf_condition_actions                   {padding-right:5px; padding-bottom:2px; white-space:nowrap; text-align:right; width:100px; vertical-align: top; }
 .wf_button                              {text-align:center; padding: 0px; margin: 0px; }

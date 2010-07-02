@@ -385,8 +385,6 @@ class Wf::Filter < ActiveRecord::Base
       add_condition(conditon_key, operator_key.to_sym, values)
     end
 
-    handle_empty_filter!
-
     if params[:wf_submitted] == 'true'
       validate!
     end
@@ -550,6 +548,7 @@ class Wf::Filter < ActiveRecord::Base
   def handle_empty_filter!
     return unless empty?
     return if default_filter_if_empty.nil?
+    errors[:filter] = "This filter cannot be submitted without any criteria because too many results may be returned. A default filter has been selected for you."
     load_filter!(default_filter_if_empty)
   end
   
@@ -633,6 +632,8 @@ class Wf::Filter < ActiveRecord::Base
   
   def results
     @results ||= begin
+      handle_empty_filter! 
+      
       recs = model_class.paginate(:order => order_clause, :page => page, :per_page => per_page, :conditions => sql_conditions, :joins => joins)
       recs.wf_filter = self
       recs

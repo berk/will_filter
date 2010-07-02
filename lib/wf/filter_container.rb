@@ -88,7 +88,9 @@ class Wf::FilterContainer
   end 
   
   def render_html(index)
-    "<input type='text' style='width:98%' #{html_input_attributes(index, 0)}>"
+    html = "<table class='wf_values_table' cellspacing='0px' cellpadding='0px'><tr>"
+    html << "<td width='99%'><input type='text' style='width:99%' #{html_input_attributes(index)}>"
+    html << "</td></tr></table>"
   end
   
   def serialize_to_params(params, index)
