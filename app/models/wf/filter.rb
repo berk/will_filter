@@ -407,6 +407,10 @@ class Wf::Filter < ActiveRecord::Base
     size == 0
   end
 
+  def has_condition?(key)
+    condition_by_key(key) != nil
+  end
+
   def valid_format?
     Wf::Config.default_export_formats.include?(format.to_s)
   end
