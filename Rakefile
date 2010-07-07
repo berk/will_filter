@@ -29,10 +29,10 @@ begin
  require 'jeweler'
  Jeweler::Tasks.new do |s|
    s.name = "will_filter"
-   s.summary = %Q{Filtering framework for Rails models.}
+   s.summary = %Q{Filtering framework for Rails AcitveRecord models.}
    s.email = "michael@geni.com"
    s.homepage = "http://github.com/berk/will_filter"
-   s.description = "Filtering framework for Rails models"
+   s.description = "Filtering framework for Rails AcitveRecord models"
    s.authors = ["Michael Berkovich"]
  end
  Jeweler::GemcutterTasks.new
@@ -69,3 +69,17 @@ end
 
 desc 'Default: run unit tests.'
 task :default => :test
+
+task :unpack_gem do
+  require "rubygems/installer"
+  source_file = File.expand_path("#{File.dirname(__FILE__)}/pkg/will_filter-0.1.0.gem")
+  puts source_file
+  
+  target_dir = File.expand_path("#{File.dirname(__FILE__)}/pkg/unpacked")
+  puts target_dir
+
+  rm_rf target_dir
+  mkdir_p target_dir
+  
+  Gem::Installer.new(source_file).unpack(target_dir)    
+end

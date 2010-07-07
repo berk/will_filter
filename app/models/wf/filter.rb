@@ -548,7 +548,7 @@ class Wf::Filter < ActiveRecord::Base
   def handle_empty_filter!
     return unless empty?
     return if default_filter_if_empty.nil?
-    errors[:filter] = "This filter cannot be submitted without any criteria because too many results may be returned. A default filter has been selected for you."
+#    errors[:filter] = "This filter cannot be submitted without any criteria because too many results may be returned. A default filter has been selected for you."
     load_filter!(default_filter_if_empty)
   end
   
@@ -577,6 +577,8 @@ class Wf::Filter < ActiveRecord::Base
   def reset!
     remove_all
     @page =  1
+    @sql_conditions = nil
+    @results = nil
   end
   
   def load_filter!(key_or_id)

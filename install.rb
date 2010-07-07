@@ -22,3 +22,4 @@
 #++
 
 # Install hook code here
+# sh "cd #{Rails.root}/public; ln -s ../vendor/gems/will_filter-0.1.0/public/wf wf"
