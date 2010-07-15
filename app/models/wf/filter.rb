@@ -584,6 +584,7 @@ class Wf::Filter < ActiveRecord::Base
   def load_filter!(key_or_id)
     reset!
     @key = key_or_id.to_s
+    
     load_default_filter(key)
     return self unless empty?
     
