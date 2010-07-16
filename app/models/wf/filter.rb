@@ -576,7 +576,7 @@ class Wf::Filter < ActiveRecord::Base
   
   def reset!
     remove_all
-    @page =  1
+#    @page =  1
     @sql_conditions = nil
     @results = nil
   end

@@ -10,11 +10,11 @@
 <div class="wf_header">
   <% if wf_filter.show_save_options? %>
 		<div style="float:right;">
-	    <%=link_to_function("<span>Save As New...</span>", "wfFilter.saveFilter()", :class => "grey-button pcb") %>
-	    <%=link_to_function("<span>Update</span>", "wfFilter.updateFilter()", :class => "grey-button pcb") %>
-	    <%=link_to_function("<span>Delete</span>", "wfFilter.deleteFilter()", :class => "grey-button pcb") %>
+	    <%=link_to_function("<span>Save As New...</span>", "wfFilter.saveFilter()", :class => "wf_grey_button wf_pcb") %>
+	    <%=link_to_function("<span>Update</span>", "wfFilter.updateFilter()", :class => "wf_grey_button wf_pcb") %>
+	    <%=link_to_function("<span>Delete</span>", "wfFilter.deleteFilter()", :class => "wf_grey_button wf_pcb") %>
       <% if wf_filter.show_export_options? %>
-        <%=link_to_function("<span>Export Data...</span>", "wfExporter.show(this)", :class => "grey-button pcb") %>
+        <%=link_to_function("<span>Export Data...</span>", "wfExporter.show(this)", :class => "wf_grey_button wf_pcb") %>
       <% end %>
 		</div>
   <% end %>

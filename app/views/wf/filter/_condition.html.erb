@@ -23,8 +23,8 @@
     <%= condition.container.render_html(index) %>
   </td>
   <td class="wf_condition_actions">
-    <%=link_to_function("<span>-</span>", "wfFilter.removeConditionAt('#{index}')", :class => "grey-button pcb") %>
-    <%=link_to_function("<span>+</span>", "wfFilter.addConditionAfter('#{index}')", :class => "grey-button pcb") %>
+    <%=link_to_function("<span>-</span>", "wfFilter.removeConditionAt('#{index}')", :class => "wf_grey_button wf_pcb") %>
+    <%=link_to_function("<span>+</span>", "wfFilter.addConditionAfter('#{index}')", :class => "wf_grey_button wf_pcb") %>
   </td>
 </tr>
       

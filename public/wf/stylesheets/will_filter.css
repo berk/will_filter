@@ -9,7 +9,7 @@
 .wf_container_panel                     {padding-top:5px; padding-bottom:5px; margin-right:2px; margin-left:2px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa;}
 .wf_debugger                            {padding:5px; margin:2px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa; font-size:10px; color: #777;}
 
-.wf_input                               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_input                               {border: 1px solid #ccc; font-size: 12px; font-family: Arial;}
 
 .wf_header                              {margin:0px; height:25px; padding:5px;}
 .wf_action                              {border: 0px; vertical-align:middle;}
@@ -26,7 +26,7 @@
 
 .wf_values_table                        {border:0px; width:100%; margin:0px; padding:0px; }
 .wf_values_table td                     {vertical-align:top; padding: 2px; margin: 0px; }
-.wf_values_table td input               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:16px;}
+.wf_values_table td input               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:21px;}
 .wf_values_table td select              {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:20px; }
 
 .wf_condition_actions                   {padding-right:5px; padding-bottom:2px; white-space:nowrap; text-align:right; width:100px; vertical-align: top; }
@@ -45,7 +45,7 @@
 .wf_calendar_cells                      {border:1px dotted #ccc; width:100%; padding:2px; margin:0px; }
 .wf_calendar_cells td                   {border: 0px; text-align:center; vertical-align:middle; font-size:10px; color:black; background-color:white;} 
 
-.wf_calendar_date_cell                  {width:11px; border: 1px solid #ccc; padding:2px; margin:1px; cursor:pointer; vertical-align:middle; text-align:center;}
+.wf_calendar_date_cell                  {width:11px; border: 1px solid #ccc; padding:2px; margin:1px; cursor:pointer; vertical-align:middle; text-align:center; background-color:white;}
 .wf_calendar_date_cell.today            {background-color:lightblue; } 
 .wf_calendar_date_cell.selected         {background-color:#ccc; } 
 .wf_calendar_date_cell:hover            {background-color:#ccc; } 
@@ -60,28 +60,27 @@
 .wf_filter_error                        {background-color: #ffeded; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e; padding:5px; margin-left:3px; margin-right:3px; }
 .wf_condition_error                     {padding-left:10px; padding-right:10px; margin-bottom:2px; font-size: 10px; background-color: #ffeded; font-family: Arial; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e;}
 
-
 /*
   Pure CSS Buttons.
   Learn more ~ http://www.halmatferello.com/lab/pure-css-buttons/
 
   Licensed under GPL and MIT.
 */
-.pcb, .pcb span                                     {background: url('/wf/images/buttons.png') no-repeat; height: 23px; line-height: 23px; padding: 3px 0 7px 0; }
-.pcb, a.pcb:link, a.pcb:visited                     {color: #333; font-size: 11px; padding-left: 14px; text-decoration: none !important; }
+.wf_pcb, .wf_pcb span                         {background: url('/wf/images/buttons.png') no-repeat; height: 23px; line-height: 23px; padding: 3px 0 7px 0; }
+.wf_pcb, a.wf_pcb:link, a.wf_pcb:visited      {color: #333; font-size: 12px; font-style:bold; font-family:arial; padding-left: 14px; text-decoration: none !important; }
 
 /* ie 6 hack */
-* html div#frame .pcb                               {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
+* html div#frame .wf_pcb                      {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
 
 /* ie 7 hack */
-*:first-child+html .pcb                             {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
+*:first-child+html .wf_pcb                    {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
 
-.pcb span                                           {background-position: right -326px; padding-right: 14px; }
-a.grey-button                                       {background-position: left -219px; padding-top: 3px; }
-a.grey-button span                                  {background-position: right -545px; padding-top: 3px;}
-a.grey-button:hover                                 {background-position: left -246px; }
-a.grey-button:hover span                            {background-position: right -572px; }
-a.grey-button:active, .grey-active-button           {background-position: left -273px; }
-a.grey-button:active span, .grey-active-button span {background-position: right -599px; }
-body .grey-disabled-button                          {background-position: left -300px; color: #bbb !important;}
-body .grey-disabled-button span                     {background-position: right -626px;}
+.wf_pcb span                                  {background-position: right -326px; padding-right: 14px; }
+a.wf_grey_button                              {background-position: left -219px; padding-top: 3px; }
+a.wf_grey_button span                         {background-position: right -545px; padding-top: 3px; }
+a.wf_grey_button:hover                        {background-position: left -246px; }
+a.wf_grey_button:hover span                   {background-position: right -572px; }
+a.wf_grey_button:active, .grey_active_button  {background-position: left -273px; }
+a.wf_grey_button:active span, .grey_active_button span {background-position: right -599px; }
+body.wf_grey_disabled_button                  {background-position: left -300px; color: #bbb !important; }
+body.wf_grey_disabled_button span             {background-position: right -626px; }

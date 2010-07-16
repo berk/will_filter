@@ -43,8 +43,8 @@
 				      :
 				      <%= select_tag("wf_calendar_second", options_for_select(Wf::Calendar.second_options, @calendar.second)) %>
 			    </div>
-		      <%=link_to_function("<span>Set Date and Time</span>", "wfCalendar.setDateTime()", :class => "grey-button pcb") %>
-		      <%=link_to_function("<span>Cancel</span>", "wfCalendar.hide()", :class => "grey-button pcb") %>
+		      <%=link_to_function("<span>Set Date and Time</span>", "wfCalendar.setDateTime()", :class => "wf_grey_button wf_pcb") %>
+		      <%=link_to_function("<span>Cancel</span>", "wfCalendar.hide()", :class => "wf_grey_button wf_pcb") %>
 		  </div>
 		<% end %>
 	
