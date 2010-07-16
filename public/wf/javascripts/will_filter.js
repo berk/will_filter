@@ -432,6 +432,7 @@ Wf.Utils = {
     var form_obj = {} 
     for(i=0; i < els.length; i++) {
       if (els[i].type == 'checkbox' && !els[i].checked) continue;
+      if (els[i].type == 'radio' && !els[i].checked) continue;
       form_obj[els[i].name] = els[i].value;
     } 
     return form_obj; 
