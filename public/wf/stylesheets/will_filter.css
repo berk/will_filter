@@ -1,15 +1,15 @@
 .wf_container                           {padding:0px; background:#f1f4f9; margin:0px; margin-bottom:10px; font-size: 12px; font-family: Arial; width: 100%; border:solid 1px #e8e8e8;border-color:#e8e8e8 #bababa #bababa #e8e8e8;}
-.wf_container input                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
-.wf_container select                    {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
+.wf_container input                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:15px; margin:0px; padding: 1px;}
+.wf_container select                    {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:20px; margin:0px; padding: 1px;}
 .wf_container .spinner                  {font-size: 10px;}
 .wf_container .debug                    {font-size:10px; border-top:1px solid #ccc; width:100%; margin-top:3px;}
 .wf_container a                         {text-decoration:none; color:#16b; outline:none; border:0px;}
 .wf_container img                       {border:0px;}
-.wf_container .conditions               {padding:0px; margin:0px; }
-.wf_container_panel                     {padding-top:5px; padding-bottom:5px; margin-right:2px; margin-left:2px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa;}
+.wf_container .conditions               {padding:0px; margin:0px;}
+.wf_container_panel                     {padding:5px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa;}
 .wf_debugger                            {padding:5px; margin:2px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa; font-size:10px; color: #777;}
 
-.wf_input                               {border: 1px solid #ccc; font-size: 12px; font-family: Arial;}
+.wf_input                               {}
 
 .wf_header                              {margin:0px; height:25px; padding:5px;}
 .wf_action                              {border: 0px; vertical-align:middle;}
@@ -25,9 +25,7 @@
 .wf_values                              {padding-right:2px; width:70%; margin:0px; vertical-align:top; }
 
 .wf_values_table                        {border:0px; width:100%; margin:0px; padding:0px; }
-.wf_values_table td                     {vertical-align:top; padding: 2px; margin: 0px; }
-.wf_values_table td input               {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:21px;}
-.wf_values_table td select              {border: 1px solid #ccc; font-size: 12px; font-family: Arial; height:20px; }
+.wf_values_table td                     {vertical-align:top; padding: 0px; margin: 0px; }
 
 .wf_condition_actions                   {padding-right:5px; padding-bottom:2px; white-space:nowrap; text-align:right; width:100px; vertical-align: top; }
 .wf_button                              {text-align:center; padding: 0px; margin: 0px; }
