@@ -77,13 +77,13 @@ class Wf::FilterContainer
 
   def html_date_selector(index, value_index = 0)  
     html = "<a href=\"#\" onclick=\"wfCalendar.selectDate('#{html_input_id(index, value_index)}', this); return false;\">"
-    html << "<img align=\"top\" alt=\"select date\" border=\"0\" class=\"wf_calendar_trigger\" src=\"/images/mf_calendar.png\" />"
+    html << "<img align=\"top\" alt=\"select date\" border=\"0\" class=\"wf_calendar_trigger\" src=\"/wf/images/calendar.png\" />"
     html << "</a>"
   end 
 
   def html_time_selector(index, value_index = 0)  
     html = "<a href=\"#\" onclick=\"wfCalendar.selectDateTime('#{html_input_id(index, value_index)}', this); return false;\">"
-    html << "<img align=\"top\" alt=\"select date\" border=\"0\" class=\"wf_calendar_trigger\" src=\"/images/mf_calendar.png\" />"
+    html << "<img align=\"top\" alt=\"select date\" border=\"0\" class=\"wf_calendar_trigger\" src=\"/wf/images/calendar.png\" />"
     html << "</a>"
   end 
   
