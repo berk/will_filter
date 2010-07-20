@@ -37,9 +37,9 @@ class Wf::BooleanContainer < Wf::FilterContainer
 
   def render_html(index)
     html = "<div style='vertical-align:middle; text-align:left; padding-top:4px;'>"
-    html << "<input type='radio' #{html_input_attributes(index, 0, '1')} #{selected_text("1")}> True"
+    html << "<input type='radio' style='width:20px' #{html_input_attributes(index, 0, '1')} #{selected_text("1")}> True"
     html << "&nbsp;&nbsp;"
-    html << "<input type='radio' #{html_input_attributes(index, 0, '0')} #{selected_text("0")}> False"
+    html << "<input type='radio' style='width:20px' #{html_input_attributes(index, 0, '0')} #{selected_text("0")}> False"
     html << "</div>"
     html
   end

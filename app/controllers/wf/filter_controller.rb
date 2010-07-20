@@ -66,7 +66,6 @@ class Wf::FilterController < ApplicationController
     wf_filter.validate!
     
     unless wf_filter.errors?
-      wf_filter.id = nil
       wf_filter.save
     end
     
@@ -85,16 +84,6 @@ class Wf::FilterController < ApplicationController
     end
     
     wf_filter.key= wf_filter.id.to_s 
-    
-    render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
-  end
-
-  def change_filter_model
-    wf_filter = Wf::Filter.deserialize_from_params(params)
-    wf_filter.remove_all
-    
-    wf_filter.id = nil
-    wf_filter.key = nil
     
     render(:partial => '/wf/filter/conditions', :layout=>false, :locals => {:wf_filter => wf_filter})
   end

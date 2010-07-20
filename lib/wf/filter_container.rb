@@ -89,7 +89,7 @@ class Wf::FilterContainer
   
   def render_html(index)
     html = "<table class='wf_values_table' cellspacing='0px' cellpadding='0px'><tr>"
-    html << "<td width='99%'><input type='text' style='width:99%' #{html_input_attributes(index)}>"
+    html << "<td width='99%'><input type='text' style='width:99%;' #{html_input_attributes(index)}>"
     html << "</td></tr></table>"
   end
   
