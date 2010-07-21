@@ -38,9 +38,9 @@ class Wf::NumericRangeContainer < Wf::FilterContainer
 
   def validate
     return "Start value must be provided" if start_value.blank?
-    return "Start value must be numeric" if numeric_start_value == 0
-    return "End value must be provided" if end_value.blank?
-    return "End value must be numeric" if numeric_end_value == 0
+    return "Start value must be numeric"  unless is_numeric?(start_value)
+    return "End value must be provided"   if end_value.blank?
+    return "End value must be numeric"    unless is_numeric?(end_value)
   end
 
   def render_html(index)

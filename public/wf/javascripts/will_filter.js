@@ -458,7 +458,9 @@ Wf.Utils = {
     options.method = options.method || 'get';
 
     var self=this;
-    url = (options.method == 'get') ? url+"?"+options.parameters : url;
+    if (options.method == 'get' && options.parameters != '') {
+      url = url + (url.indexOf('?') == -1 ? '?' : '&') + options.parameters;
+    }
     var request = this.getRequest();
     
     request.onreadystatechange = function() {

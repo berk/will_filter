@@ -33,7 +33,7 @@ class Wf::NumericContainer < Wf::FilterContainer
 
   def validate
     return "Value must be provided" if value.blank?
-    return "Value must be numeric" if numeric_value == 0
+    return "Value must be numeric" unless is_numeric?(value)
   end
 
   def sql_condition

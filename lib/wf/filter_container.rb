@@ -99,4 +99,8 @@ class Wf::FilterContainer
     end
   end
 
+  def is_numeric?(s)
+    s.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+  end
+
 end
