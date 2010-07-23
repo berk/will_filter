@@ -14,8 +14,6 @@ To install, configure and initialize will_filter engine, run the following comma
 
   $ script/plugin install git://github.com/berk/will_filter.git
   $ rake will_filter:sync  
-
-  $ script/generate will_filter_migration
   $ rake db:migrate 
 
   $ cd public; ln -s ../vendor/plugins/will_filter/public/wf wf
