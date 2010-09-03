@@ -1,16 +1,24 @@
 = WillFilter
 
-will_filter is a Rails engine plugin that makes it easy to add administration tools to your site.
+will_filter is a Rails engine plugin that extends the functionality of will_paginate by adding filters to your pages.
+
+== Preamble
  
-If you ever had to build a page that displays a list of objects that can be filtered using 
-various criteria, this plugin can make your life easier. Adding a filtered page can now be 
-a matter of adding a line of code to your controller and creating a view to display your data.
+If you ever had to build an admin tool for your web site that displayed a list of objects that can be filtered using 
+various criteria, this plugin will make your life easier. Adding a filtered page can now be 
+a matter of adding two lines of code - one to your controller and one to your view. See examples below.
+
+For advanced samples of how to use the filters, please download and install the following project: 
+
+http://github.com/berk/will_filter_examples
 
 == Installation Instructions
 
-To install, configure and initialize will_filter engine, run the following commands: 
+Install the latest version of the will_paginate plugin or gem created by Mislav Marohnić. 
 
   $ script/plugin install git://github.com/mislav/will_paginate.git
+
+To install, configure and initialize will_filter engine, run the following commands: 
 
   $ script/plugin install git://github.com/berk/will_filter.git
   $ rake will_filter:sync  
@@ -20,7 +28,7 @@ To install, configure and initialize will_filter engine, run the following comma
 
 == Examples
 
-Here is an example of how objects can be filtered in your controller:
+To add a filtered resultset to your controller use the following method call:
 
   class ProfileController < ApplicationController
   
@@ -32,19 +40,15 @@ Here is an example of how objects can be filtered in your controller:
 
 Note: 'Profile' is a Rails ActiveRecord model 
 
-That's it. Now all you have to do is create a view for this action and add the following tag where you want your filter to be rendered:
+Now all you have to do is create a view for this action and add the following tag where you want the filter to be rendered:
 
   <%= will_filter(@profiles) %>
 
-This will render a filter box with various conditions, operators and values for the model object you selected.
+That's it. This will render a filter box with various conditions, operators and values for the model object you selected.
 
 Below are a couple of screenshot of what the filter looks like when it is rendered on a page:
 
-This is a simple profiles filter that filters users who are male and their first name starts with Steven
-
 http://www.theiceberk.com/projects/rails/will_filter/will_filter1.png
-
-This is a more complicated case where we are looking at a list of events that were created by users filtered using the preveous example.
 
 http://www.theiceberk.com/projects/rails/will_filter/will_filter3.png
 
