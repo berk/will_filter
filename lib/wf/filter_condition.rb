@@ -44,7 +44,11 @@ class Wf::FilterCondition
   end
   
   def full_key
-    return key.to_s if key.to_s.index('.')
+    if key.to_s.index('.')
+      parts = key.to_s.split(".")
+      join_class = parts.first.camelcase.constantize
+      return "#{join_class.table_name}.#{parts.last}"
+    end  
     "#{filter.table_name}.#{key}"
   end
   

@@ -38,7 +38,7 @@ class Wf::FilterListContainer < Wf::FilterContainer
     else
       model_class_name = condition.key.to_s[0..-4].camelcase
     end
-    identity_filters = Wf::Filter.new(model_class_name, {}, filter.identity).saved_filters(false)
+    identity_filters = Wf::Filter.new(model_class_name).saved_filters(false)
     identity_filters.each do |filter|
       opt_name = filter[0]
       opt_value = filter[1]

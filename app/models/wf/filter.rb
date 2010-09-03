@@ -122,7 +122,7 @@ class Wf::Filter < ActiveRecord::Base
       inner_joins.each do |inner_join|
         join_class = inner_join.first.to_s.camelcase.constantize
         join_class.columns.each do |col|
-          defs[:"#{join_class.table_name}.#{col.name.to_sym}"] = default_condition_definition_for(col.name, col.sql_type)
+          defs[:"#{join_class.to_s.underscore}.#{col.name.to_sym}"] = default_condition_definition_for(col.name, col.sql_type)
         end
       end
       
@@ -149,7 +149,7 @@ class Wf::Filter < ActiveRecord::Base
     
     if name == "id"
       operators[:is_filtered_by] = :filter_list 
-    elsif (name.length - 3) == name.index("_id")
+    elsif "_id" == name[-3..-1]
       begin
         name[0..-4].camelcase.constantize
         operators[:is_filtered_by] = :filter_list 
