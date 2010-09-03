@@ -529,13 +529,22 @@ class Wf::Filter < ActiveRecord::Base
         end
       end
 
-#      if identity and Wf::Config.identity_enabled?
-#        identity_filters = Wf::Filter.find(:all, :conditions=>["identity_type = ? AND identity_id = ? AND model_class_name = ?", identity.class.name, identity.id, self.model_class_name])
-#      else
-#        identity_filters = Wf::Filter.find(:all, :conditions=>["model_class_name = ?", self.model_class_name])
-#      end
-      
-      user_filters = Wf::Filter.find(:all, :conditions=>["model_class_name = ?", self.model_class_name])
+      if include_default
+        conditions = ["type = ? and model_class_name = ?", self.class.name, self.model_class_name]
+      else
+        conditions = ["model_class_name = ?", self.model_class_name]
+      end
+
+      if Wf::Config.user_filters_enabled?
+        conditions[0] << " and user_id = ? "
+        if Wf::Config.current_user and Wf::Config.current_user.id
+          conditions << Wf::Config.current_user.id
+        else
+          conditions << "0"
+        end
+      end
+
+      user_filters = Wf::Filter.find(:all, :conditions => conditions)
       
       if user_filters.size > 0
         filters << ["-- Select Saved Filter --", "-2"] if include_default
