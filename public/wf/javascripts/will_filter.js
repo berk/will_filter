@@ -36,27 +36,15 @@ var Wf = Wf || {
   hide: function(element_id) {
     Wf.element(element_id).style.display = "none";
   },
-  hidden: function(element_id) {
-    Wf.element(element_id).style.display == "none";
+  visible: function(element_id) {
+    return (Wf.element(element_id).style.display != "none");
   },
-	visible: function(element_id) {
-		!Wf.hidden(element_id);
-	},
+  hidden: function(element_id) {
+    return (!Wf.visible(element_id));
+  },
   show: function(element_id) {
     var style = (Wf.element(element_id).tagName == "SPAN") ? "inline" : "block";
     Wf.element(element_id).style.display = style;
-  },
-  blindUp: function(element_id) {
-    Wf.hide(element_id);    
-  },
-  blindDown: function(element_id) {
-    Wf.show(element_id);    
-  },
-  appear: function(element_id) {
-    Wf.show(element_id);
-  },
-  fade: function(element_id) {
-    Wf.hide(element_id);
   },
   submit: function(element_id) {
     Wf.element(element_id).submit();
@@ -78,6 +66,25 @@ var Wf = Wf || {
 };
 
 /****************************************************************************
+**** Effects Functions
+**** The functions can be overloaded using a specific framework
+****************************************************************************/
+Wf.Effects = {
+  blindUp: function(element_id) {
+    Wf.hide(element_id);    
+  },
+  blindDown: function(element_id) {
+    Wf.show(element_id);    
+  },
+  appear: function(element_id) {
+    Wf.show(element_id);
+  },
+  fade: function(element_id) {
+    Wf.hide(element_id);
+  },
+};
+
+/****************************************************************************
 **** Filter Container
 ****************************************************************************/
 
@@ -95,9 +102,9 @@ Wf.Filter.prototype = {
   },
   toggleDebugger: function() {
 		if (Wf.visible("wf_debugger")) {
-			new Wf.blindUp("wf_debugger");
+			new Wf.Effects.blindUp("wf_debugger");
 		} else {	
-		  new Wf.blindDown("wf_debugger");
+		  new Wf.Effects.blindDown("wf_debugger");
 		}
 	},
 	markDirty: function() {
@@ -230,7 +237,7 @@ Wf.Calendar.prototype = {
           calendar_container.style.left = (trigger_position[0] - 237) + "px";
           calendar_container.style.top = trigger_position[1] + "px";
           calendar_container.style.width = "230px";
-          Wf.appear("wf_calendar");
+          Wf.Effects.appear("wf_calendar");
       } 
     });
   },
@@ -307,7 +314,7 @@ Wf.Calendar.prototype = {
   },
 	hide: function() {
 		this.selected_field_id = null;
-    Wf.fade("wf_calendar");
+    Wf.Effects.fade("wf_calendar");
 	}
 };
 
@@ -335,12 +342,12 @@ Wf.Exporter.prototype = {
           var exporter_container = Wf.element("wf_exporter");
           exporter_container.style.left = (trigger_position[0] - 240) + "px";
           exporter_container.style.top = trigger_position[1] + "px";
-				  Wf.appear("wf_exporter");
+				  Wf.Effects.appear("wf_exporter");
 	    } 
 	  });
   },
   hide: function() {
-    Wf.fade("wf_exporter");
+    Wf.Effects.fade("wf_exporter");
   },
 	selectAllFields: function (fld) {
 	  var i = 0;

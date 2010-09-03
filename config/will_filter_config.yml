@@ -6,13 +6,17 @@
 # You can overload any feature for any environment by changing the 
 # environment settings at the bottom of the file. 
 #
-# Alternatively, you can overload any of the methods of Tr8n::Config
+# Alternatively, you can overload any of the methods of Wf::Config
 #############################################################################
 
 defaults: &defaults
+  effects_options:
+    enabled:              false
+    script_path:          "/wf/javascripts/will_filter_prototype_effects.js"
+    
   save_options: 
     enabled:              true
-    user_filters_enabled: false   # if set to false, the filters will be private
+    user_filters_enabled: false   # if set to true, the filters will be private
     user_class_name:      User 
     current_user_method:  current_user 
 

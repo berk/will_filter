@@ -27,11 +27,8 @@ class Wf::Filter < ActiveRecord::Base
   serialize   :data
   
   #############################################################################
-  # 
   # Basics 
-  # 
   #############################################################################
-  
   def initialize(model_class)
     super()
     self.model_class_name = model_class.to_s
@@ -52,11 +49,8 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   #############################################################################
-  # 
   # Defaults 
-  # 
   #############################################################################
-  
   def show_export_options?
     Wf::Config.exporting_enabled?
   end
@@ -85,8 +79,10 @@ class Wf::Filter < ActiveRecord::Base
     @fields ||= []
   end
   
+  #############################################################################
   # a list of indexed fields where at least one of them has to be in a query
   # otherwise the filter may hang the database
+  #############################################################################
   def required_condition_keys
     []
   end
@@ -108,16 +104,32 @@ class Wf::Filter < ActiveRecord::Base
     @match = new_match
   end
   
+  #############################################################################
+  # Inner Joins come in a form of 
+  # [[joining_model_name, column_name], [joining_model_name, column_name]]
+  #############################################################################
+  def inner_joins
+    []
+  end
+  
   def definition
     @definition ||= begin
       defs = {}
       model_class.columns.each do |col|
         defs[col.name.to_sym] = default_condition_definition_for(col.name, col.sql_type)
       end
+      
+      inner_joins.each do |inner_join|
+        join_class = inner_join.first.to_s.camelcase.constantize
+        join_class.columns.each do |col|
+          defs[:"#{join_class.table_name}.#{col.name.to_sym}"] = default_condition_definition_for(col.name, col.sql_type)
+        end
+      end
+      
       defs
     end
   end
-  
+
   def container_by_sql_type(type)
     raise Wf::FilterException.new("Unsupported data type #{type}") unless Wf::Config.data_types[type]
     Wf::Config.data_types[type]
@@ -155,32 +167,63 @@ class Wf::Filter < ActiveRecord::Base
   def first_sorted_operator(opers)
     sorted_operators(opers).first.to_sym
   end
+
+  def default_order
+    'id'
+  end
   
-  # Match Options
+  def order
+    @order ||= default_order
+  end
+  
+  def default_order_type
+    'desc'
+  end
+
+  def order_type
+    @order_type ||= default_order_type
+  end
+
+  def order_clause
+    "#{order} #{order_type}"
+  end
+
+  def default_per_page
+    30
+  end
+  
+  def per_page
+    @per_page ||= default_per_page
+  end
+
+  def page
+    @page ||= 1
+  end
+  
+  def default_per_page_options
+    [10, 20, 30, 40, 50, 100]
+  end
+  
+  def per_page_options
+    @per_page_options ||= default_per_page_options.collect{ |n| [n.to_s, n.to_s] }
+  end
+  
   def match_options
     [["all", "all"], ["any", "any"]]
   end
   
-  # Order Options
   def order_type_options
     [["desc", "desc"], ["asc", "asc"]]
   end
-  
-  # Page Size Options
-  def per_page_options
-    @per_page_options ||= [10, 20, 30, 40, 50, 100].collect{ |n| [n.to_s, n.to_s] }
-  end
-  
-  def order_clause
-    "#{order} #{order_type}"
-  end
-  
+
+  #############################################################################
   # Can be overloaded for custom titles
+  #############################################################################
   def condition_title_for(key)
-    key.to_s.capitalize.gsub('_', ' ').gsub('.', ' - ')
+    title = key.to_s.gsub(".", ": ").gsub("_", " ")
+    title.split(" ").collect{|part| part.capitalize}.join(" ")
   end
   
-  # Condition Options
   def condition_options
     @condition_options ||= begin
       opts = []
@@ -191,7 +234,6 @@ class Wf::Filter < ActiveRecord::Base
     end
   end
   
-  # Operator Options
   def operator_options_for(condition_key)
     condition_key = condition_key.to_sym if condition_key.is_a?(String)
     
@@ -243,42 +285,18 @@ class Wf::Filter < ActiveRecord::Base
     @conditions.insert(index, condition)
   end
   
+  #############################################################################
   # options always go in [NAME, KEY] format
+  #############################################################################
   def default_condition_key
     condition_options.first.last
   end
   
+  #############################################################################
   # options always go in [NAME, KEY] format
+  #############################################################################
   def default_operator_key(condition_key)
     operator_options_for(condition_key).first.last
-  end
-  
-  def default_order
-    'id'
-  end
-  
-  def default_order_type
-    'desc'
-  end
-
-  def default_per_page
-    30
-  end
-  
-  def per_page
-    @per_page ||= default_per_page
-  end
-
-  def page
-    @page ||= 1
-  end
-  
-  def order
-    @order ||= default_order
-  end
-  
-  def order_type
-    @order_type ||= default_order_type
   end
   
   def conditions=(new_conditions) 
@@ -317,11 +335,8 @@ class Wf::Filter < ActiveRecord::Base
   end
 
   #############################################################################
-  # 
   # Serialization 
-  # 
   #############################################################################
-
   def serialize_to_params
     params = {}
     params[:wf_type]        = self.class.name
@@ -338,7 +353,9 @@ class Wf::Filter < ActiveRecord::Base
     params
   end
   
+  #############################################################################
   # allows to create a filter from params only
+  #############################################################################
   def self.deserialize_from_params(params)
     params[:wf_type] = self.name unless params[:wf_type]
     params[:wf_type].constantize.new(params[:wf_model]).deserialize_from_params(params)
@@ -393,9 +410,7 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   #############################################################################
-  # 
   # Validations 
-  # 
   #############################################################################
   def errors?
    (@errors and @errors.size > 0)
@@ -436,11 +451,8 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   #############################################################################
-  # 
   # SQL Conditions 
-  # 
   #############################################################################
-  
   def sql_conditions
     @sql_conditions  ||= begin
 
@@ -504,11 +516,8 @@ class Wf::Filter < ActiveRecord::Base
   end
 
   #############################################################################
-  # 
   # Saved Filters 
-  # 
   #############################################################################
-
   def saved_filters(include_default = true)
     @saved_filters ||= begin
       filters = []
@@ -540,7 +549,9 @@ class Wf::Filter < ActiveRecord::Base
     end
   end
   
+  #############################################################################
   # overload this method if you don't want to allow empty filters
+  #############################################################################
   def default_filter_if_empty
     nil
   end
@@ -548,7 +559,6 @@ class Wf::Filter < ActiveRecord::Base
   def handle_empty_filter!
     return unless empty?
     return if default_filter_if_empty.nil?
-#    errors[:filter] = "This filter cannot be submitted without any criteria because too many results may be returned. A default filter has been selected for you."
     load_filter!(default_filter_if_empty)
   end
   
@@ -576,7 +586,6 @@ class Wf::Filter < ActiveRecord::Base
   
   def reset!
     remove_all
-#    @page =  1
     @sql_conditions = nil
     @results = nil
   end
@@ -594,11 +603,8 @@ class Wf::Filter < ActiveRecord::Base
   end
 
   #############################################################################
-  # 
   # Export Filter Data
-  # 
   #############################################################################
-
   def export_formats
     formats = []
     formats << ["-- Generic Formats --", -1]
@@ -630,7 +636,12 @@ class Wf::Filter < ActiveRecord::Base
   end
   
   def joins
-    nil
+    return nil if inner_joins.empty?
+    inner_joins.collect do |inner_join|
+      join_table_name = inner_join.first.to_s.camelcase.constantize.table_name
+      join_on_field = inner_join.last.to_s
+      "INNER JOIN #{join_table_name} ON #{join_table_name}.id = #{table_name}.#{join_on_field}"
+    end
   end
   
   def results

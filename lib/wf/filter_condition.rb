@@ -44,6 +44,7 @@ class Wf::FilterCondition
   end
   
   def full_key
+    return key.to_s if key.to_s.index('.')
     "#{filter.table_name}.#{key}"
   end
   
