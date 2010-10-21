@@ -663,4 +663,9 @@ class Wf::Filter < ActiveRecord::Base
     end
   end
   
+  # sums up the column for the given conditions
+  def sum(column_name)
+    model_class.sum(column_name, :conditions => sql_conditions)
+  end
+  
 end
