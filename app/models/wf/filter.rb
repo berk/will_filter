@@ -120,6 +120,10 @@ class Wf::Filter < ActiveRecord::Base
     model_columns.collect{|col| col.name.to_sym}
   end
   
+  def contains_column?(key)
+    model_column_keys.index(key) != nil
+  end
+  
   def definition
     @definition ||= begin
       defs = {}

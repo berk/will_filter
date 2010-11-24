@@ -85,11 +85,26 @@ a.wf_grey_button:active span, .grey_active_button span {background-position: rig
 body.wf_grey_disabled_button                  {background-position: left -300px; color: #bbb !important; }
 body.wf_grey_disabled_button span             {background-position: right -626px; }
 
-
-
 .wf_paginator { width:100%; margin-bottom: 10px; font-size: 12px; font-family: Arial;}
 
-.wf_results_table { width:100%; font-size: 12px; font-family: Arial;}
+.wf_results_table { 
+  width: 100%;
+  font-size: 12px;
+  border: 1px #e5e5e5 solid;
+  border-collapse: collapse;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.wf_results_table thead th {
+	background-color:#F5F5F5;
+	border-bottom:1px solid #CCCCCC;
+	border-top:1px solid #CCCCCC;
+	font-size:12px;
+	padding:5px 5px 5px 10px;
+	text-align:left;
+	white-space:nowrap;
+}
 .wf_results_table th,
 .wf_results_table td {padding-right:10px;padding-left:10px;}
 .wf_results_table td {padding:10px;border-bottom:solid 1px #ddd;vertical-align:top;}
@@ -108,7 +123,8 @@ body.wf_grey_disabled_button span             {background-position: right -626px
 .wf_results_table th.desc .sort_control {display:block;}
 .wf_results_table th.asc .sort_control .up {background: url(/wf/images/sort_arrow_all.gif) -17px 0 no-repeat;}
 .wf_results_table th.desc .sort_control .down {background: url(/wf/images/sort_arrow_all.gif) -17px -13px no-repeat;}
-.wf_results_table td.current_sort {background-color:#f9f9f9;}
+.wf_results_table td.current_sort {font-weight:bold; border-left:1px solid #ccc; border-right:1px solid #ccc;}
+.wf_results_table tr.data_row:hover {background-color: #eee;}
 
 .wf_results_table .sort_title {float:left;}
 .wf_results_table .table_head_container {position:relative;padding-right:20px;}
