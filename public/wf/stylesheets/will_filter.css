@@ -106,7 +106,7 @@ body.wf_grey_disabled_button span             {background-position: right -626px
 	white-space:nowrap;
 }
 .wf_results_table th,
-.wf_results_table td {padding-right:10px;padding-left:10px;}
+.wf_results_table td {padding-right:10px;padding-left:10px; border-left:1px solid #eee;}
 .wf_results_table td {padding:10px;border-bottom:solid 1px #ddd;vertical-align:top;}
 .wf_results_table th {border-left:1px solid #ccc;padding-right:0px;font-weight:normal}
 .wf_results_table th.first {border-left:none;}
@@ -123,7 +123,7 @@ body.wf_grey_disabled_button span             {background-position: right -626px
 .wf_results_table th.desc .sort_control {display:block;}
 .wf_results_table th.asc .sort_control .up {background: url(/wf/images/sort_arrow_all.gif) -17px 0 no-repeat;}
 .wf_results_table th.desc .sort_control .down {background: url(/wf/images/sort_arrow_all.gif) -17px -13px no-repeat;}
-.wf_results_table td.current_sort {font-weight:bold; border-left:1px solid #ccc; border-right:1px solid #ccc;}
+.wf_results_table td.current_sort {font-weight:bold;border-left:1px solid #ccc;border-right:1px solid #ccc;}
 .wf_results_table tr.data_row:hover {background-color: #eee;}
 
 .wf_results_table .sort_title {float:left;}

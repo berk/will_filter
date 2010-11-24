@@ -1,4 +1,4 @@
-<table class='wf_paginator'>
+<table class='wf_paginator' style="margin-top:10px; margin-bottom:10px;">
     <tr>
         <td align='left'>
             <%= will_paginate(results) %>
@@ -15,7 +15,7 @@
 			<% opts[:columns].each_with_index do |column, index| %>
 		    <%
 				  key = column.is_a?(Array) ? column.first : column
-  
+          
 		      sort_direction       = filter.column_sorted?(key) ? filter.order_type : "asc"
 		      sort_direction_click = filter.column_sorted?(key) ? (sort_direction == "asc" ? "desc" : "asc") : "asc"
           column_title   = filter.condition_title_for(key)  
@@ -47,19 +47,21 @@
       <tr class='data_row <%=(index % 2 == 0) ? "wf_row_even" : "wf_row_odd"%>'>
 				<% opts[:columns].each do |column| %>
 				  <% 
+            style = ''
             if column.is_a?(Array)
               key = column.first
-              if column.last.is_a?(Proc)
-                value = column.last.call(obj)
+              if column.second.is_a?(Proc)
+                value = column.second.call(obj)
               else
-                value = column.last.to_s
+                value = column.second.to_s
               end
+              style = column.size > 2 ? column.last : ''
             else
               key = column
               value = obj.send(key)
             end
           %>
-	        <td<%= " class='current_sort'" if filter.column_sorted?(key) %>>
+	        <td style='<%=style%>' <%= " class='current_sort'" if filter.column_sorted?(key) %>>
 							 <% if value.is_a?(Hash) %>
 	                <% value.each do |key, value| %>
 	                  <strong><%=key%>:</strong> <%= value %>;
