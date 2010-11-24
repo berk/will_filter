@@ -21,64 +21,28 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::FilterContainer
+class Wf::Containers::DateTime < Wf::FilterContainer
 
-  attr_accessor :filter, :condition, :operator, :values, :index
-
-  def initialize(filter, condition, operator, values)
-    @filter         = filter
-    @condition      = condition
-    @operator       = operator
-    @values         = values
-  end
-
-  def value
-    values.first
-  end
-
-  def sanitized_value(index = 0)
-    return '' if index >= values.size 
-    return '' if values[index].blank?
-    values[index].to_s.gsub("'", "&#39;")
-  end
-
-  # used by the list based containers
-  def options
-    []
+  def self.operators
+    [:is, :is_not, :is_after, :is_before]
   end
 
   def validate
     return "Value must be provided" if value.blank?
+    return "Value must be a valid date/time (2008-01-01 14:30:00)" if time == nil
   end
 
-  def reset_values
-    @values = []
-  end
-  
-  def template_name
-    self.class.name.underscore.split('/').last
-  end
-  
-  def template_path
-    "/app/views/wf/containers/#{template_name}.html.erb"
-  end
-  
-  def render_html(index)
-    @index = index
-    @container = self
-    
-    expanded_path = File.expand_path("#{File.dirname(__FILE__)}/../..#{template_path}")
-    ERB.new(IO.read(expanded_path)).result(binding)
-  end
-  
-  def serialize_to_params(params, index)
-    values.each_with_index do |v, v_index|
-      params["wf_v#{index}_#{v_index}"] = v
-    end
+  def time
+    Time.parse(value)
+  rescue ArgumentError
+    nil
   end
 
-  def is_numeric?(s)
-    s.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+  def sql_condition
+    return [" #{condition.full_key} = ? ",   time]     if operator == :is
+    return [" #{condition.full_key} <> ? ",  time]     if operator == :is_not
+    return [" #{condition.full_key} > ? ",   time]     if operator == :is_after
+    return [" #{condition.full_key} < ? ",   time]     if operator == :is_before
   end
 
 end

@@ -21,64 +21,35 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::FilterContainer
+class Wf::Containers::SingleDate < Wf::FilterContainer
 
-  attr_accessor :filter, :condition, :operator, :values, :index
-
-  def initialize(filter, condition, operator, values)
-    @filter         = filter
-    @condition      = condition
-    @operator       = operator
-    @values         = values
+  def self.operators
+    [:is_on]
   end
 
-  def value
-    values.first
-  end
-
-  def sanitized_value(index = 0)
-    return '' if index >= values.size 
-    return '' if values[index].blank?
-    values[index].to_s.gsub("'", "&#39;")
-  end
-
-  # used by the list based containers
-  def options
-    []
+  def template_name
+    'date'
   end
 
   def validate
     return "Value must be provided" if value.blank?
+    return "Value must be a valid date (2008-01-01)" if start_date_time == nil
   end
 
-  def reset_values
-    @values = []
-  end
-  
-  def template_name
-    self.class.name.underscore.split('/').last
-  end
-  
-  def template_path
-    "/app/views/wf/containers/#{template_name}.html.erb"
-  end
-  
-  def render_html(index)
-    @index = index
-    @container = self
-    
-    expanded_path = File.expand_path("#{File.dirname(__FILE__)}/../..#{template_path}")
-    ERB.new(IO.read(expanded_path)).result(binding)
-  end
-  
-  def serialize_to_params(params, index)
-    values.each_with_index do |v, v_index|
-      params["wf_v#{index}_#{v_index}"] = v
-    end
+  def start_date_time
+    Date.parse(value).to_time
+  rescue ArgumentError
+    nil
   end
 
-  def is_numeric?(s)
-    s.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+  def end_date_time
+    (start_date_time + 1.day)
+  rescue ArgumentError
+    nil
+  end
+
+  def sql_condition
+    return [" #{condition.full_key} >= ? and #{condition.full_key} < ? ", start_date_time, end_date_time]  if operator == :is_on
   end
 
 end

@@ -41,7 +41,7 @@ class Wf::Config
   end
   
   def self.config
-    @config ||= load_yml("/config/will_filter_config.yml")
+    @config ||= load_yml("/config/wf/config.yml")
   end
 
   def self.effects_options

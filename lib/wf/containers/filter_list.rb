@@ -21,64 +21,37 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::FilterContainer
+class Wf::Containers::FilterList < Wf::FilterContainer
 
-  attr_accessor :filter, :condition, :operator, :values, :index
-
-  def initialize(filter, condition, operator, values)
-    @filter         = filter
-    @condition      = condition
-    @operator       = operator
-    @values         = values
-  end
-
-  def value
-    values.first
-  end
-
-  def sanitized_value(index = 0)
-    return '' if index >= values.size 
-    return '' if values[index].blank?
-    values[index].to_s.gsub("'", "&#39;")
-  end
-
-  # used by the list based containers
-  def options
-    []
+  def self.operators
+    [:is_filtered_by]
   end
 
   def validate
     return "Value must be provided" if value.blank?
   end
 
-  def reset_values
-    @values = []
-  end
-  
   def template_name
-    self.class.name.underscore.split('/').last
-  end
-  
-  def template_path
-    "/app/views/wf/containers/#{template_name}.html.erb"
-  end
-  
-  def render_html(index)
-    @index = index
-    @container = self
-    
-    expanded_path = File.expand_path("#{File.dirname(__FILE__)}/../..#{template_path}")
-    ERB.new(IO.read(expanded_path)).result(binding)
-  end
-  
-  def serialize_to_params(params, index)
-    values.each_with_index do |v, v_index|
-      params["wf_v#{index}_#{v_index}"] = v
-    end
+    'list'
   end
 
-  def is_numeric?(s)
-    s.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+  def options
+    if condition.key == :id
+      model_class_name = filter.model_class_name
+    else
+      model_class_name = condition.key.to_s[0..-4].camelcase
+    end
+    
+    Wf::Filter.new(model_class_name).saved_filters(false)
+  end
+
+  def sql_condition
+    return nil unless operator == :is_filtered_by
+    sub_filter = Wf::Filter.find_by_id(value)
+    sub_conds = sub_filter.sql_conditions
+    sub_sql = "SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}"
+    sub_conds[0] = " #{condition.full_key} IN (#{sub_sql}) "
+    sub_conds
   end
 
 end

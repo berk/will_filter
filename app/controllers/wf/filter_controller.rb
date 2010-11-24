@@ -23,6 +23,10 @@
 
 class Wf::FilterController < ApplicationController
 
+  def index
+    @filters = Wf::Filter.new(Wf::Filter).deserialize_from_params(params).results
+  end
+
   def update_condition
     wf_filter = Wf::Filter.deserialize_from_params(params)
     condition = wf_filter.condition_at(params[:at_index].to_i)

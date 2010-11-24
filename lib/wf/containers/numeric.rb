@@ -21,64 +21,30 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::FilterContainer
+class Wf::Containers::Numeric < Wf::FilterContainer
 
-  attr_accessor :filter, :condition, :operator, :values, :index
-
-  def initialize(filter, condition, operator, values)
-    @filter         = filter
-    @condition      = condition
-    @operator       = operator
-    @values         = values
+  def self.operators
+    [:is, :is_not, :is_less_than, :is_greater_than]
   end
 
-  def value
-    values.first
+  def template_name
+    'text'
   end
 
-  def sanitized_value(index = 0)
-    return '' if index >= values.size 
-    return '' if values[index].blank?
-    values[index].to_s.gsub("'", "&#39;")
-  end
-
-  # used by the list based containers
-  def options
-    []
+  def numeric_value
+    value.to_i
   end
 
   def validate
     return "Value must be provided" if value.blank?
+    return "Value must be numeric" unless is_numeric?(value)
   end
 
-  def reset_values
-    @values = []
-  end
-  
-  def template_name
-    self.class.name.underscore.split('/').last
-  end
-  
-  def template_path
-    "/app/views/wf/containers/#{template_name}.html.erb"
-  end
-  
-  def render_html(index)
-    @index = index
-    @container = self
-    
-    expanded_path = File.expand_path("#{File.dirname(__FILE__)}/../..#{template_path}")
-    ERB.new(IO.read(expanded_path)).result(binding)
-  end
-  
-  def serialize_to_params(params, index)
-    values.each_with_index do |v, v_index|
-      params["wf_v#{index}_#{v_index}"] = v
-    end
-  end
-
-  def is_numeric?(s)
-    s.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+  def sql_condition
+    return [" #{condition.full_key} = ? ",   numeric_value]    if operator == :is
+    return [" #{condition.full_key} <> ? ",  numeric_value]    if operator == :is_not
+    return [" #{condition.full_key} < ? ",   numeric_value]    if operator == :is_less_than
+    return [" #{condition.full_key} > ? ",   numeric_value]    if operator == :is_greater_than
   end
 
 end
