@@ -27,6 +27,10 @@ class Wf::Containers::Nil < Wf::FilterContainer
     [:is_provided, :is_not_provided]
   end
 
+  def template_name
+    'blank'
+  end
+
   def validate
     # no validation is necessary
   end
