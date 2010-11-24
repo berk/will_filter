@@ -59,18 +59,6 @@ class Wf::FilterContainer
     self.class.name.underscore.split('/').last
   end
   
-  def template_path
-    "/app/views/wf/containers/#{template_name}.html.erb"
-  end
-  
-  def render_html(index)
-    @index = index
-    @container = self
-    
-    expanded_path = File.expand_path("#{File.dirname(__FILE__)}/../..#{template_path}")
-    ERB.new(IO.read(expanded_path)).result(binding)
-  end
-  
   def serialize_to_params(params, index)
     values.each_with_index do |v, v_index|
       params["wf_v#{index}_#{v_index}"] = v

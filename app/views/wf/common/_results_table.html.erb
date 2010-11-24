@@ -1,0 +1,67 @@
+<table class='wf_paginator'>
+    <tr>
+        <td align='left'>
+            <%= will_paginate(@filters) %>
+        </td>
+        <td align='right'>
+            <%= page_entries_info(@filters) %>
+        </td>
+    </tr>
+</table>
+
+<table class='wf_results_table'>
+	<thead>
+		<tr>
+			<% opts[:columns].each_with_index do |key, index| %>
+		    <%
+		      sort_direction       = filter.column_sorted?(key) ? filter.order_type : "asc"
+		      sort_direction_click = filter.column_sorted?(key) ? (sort_direction == "asc" ? "desc" : "asc") : "asc"
+          column_title   = filter.condition_title_for(key)  
+		      the_class_name =  key.to_s
+		      the_class_name << " sortable"                 
+		      the_class_name << " current_sort"             if filter.column_sorted?(key)
+		      the_class_name << " #{sort_direction}"
+		    %>
+		    <th class="<%= the_class_name %>">
+		      <div class="table_head_container">
+		          <div class="sort_control">
+		            <%= link_to "", filter.serialize_to_params(:wf_order => key, :wf_order_type => 'asc'), :title => "sort by #{key} ascending", :class => 'up' %>
+		            <%= link_to "", filter.serialize_to_params(:wf_order => key, :wf_order_type => 'desc'), :title => "sort by #{key} descending", :class => 'down' %>
+		          </div>
+		
+		          <%= link_to column_title, filter.serialize_to_params(:wf_order => key, :wf_order_type => sort_direction_click), :class => "sort_link" %>
+		      </div>
+		    </th>
+		  <% end %>
+		</tr>
+	</thead>	
+		
+  <tbody>
+    <% results.each_with_index do |obj, index| %>
+      <tr class='<%=(index % 2 == 0) ? "wf_row_even" : "wf_row_odd"%>'>
+				<% opts[:columns].each do |key| %>
+	        <td<%= " class='current_sort'" if filter.column_sorted?(key) %>>
+					     <% data = obj.send(key) %>
+							 <% if data.is_a?(Hash) %>
+	                <% data.each do |key, value| %>
+	                  <strong><%=key%>:</strong> <%= value %>;
+	                <% end %>
+									
+								<% elsif data.is_a?(Time) %>	
+									<%= data.strftime("%m/%d/%Y %l:%M:%S") %>
+
+                <% elsif data.is_a?(Date) %>  
+                  <%= data.strftime("%m/%d/%Y") %>
+									
+							 <% else %>
+							    <%= data.to_s %> 
+							 <% end %>	
+					</td>
+	      <% end %>
+      </tr>
+    <% end  %>
+	</tbody>
+</table>		
+
+
+    

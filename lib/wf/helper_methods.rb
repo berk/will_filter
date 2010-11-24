@@ -31,22 +31,10 @@ module Wf::HelperMethods
     render(:partial => "/wf/common/scripts")
   end
   
-  def will_filter_table_tag(filter, fields = [])
-    html = "<table cellspacing='1px' cellpadding='1px'>"
-    html <<  "<tr>"
-    filter.fields.each do |field|
-      html << "<th>" << field.to_s << "</th>"
-    end
-    html <<  "</tr>"
-    
-    filter.results.each do |obj|
-      html <<  "<tr>"
-      filter.fields.each do |field|
-        html << "<td>" << obj.send(field).to_s << "</td>"
-      end
-      html <<  "</tr>"
-    end  
-    html <<  "</table>"  
+  def will_filter_table_tag(results, opts = {})
+    filter = results.wf_filter
+    opts[:columns] ||= filter.model_column_keys
+    render(:partial => "/wf/common/results_table", :locals => {:results => results, :filter => filter, :opts => opts})
   end
   
 end
