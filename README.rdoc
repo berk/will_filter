@@ -56,6 +56,11 @@ will_filter_examples project contains some samples that show you how to customiz
 
   git://github.com/berk/will_filter_examples.git
 
+Live will_filter_examples application is running here:
+
+http://wf.tr8n.org 
+
+
 If you have any questions, comments or suggestions, email me at michael@geni.com
 
 
