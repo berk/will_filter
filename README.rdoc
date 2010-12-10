@@ -48,9 +48,9 @@ That's it. This will render a filter box with various conditions, operators and 
 
 Below are a couple of screenshot of what the filter looks like when it is rendered on a page:
 
-http://www.theiceberk.com/projects/rails/will_filter/will_filter1.png
+http://wiki.tr8n.org/images/d/da/Will_filter_1.png
 
-http://www.theiceberk.com/projects/rails/will_filter/will_filter3.png
+http://wiki.tr8n.org/images/d/da/Will_filter_2.png
 
 will_filter_examples project contains some samples that show you how to customize filters and much more
 
