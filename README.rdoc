@@ -2,6 +2,7 @@
 
 will_filter is a Rails engine plugin that extends the functionality of will_paginate by adding filters to your pages.
 
+
 == Preamble
  
 If you ever had to build an admin tool for your web site that displayed a list of objects that can be filtered using 
