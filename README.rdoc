@@ -26,7 +26,7 @@ For more details on installing will_paginate, please visit: https://github.com/m
 
 To install, configure and initialize will_filter engine, run the following commands: 
 
-  $ script/plugin install git://github.com/berk/will_filter.git
+  $ rails plugin install git://github.com/berk/will_filter.git -r rails3
   $ rake will_filter:sync  
   $ rake db:migrate 
 
