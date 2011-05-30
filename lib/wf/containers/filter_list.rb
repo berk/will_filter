@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,37 +21,39 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::FilterList < Wf::FilterContainer
-
-  def self.operators
-    [:is_filtered_by]
-  end
-
-  def validate
-    return "Value must be provided" if value.blank?
-  end
-
-  def template_name
-    'list'
-  end
-
-  def options
-    if condition.key == :id
-      model_class_name = filter.model_class_name
-    else
-      model_class_name = condition.key.to_s[0..-4].camelcase
-    end
+module Wf
+  module Containers
+    class FilterList < Wf::FilterContainer
+      def self.operators
+        [:is_filtered_by]
+      end
     
-    Wf::Filter.new(model_class_name).saved_filters(false)
+      def validate
+        return "Value must be provided" if value.blank?
+      end
+    
+      def template_name
+        'list'
+      end
+    
+      def options
+        if condition.key == :id
+          model_class_name = filter.model_class_name
+        else
+          model_class_name = condition.key.to_s[0..-4].camelcase
+        end
+        
+        Wf::Filter.new(model_class_name).saved_filters(false)
+      end
+    
+      def sql_condition
+        return nil unless operator == :is_filtered_by
+        sub_filter = Wf::Filter.find_by_id(value)
+        sub_conds = sub_filter.sql_conditions
+        sub_sql = "SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}"
+        sub_conds[0] = " #{condition.full_key} IN (#{sub_sql}) "
+        sub_conds
+      end
+    end
   end
-
-  def sql_condition
-    return nil unless operator == :is_filtered_by
-    sub_filter = Wf::Filter.find_by_id(value)
-    sub_conds = sub_filter.sql_conditions
-    sub_sql = "SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}"
-    sub_conds[0] = " #{condition.full_key} IN (#{sub_sql}) "
-    sub_conds
-  end
-
 end

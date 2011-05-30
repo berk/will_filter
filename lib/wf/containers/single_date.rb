@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,35 +21,37 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::SingleDate < Wf::FilterContainer
-
-  def self.operators
-    [:is_on]
+module Wf
+  module Containers
+    class SingleDate < Wf::FilterContainer
+      def self.operators
+        [:is_on]
+      end
+    
+      def template_name
+        'date'
+      end
+    
+      def validate
+        return "Value must be provided" if value.blank?
+        return "Value must be a valid date (2008-01-01)" if start_date_time == nil
+      end
+    
+      def start_date_time
+        Date.parse(value).to_time
+      rescue ArgumentError
+        nil
+      end
+    
+      def end_date_time
+        (start_date_time + 1.day)
+      rescue ArgumentError
+        nil
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} >= ? and #{condition.full_key} < ? ", start_date_time, end_date_time]  if operator == :is_on
+      end
+    end
   end
-
-  def template_name
-    'date'
-  end
-
-  def validate
-    return "Value must be provided" if value.blank?
-    return "Value must be a valid date (2008-01-01)" if start_date_time == nil
-  end
-
-  def start_date_time
-    Date.parse(value).to_time
-  rescue ArgumentError
-    nil
-  end
-
-  def end_date_time
-    (start_date_time + 1.day)
-  rescue ArgumentError
-    nil
-  end
-
-  def sql_condition
-    return [" #{condition.full_key} >= ? and #{condition.full_key} < ? ", start_date_time, end_date_time]  if operator == :is_on
-  end
-
 end

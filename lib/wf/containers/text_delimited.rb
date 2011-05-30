@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,28 +21,30 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::TextDelimited < Wf::FilterContainer
-
-  TEXT_DELIMITER = ","
-
-  def self.operators
-    [:is_in]
+module Wf
+  module Containers
+    class TextDelimited < Wf::FilterContainer
+      TEXT_DELIMITER = ","
+    
+      def self.operators
+        [:is_in]
+      end
+    
+      def template_name
+        'text'
+      end
+    
+      def validate
+        return "Values must be provided. Separate values with '#{TEXT_DELIMITER}'" if value.blank?
+      end
+    
+      def split_values
+        value.split(TEXT_DELIMITER)
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} in (?) ", split_values] if operator == :is_in
+      end
+    end
   end
-
-  def template_name
-    'text'
-  end
-
-  def validate
-    return "Values must be provided. Separate values with '#{TEXT_DELIMITER}'" if value.blank?
-  end
-
-  def split_values
-    value.split(TEXT_DELIMITER)
-  end
-
-  def sql_condition
-    return [" #{condition.full_key} in (?) ", split_values] if operator == :is_in
-  end
-
 end

@@ -22,7 +22,7 @@ defaults: &defaults
 
   export_options:         
     enabled:              true
-    default_formats:      [table, csv, xml, json]
+    default_formats:      [html, csv, xml, json]
   
   containers:             # container implementation mapping
     nil:                  Wf::Containers::Nil

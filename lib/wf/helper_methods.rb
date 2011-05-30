@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,27 +21,27 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module Wf::HelperMethods
-
-  def will_filter(results)
-    render(:partial => "/wf/filter/container", :locals => {:wf_filter => results.wf_filter})
-  end
-
-  def will_filter_scripts_tag
-    render(:partial => "/wf/common/scripts")
-  end
+module Wf
+  module HelperMethods
+    def will_filter(results)
+      render(:partial => "/wf/filter/container", :locals => {:wf_filter => results.wf_filter})
+    end
   
-  def will_filter_table_tag(results, opts = {})
-    filter = results.wf_filter
-    opts[:columns] ||= filter.model_column_keys
-    render(:partial => "/wf/common/results_table", :locals => {:results => results, :filter => filter, :opts => opts})
-  end
-
-  def will_filter_actions_bar_tag(results, actions, opts = {})
-    filter = results.wf_filter
-    opts[:class] ||= "wf_actions_bar_blue"
-    opts[:style] ||= ""
-    render(:partial => "/wf/common/actions_bar", :locals => {:results => results, :filter => filter, :actions => actions, :opts => opts})
-  end
+    def will_filter_scripts_tag
+      render(:partial => "/wf/common/scripts")
+    end
+    
+    def will_filter_table_tag(results, opts = {})
+      filter = results.wf_filter
+      opts[:columns] ||= filter.model_column_keys
+      render(:partial => "/wf/common/results_table", :locals => {:results => results, :filter => filter, :opts => opts})
+    end
   
+    def will_filter_actions_bar_tag(results, actions, opts = {})
+      filter = results.wf_filter
+      opts[:class] ||= "wf_actions_bar_blue"
+      opts[:style] ||= ""
+      render(:partial => "/wf/common/actions_bar", :locals => {:results => results, :filter => filter, :actions => actions, :opts => opts})
+    end
+  end
 end

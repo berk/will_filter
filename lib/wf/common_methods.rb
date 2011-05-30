@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,26 +21,29 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module Wf::CommonMethods
-
-  def self.included(base)
-    if 'ApplicationController' == base.name
-      base.append_before_filter :init_will_filter
-    end
-  end
-
-  def init_will_filter
-    # only if the filters need to be  
-    return unless Wf::Config.user_filters_enabled?
-    
-    wf_current_user = nil
-    begin
-      wf_current_user = eval(Wf::Config.current_user_method)
-    rescue Exception => ex
-      raise Wf::Exception.new("will_filter cannot be initialized because #{Wf::Config.current_user_method} failed with: #{ex.message}")
-    end
-    
-    Wf::Config.init(wf_current_user)
-  end
+module Wf
+  module CommonMethods
   
+    def self.included(base)
+      if 'ApplicationController' == base.name
+        base.append_before_filter :init_will_filter
+      end
+    end
+  
+    def init_will_filter
+      # only if the filters need to be  
+      return unless Wf::Config.user_filters_enabled?
+      
+      wf_current_user = nil
+      begin
+        wf_current_user = eval(Wf::Config.current_user_method)
+      rescue Exception => ex
+        raise Wf::Exception.new("will_filter cannot be initialized because #{Wf::Config.current_user_method} failed with: #{ex.message}")
+      end
+      
+      Wf::Config.init(wf_current_user)
+    end
+    
+  end
 end
+

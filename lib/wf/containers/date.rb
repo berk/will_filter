@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,28 +21,31 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::Date < Wf::FilterContainer
-
-  def self.operators
-    [:is, :is_not, :is_after, :is_before]
+module Wf
+  module Containers
+    class Date < Wf::FilterContainer
+      def self.operators
+        [:is, :is_not, :is_after, :is_before]
+      end
+    
+      def validate
+        return "Value must be provided" if value.blank?
+        return "Value must be a valid date (2008-01-01)" if date == nil
+      end
+    
+      def date
+        Date.parse(value)
+      rescue ArgumentError
+        nil
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} = ? ",  date]  if operator == :is
+        return [" #{condition.full_key} <> ? ", date]  if operator == :is_not
+        return [" #{condition.full_key} > ? ",  date]  if operator == :is_after
+        return [" #{condition.full_key} < ? ",  date]  if operator == :is_before
+      end
+      
+    end
   end
-
-  def validate
-    return "Value must be provided" if value.blank?
-    return "Value must be a valid date (2008-01-01)" if date == nil
-  end
-
-  def date
-    Date.parse(value)
-  rescue ArgumentError
-    nil
-  end
-
-  def sql_condition
-    return [" #{condition.full_key} = ? ",  date]  if operator == :is
-    return [" #{condition.full_key} <> ? ", date]  if operator == :is_not
-    return [" #{condition.full_key} > ? ",  date]  if operator == :is_after
-    return [" #{condition.full_key} < ? ",  date]  if operator == :is_before
-  end
-  
 end

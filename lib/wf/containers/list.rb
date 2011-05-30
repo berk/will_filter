@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,33 +21,36 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::List < Wf::FilterContainer
-
-  def self.operators
-    [:is, :is_not, :contains, :does_not_contain]
-  end
-
-  def options
-    opts = []
-    filter.value_options_for(condition.key).each do |item|
-      if item.is_a?(Array)
-        opt_name = item.first.to_s
-        opt_value = item.last.to_s
-      else
-        opt_name = item.to_s
-        opt_value = item.to_s
+module Wf
+  module Containers
+    class List < Wf::FilterContainer
+      def self.operators
+        [:is, :is_not, :contains, :does_not_contain]
       end
-      next if opt_name.strip == ""
-      opts << [ERB::Util.html_escape(opt_name), ERB::Util.html_escape(opt_value)]
+    
+      def options
+        opts = []
+        filter.value_options_for(condition.key).each do |item|
+          if item.is_a?(Array)
+            opt_name = item.first.to_s
+            opt_value = item.last.to_s
+          else
+            opt_name = item.to_s
+            opt_value = item.to_s
+          end
+          next if opt_name.strip == ""
+          opts << [ERB::Util.html_escape(opt_name), ERB::Util.html_escape(opt_value)]
+        end
+        opts
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} = ? ", value]                if operator == :is
+        return [" #{condition.full_key} <> ? ", value]               if operator == :is_not
+        return [" #{condition.full_key} like ? ", "%#{value}%"]      if operator == :contains
+        return [" #{condition.full_key} not like ? ", "%#{value}%"]  if operator == :does_not_cotain
+      end
+    
     end
-    opts
   end
-
-  def sql_condition
-    return [" #{condition.full_key} = ? ", value]                if operator == :is
-    return [" #{condition.full_key} <> ? ", value]               if operator == :is_not
-    return [" #{condition.full_key} like ? ", "%#{value}%"]      if operator == :contains
-    return [" #{condition.full_key} not like ? ", "%#{value}%"]  if operator == :does_not_cotain
-  end
-
 end

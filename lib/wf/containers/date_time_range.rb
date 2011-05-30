@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,42 +21,44 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::DateTimeRange < Wf::FilterContainer
-
-  attr_accessor :start_value, :end_value
-
-  def self.operators
-    [:is_in_the_range]
-  end
-
-  def initialize(filter, criteria_key, operator, values)
-    super(filter, criteria_key, operator, values)
-
-    @start_value = values[0]
-    @end_value = values[1] if values.size > 1
-  end
-
-  def validate
-    return "Start value must be provided" if start_value.blank?
-    return "Start value must be a valid date/time (2008-01-01 14:30:00)" if start_time == nil
-    return "End value must be provided" if end_value.blank?
-    return "End value must be a valid date/time (2008-01-01 14:30:00)" if end_time == nil
-  end
-
-  def start_time
-    Time.parse(start_value)
-  rescue ArgumentError
-    nil
-  end
-
-  def end_time
-    Time.parse(end_value)
-  rescue ArgumentError
-    nil
-  end
-
-  def sql_condition
-    return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", start_time, end_time] if operator == :is_in_the_range
-  end
-
+module Wf
+  module Containers
+    class DateTimeRange < Wf::FilterContainer
+      attr_accessor :start_value, :end_value
+    
+      def self.operators
+        [:is_in_the_range]
+      end
+    
+      def initialize(filter, criteria_key, operator, values)
+        super(filter, criteria_key, operator, values)
+    
+        @start_value = values[0]
+        @end_value = values[1] if values.size > 1
+      end
+    
+      def validate
+        return "Start value must be provided" if start_value.blank?
+        return "Start value must be a valid date/time (2008-01-01 14:30:00)" if start_time == nil
+        return "End value must be provided" if end_value.blank?
+        return "End value must be a valid date/time (2008-01-01 14:30:00)" if end_time == nil
+      end
+    
+      def start_time
+        Time.parse(start_value)
+      rescue ArgumentError
+        nil
+      end
+    
+      def end_time
+        Time.parse(end_value)
+      rescue ArgumentError
+        nil
+      end
+    
+      def sql_condition
+        return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", start_time, end_time] if operator == :is_in_the_range
+      end
+    end
+  end 
 end

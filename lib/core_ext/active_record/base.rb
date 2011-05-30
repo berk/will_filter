@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -22,7 +22,6 @@
 #++
 
 class ActiveRecord::Base
-
   def self.filter(opts = {})
     if ActiveRecord::Base == self.class
       raise Wf::FilterException.new("Cannot apply filter to the ActiveRecord::Base object")
@@ -42,5 +41,4 @@ class ActiveRecord::Base
   
     filter_class.new(self).deserialize_from_params(params).results
   end
-  
 end

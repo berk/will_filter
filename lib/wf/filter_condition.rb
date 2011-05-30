@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,39 +21,39 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::FilterCondition
-
-  attr_accessor :filter, :key, :operator, :container
-
-  def initialize(filter, key, operator, container_class, values)
-    @filter     = filter
-    @key        = key
-    @operator   = operator
-    @container  = Wf::Config.containers[container_class].constantize.new(filter, self, operator, values)
-  end
-
-  def validate
-    container.validate
-  end
-
-  def serialize_to_params(params, index)
-    params["wf_c#{index}"] = key
-    params["wf_o#{index}"] = operator
-    container.serialize_to_params(params, index)
-    params
-  end
+module Wf
+  class FilterCondition
+    attr_accessor :filter, :key, :operator, :container
   
-  def full_key
-    if key.to_s.index('.')
-      parts = key.to_s.split(".")
-      join_class = parts.first.camelcase.constantize
-      return "#{join_class.table_name}.#{parts.last}"
-    end  
-    "#{filter.table_name}.#{key}"
-  end
+    def initialize(filter, key, operator, container_class, values)
+      @filter     = filter
+      @key        = key
+      @operator   = operator
+      @container  = Wf::Config.containers[container_class].constantize.new(filter, self, operator, values)
+    end
   
-  def to_s
-    key
+    def validate
+      container.validate
+    end
+  
+    def serialize_to_params(params, index)
+      params["wf_c#{index}"] = key
+      params["wf_o#{index}"] = operator
+      container.serialize_to_params(params, index)
+      params
+    end
+    
+    def full_key
+      if key.to_s.index('.')
+        parts = key.to_s.split(".")
+        join_class = parts.first.camelcase.constantize
+        return "#{join_class.table_name}.#{parts.last}"
+      end  
+      "#{filter.table_name}.#{key}"
+    end
+    
+    def to_s
+      key
+    end
   end
-
 end

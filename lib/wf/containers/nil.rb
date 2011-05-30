@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,23 +21,25 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::Nil < Wf::FilterContainer
-
-  def self.operators
-    [:is_provided, :is_not_provided]
+module Wf
+  module Containers
+    class Nil < Wf::FilterContainer
+      def self.operators
+        [:is_provided, :is_not_provided]
+      end
+    
+      def template_name
+        'blank'
+      end
+    
+      def validate
+        # no validation is necessary
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} is not null "]  if operator == :is_provided
+        return [" #{condition.full_key} is null "]      if operator == :is_not_provided
+      end
+    end
   end
-
-  def template_name
-    'blank'
-  end
-
-  def validate
-    # no validation is necessary
-  end
-
-  def sql_condition
-    return [" #{condition.full_key} is not null "]  if operator == :is_provided
-    return [" #{condition.full_key} is null "]      if operator == :is_not_provided
-  end
-
 end

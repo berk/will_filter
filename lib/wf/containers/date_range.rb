@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,33 +21,36 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class Wf::Containers::DateRange < Wf::FilterContainer
-
-  def self.operators
-    [:is_in_the_range]
+module Wf
+  module Containers
+    class DateRange < Wf::FilterContainer
+      def self.operators
+        [:is_in_the_range]
+      end
+    
+      def initialize(filter, criteria_key, operator, values)
+        super(filter, criteria_key, operator, values)
+        @start_date = values[0]
+        @end_date = values[1] if values.size > 1
+      end
+    
+      def validate
+        return "Start value must be provided" if @start_date.blank?
+        return "Start value must be a valid date (2008-01-01)" if date(@start_date) == nil
+        return "End value must be provided" if @end_date.blank?
+        return "End value must be a valid date (2008-01-01)" if date(@end_date) == nil
+      end
+    
+      def date(dt)
+        Date.parse(dt)
+      rescue ArgumentError
+        nil
+      end
+    
+      def sql_condition
+        return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", date(@start_date), date(@end_date)] if operator == :is_in_the_range
+      end
+      
+    end
   end
-
-  def initialize(filter, criteria_key, operator, values)
-    super(filter, criteria_key, operator, values)
-    @start_date = values[0]
-    @end_date = values[1] if values.size > 1
-  end
-
-  def validate
-    return "Start value must be provided" if @start_date.blank?
-    return "Start value must be a valid date (2008-01-01)" if date(@start_date) == nil
-    return "End value must be provided" if @end_date.blank?
-    return "End value must be a valid date (2008-01-01)" if date(@end_date) == nil
-  end
-
-  def date(dt)
-    Date.parse(dt)
-  rescue ArgumentError
-    nil
-  end
-
-  def sql_condition
-    return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", date(@start_date), date(@end_date)] if operator == :is_in_the_range
-  end
-  
 end

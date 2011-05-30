@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,13 +21,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-require 'csv'
-
-class Wf::CalendarController < ApplicationController
-
-  def index
-    @calendar = Wf::Calendar.new(params[:wf_calendar_selected_date], params[:wf_calendar_start_date], params[:wf_calendar_show_time] == 'true', params[:wf_calendar_mode] || 'month')
-    render :layout => false
+module Wf
+  class CalendarController < ApplicationController
+    def index
+      @calendar = Wf::Calendar.new(params[:wf_calendar_selected_date], params[:wf_calendar_start_date], params[:wf_calendar_show_time] == 'true', params[:wf_calendar_mode] || 'month')
+      render :layout => false
+    end
   end
-  
 end

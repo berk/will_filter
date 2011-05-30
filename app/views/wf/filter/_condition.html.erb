@@ -23,8 +23,8 @@
 	  <%= render :partial => "/wf/filter/containers/#{condition.container.template_name}", :locals => {:container => condition.container, :index => index} %>
   </td>
   <td class="wf_condition_actions" style="padding:0px;">
-    <%=link_to_function("<span>-</span>", "wfFilter.removeConditionAt('#{index}')", :class => "wf_grey_button wf_pcb") %>
-    <%=link_to_function("<span>+</span>", "wfFilter.addConditionAfter('#{index}')", :class => "wf_grey_button wf_pcb") %>
+    <%=link_to_function("<span>-</span>".html_safe, "wfFilter.removeConditionAt('#{index}')", :class => "wf_grey_button wf_pcb") %>
+    <%=link_to_function("<span>+</span>".html_safe, "wfFilter.addConditionAfter('#{index}')", :class => "wf_grey_button wf_pcb") %>
   </td>
 </tr>
       
