@@ -14,9 +14,15 @@ http://github.com/berk/will_filter_examples
 
 == Installation Instructions
 
-Install the latest version of the will_paginate plugin or gem created by Mislav Marohnić. 
+Add the “will_paginate” gem created by Mislav Marohnić to your Gemfile.
 
-  $ script/plugin install git://github.com/mislav/will_paginate.git
+  $ gem "will_paginate", "~> 3.0.pre2"
+
+And run:
+
+  $ bundle install
+
+For more details on installing will_paginate, please visit: https://github.com/mislav/will_paginate/wiki/Installation
 
 To install, configure and initialize will_filter engine, run the following commands: 
 
