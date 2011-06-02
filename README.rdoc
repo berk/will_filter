@@ -14,7 +14,7 @@ http://github.com/berk/will_filter_examples
 
 == Installation Instructions
 
-Add the “will_paginate” gem created by Mislav Marohnić to your Gemfile.
+Add "will_paginate" gem to your Gemfile.
 
   gem "will_paginate", "~> 3.0.pre2"
 

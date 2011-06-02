@@ -24,10 +24,31 @@
 # Add your own tasks in files placed in lib/tasks ending in .rake,
 # for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
 
-require File.expand_path('../config/application', __FILE__)
-require 'rake'
+require 'rake/testtask'
 
-WillFilter::Application.load_tasks
+Rake::TestTask.new do |test|
+  test.pattern = 'test/**/*_test.rb'
+  test.libs << 'test'
+end
 
-require 'app2engine/rake/tasks'
-App2Engine::Rake::Tasks.new
+begin
+ require 'jeweler'
+ Jeweler::Tasks.new do |s|
+   s.name = "will_filter"
+   s.summary = "Rails engine for filtering ActiveRecord model objects."
+   s.email = "theiceberk@gmail.com"
+   s.homepage = "http://github.com/berk/will_filter"
+   s.description = "Rails engine for filtering ActiveRecord model objects."
+   s.authors = ["Michael Berkovich"]
+ end
+ Jeweler::GemcutterTasks.new
+rescue LoadError
+ puts "Jeweler not available. Install it with: sudo gem install jeweler"
+end
+
+#require File.expand_path('../config/application', __FILE__)
+#require 'rake'
+#
+#WillFilter::Application.load_tasks
+
+
