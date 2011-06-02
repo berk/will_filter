@@ -24,7 +24,7 @@
 class ActiveRecord::Base
   def self.filter(opts = {})
     if ActiveRecord::Base == self.class
-      raise Wf::FilterException.new("Cannot apply filter to the ActiveRecord::Base object")
+      raise WillFilter::FilterException.new("Cannot apply filter to the ActiveRecord::Base object")
     end
 
     params = opts[:params] || {}
@@ -36,7 +36,7 @@ class ActiveRecord::Base
         else filter_class = opts[:filter]
       end
     else
-      filter_class = Wf::Filter
+      filter_class = WillFilter::Filter
     end
   
     filter_class.new(self).deserialize_from_params(params).results

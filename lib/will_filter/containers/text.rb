@@ -21,6 +21,25 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module ApplicationHelper
-  
+module WillFilter
+  module Containers
+    class Text < WillFilter::FilterContainer
+      def self.operators
+        [:is, :is_not, :contains, :does_not_contain, :starts_with, :ends_with]
+      end
+    
+      def validate
+        # always valid, even when it is empty
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} = ? ", value]                 if operator == :is
+        return [" #{condition.full_key} <> ? ", value]                if operator == :is_not
+        return [" #{condition.full_key} like ? ", "%#{value}%"]       if operator == :contains
+        return [" #{condition.full_key} not like ? ", "%#{value}%"]   if operator == :does_not_contain
+        return [" #{condition.full_key} like ? ", "#{value}%"]        if operator == :starts_with
+        return [" #{condition.full_key} like ? ", "%#{value}"]        if operator == :ends_with
+      end
+    end
+  end
 end

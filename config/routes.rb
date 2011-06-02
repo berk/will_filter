@@ -1,4 +1,4 @@
-WillFilter::Application.routes.draw do
+Rails.application.routes.draw do 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -48,13 +48,17 @@ WillFilter::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => "wf/filter#index"
+  root :to => "will_filter/filter#index"
+
+#  mount_at = WillFilter::Engine.config.mount_at
+#  match mount_at => 'will_filter/filter#index'
+#  map.resources :filter, :controller => "will_filter/filter", :path_prefix => mount_at, :name_prefix => "will_filter_"
 
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   match ':controller(/:action(/:id(.:format)))'
-  match ':controller(/:action(/:id))', :controller => /wf\/[^\/]+/
+  match ':controller(/:action(/:id))', :controller => /will_filter\/[^\/]+/
   
 end

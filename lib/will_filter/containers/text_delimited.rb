@@ -21,6 +21,31 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module ApplicationHelper
-  
+module WillFilter
+  module Containers
+    class TextDelimited < WillFilter::FilterContainer
+      TEXT_DELIMITER = ","
+    
+      def self.operators
+        [:is_in, :is_not_in]
+      end
+    
+      def template_name
+        'text'
+      end
+    
+      def validate
+        return "Values must be provided. Separate values with '#{TEXT_DELIMITER}'" if value.blank?
+      end
+    
+      def split_values
+        value.split(TEXT_DELIMITER)
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} in (?) ", split_values] if operator == :is_in
+        return [" #{condition.full_key} not in (?) ", split_values] if operator == :is_not_in
+      end
+    end
+  end
 end

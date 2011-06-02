@@ -21,6 +21,31 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module ApplicationHelper
-  
+module WillFilter
+  module Containers
+    class Date < WillFilter::FilterContainer
+      def self.operators
+        [:is, :is_not, :is_after, :is_before]
+      end
+    
+      def validate
+        return "Value must be provided" if value.blank?
+        return "Value must be a valid date (2008-01-01)" if date == nil
+      end
+    
+      def date
+        @date ||= Time.parse(value).to_date
+      rescue ArgumentError
+        nil
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} = ? ",  date]  if operator == :is
+        return [" #{condition.full_key} <> ? ", date]  if operator == :is_not
+        return [" #{condition.full_key} > ? ",  date]  if operator == :is_after
+        return [" #{condition.full_key} < ? ",  date]  if operator == :is_before
+      end
+      
+    end
+  end
 end

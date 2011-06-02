@@ -21,6 +21,25 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module ApplicationHelper
-  
+module WillFilter
+  module Containers
+    class Nil < WillFilter::FilterContainer
+      def self.operators
+        [:is_provided, :is_not_provided]
+      end
+    
+      def template_name
+        'blank'
+      end
+    
+      def validate
+        # no validation is necessary
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} is not null "]  if operator == :is_provided
+        return [" #{condition.full_key} is null "]      if operator == :is_not_provided
+      end
+    end
+  end
 end

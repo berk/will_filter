@@ -21,6 +21,39 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module ApplicationHelper
+module WillFilter
+  class FilterCondition
+    attr_accessor :filter, :key, :operator, :container
   
+    def initialize(filter, key, operator, container_class, values)
+      @filter     = filter
+      @key        = key
+      @operator   = operator
+      @container  = WillFilter::Config.containers[container_class].constantize.new(filter, self, operator, values)
+    end
+  
+    def validate
+      container.validate
+    end
+  
+    def serialize_to_params(params, index)
+      params["wf_c#{index}"] = key
+      params["wf_o#{index}"] = operator
+      container.serialize_to_params(params, index)
+      params
+    end
+    
+    def full_key
+      if key.to_s.index('.')
+        parts = key.to_s.split(".")
+        join_class = parts.first.camelcase.constantize
+        return "#{join_class.table_name}.#{parts.last}"
+      end  
+      "#{filter.table_name}.#{key}"
+    end
+    
+    def to_s
+      key
+    end
+  end
 end

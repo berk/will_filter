@@ -21,6 +21,23 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module ApplicationHelper
-  
+module WillFilter
+  module Containers
+    class Boolean < WillFilter::FilterContainer
+    
+      def self.operators
+        [:is]
+      end
+    
+      def selected?
+        value == "1"
+      end
+    
+      def sql_condition
+        return [" #{condition.full_key} = ? ", (selected? ? true : false)] if operator == :is
+      end
+      
+    end    
+  end
 end
+

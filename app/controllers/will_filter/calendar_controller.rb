@@ -21,6 +21,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module ApplicationHelper
-  
+module WillFilter
+  class CalendarController < ApplicationController
+    def index
+      @calendar = WillFilter::Calendar.new(params[:wf_calendar_selected_date], params[:wf_calendar_start_date], params[:wf_calendar_show_time] == 'true', params[:wf_calendar_mode] || 'month')
+      render :layout => false
+    end
+  end
 end
