@@ -39,5 +39,7 @@ module WillFilter
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+    config.session_store :active_record_store
+    config.secret_token = 'ba8e7d52f10084c758887c56815e894f32aef79496ecb2ed9ab9458a0bd37b33d6d2bace4a2c1cd828e4aaf347a5b23fe1c9c14ef11c7c9ad950207022902003'
   end
 end
