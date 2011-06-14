@@ -1,13 +1,12 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.7'
+gem "will_paginate", "~> 3.0.pre2"
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem "will_paginate", "~> 3.0.pre2"
-
-gem 'sqlite3'
+# gem 'sqlite3'
 
 # Use unicorn as the web server
 # gem 'unicorn'
