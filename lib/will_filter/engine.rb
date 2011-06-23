@@ -3,11 +3,6 @@ require "rails"
 
 module WillFilter
   class Engine < Rails::Engine
-    config.autoload_paths << File.expand_path("../../lib", __FILE__)
-    config.autoload_paths << File.expand_path("../../lib/core_ext/**", __FILE__)
-    config.autoload_paths << File.expand_path("../../lib/will_filter", __FILE__)
-    config.autoload_paths << File.expand_path("../../lib/will_filter/containers", __FILE__)
-    
     [
      "../../lib/core_ext/**",
      "../../lib/will_filter",
@@ -17,7 +12,6 @@ module WillFilter
           require(file)
         end
     end
-
     require(File.expand_path("#{File.dirname(__FILE__)}/../../lib/application_helper.rb"))
 
     initializer "static assets" do |app|
