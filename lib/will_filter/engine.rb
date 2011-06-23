@@ -9,7 +9,6 @@ module WillFilter
     config.autoload_paths << File.expand_path("../../lib/will_filter/containers", __FILE__)
     
     [
-     "../../lib",
      "../../lib/core_ext/**",
      "../../lib/will_filter",
      "../../lib/will_filter/containers"
@@ -18,6 +17,8 @@ module WillFilter
           require(file)
         end
     end
+
+    require(File.expand_path("#{File.dirname(__FILE__)}/../../lib/application_helper.rb"))
 
     initializer "static assets" do |app|
       # app.middleware.use ActionDispatch::Static, "#{root}/public" # Old way, does not work in production
