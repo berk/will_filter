@@ -3,6 +3,22 @@ require "rails"
 
 module WillFilter
   class Engine < Rails::Engine
+    config.autoload_paths << File.expand_path("../../lib", __FILE__)
+    config.autoload_paths << File.expand_path("../../lib/core_ext/**", __FILE__)
+    config.autoload_paths << File.expand_path("../../lib/will_filter", __FILE__)
+    config.autoload_paths << File.expand_path("../../lib/will_filter/containers", __FILE__)
+    
+    [
+     "../../lib",
+     "../../lib/core_ext/**",
+     "../../lib/will_filter",
+     "../../lib/will_filter/containers"
+    ].each do |dir|
+        Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
+          require(file)
+        end
+    end
+
     initializer "static assets" do |app|
       # app.middleware.use ActionDispatch::Static, "#{root}/public" # Old way, does not work in production
       app.middleware.insert_after ActionDispatch::Static, ActionDispatch::Static, "#{root}/public"

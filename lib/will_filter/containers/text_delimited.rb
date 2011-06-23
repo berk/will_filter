@@ -24,7 +24,7 @@
 module WillFilter
   module Containers
     class TextDelimited < WillFilter::FilterContainer
-      TEXT_DELIMITER = ","
+      TEXT_DELIMITER = ","  unless defined?(TEXT_DELIMITER)
     
       def self.operators
         [:is_in, :is_not_in]

@@ -24,8 +24,8 @@
 module WillFilter
   class Calendar
   
-    MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+    MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] unless defined?(MONTHS)
+    DAYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']  unless defined?(DAYS)
     
     def initialize(selected_date = nil, start_date = nil, show_time = false, mode = 'month')
       if selected_date.blank?

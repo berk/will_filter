@@ -24,7 +24,7 @@
 module WillFilter
   module Containers
     class NumericDelimited < WillFilter::FilterContainer
-      NUMERIC_DELIMITER = ","
+      NUMERIC_DELIMITER = ","   unless defined?(NUMERIC_DELIMITER)
     
       def self.operators
         [:is_in]

@@ -57,10 +57,11 @@
     <% results.each_with_index do |obj, index| %>
       <tr class='data_row <%=(index % 2 == 0) ? "wf_row_even" : "wf_row_odd"%>'>
         <% opts[:columns].each_with_index do |column, column_index| %>
-          <% 
+          <%
             style = 'padding:3px;'
             if column.is_a?(Array)
               key = column.first
+
               if column.second.is_a?(Proc)
                 value = column.second.call(obj)
               else
