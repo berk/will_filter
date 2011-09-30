@@ -1,0 +1,12 @@
+<h1>Advanced Users Filter</h1>
+<%= will_filter_tag(@users) %>
+<%= will_filter_table_tag(@users, :columns => [
+      [:checkbox, 'users'], 
+      :id, 
+      [:name, lambda{|user| "#{user.first_name} #{user.last_name}"}], 
+      :sex]) 
+%>
+
+<%= will_filter_actions_bar_tag(@users, [
+  ['Delete Selected Languages', "alert('Deleting users...')"]
+]) %>

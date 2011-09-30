@@ -1,0 +1,36 @@
+<%=stylesheet_link_tag("/wf/stylesheets/will_filter.css") -%>
+<%=javascript_include_tag("/wf/javascripts/will_filter.js") -%>
+
+<% form_tag({}, {:method => :get, :name=>'wf_form', :id => 'wf_form', :class => 'wf_form' }) do %>
+<div class="will_filter">
+	
+    <div id="wf_filter_conditions" class="conditions">
+        <%= render :partial=> "/wf/filter/conditions" %>
+    </div>
+		
+		<div class="footer">
+			<div style="float:right">
+        <%=link_to_function("Toggle Conditions", "wfFilter.toggleDebugger()", :style=>"font-size:9px") %>
+        &nbsp;&nbsp;
+        Order: 
+        <%= select_tag(:wf_order, options_for_select(@wf_filter.condition_options, @wf_filter.order), {:onChange=>"markDirty()"}) %>
+        <%= select_tag(:wf_order_type, options_for_select(@wf_filter.order_type_options, @wf_filter.order_type), {:onChange=>"markDirty()"}) %>
+        Per Page: 
+				<%= select_tag(:wf_per_page, options_for_select(@wf_filter.per_page_options, @wf_filter.per_page), {:onChange=>"markDirty()"}) %>
+        &nbsp;&nbsp;<%=link_to_function("<span>Submit Filter</span>", "$('wf_form').submit()", :class => "grey-button pcb") %>
+		  </div>
+			<div>
+        <%=link_to_function("<span>+ Add</span>", "wfFilter.addCondition()", :class => "grey-button pcb") %>
+        <%=link_to_function("<span>- Clear</span>", "wfFilter.removeAllConditions()", :class => "grey-button pcb") %>
+        &nbsp;&nbsp;<span id="wf_loader" class="spinner" style="display:none;"><%=image_tag "/wf/images/spinner.gif", {:style=>"vertical-align:middle"} %> Loading...</span>
+			</div>
+		</div>
+
+    <div id="wf_debugger" class="debug" style="display:none;">
+        <%= @wf_filter.debug_sql_conditions %>
+    </div>
+</div>
+<% end %>
+
+<div id="wf_calendar" style="display:none">
+</div>

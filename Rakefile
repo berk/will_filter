@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010 Michael Berkovich, Geni Inc
+# Copyright (c) 2010-2011 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,68 +21,48 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-require(File.join(File.dirname(__FILE__), 'config', 'boot'))
+#!/usr/bin/env rake
+begin
+  require 'bundler/setup'
+rescue LoadError
+  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
+end
+begin
+  require 'rdoc/task'
+rescue LoadError
+  require 'rdoc/rdoc'
+  require 'rake/rdoctask'
+  RDoc::Task = Rake::RDocTask
+end
 
-require 'rake'
+RDoc::Task.new(:rdoc) do |rdoc|
+  require 'will_filter/version'
+  
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = 'WillFilter #{WillFilter::VERSION}'
+  rdoc.options << '--line-numbers'
+  rdoc.rdoc_files.include('README.rdoc')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
+load 'rails/tasks/engine.rake'
+
+Bundler::GemHelper.install_tasks
+
 require 'rake/testtask'
-require 'rake/rdoctask'
-require 'tasks/rails'
 
-begin
- require 'jeweler'
- Jeweler::Tasks.new do |s|
-   s.name = "will_filter"
-   s.summary = %Q{Filtering framework for Rails AcitveRecord models.}
-   s.email = "michael@geni.com"
-   s.homepage = "http://github.com/berk/will_filter"
-   s.description = "Filtering framework for Rails AcitveRecord models"
-   s.authors = ["Michael Berkovich"]
- end
- Jeweler::GemcutterTasks.new
-rescue LoadError
- puts "Jeweler not available. Install it with: sudo gem install jeweler"
-end
-
-begin
- require 'rcov/rcovtask'
- Rcov::RcovTask.new do |t|
-   t.libs << 'test'
-   t.test_files = FileList['test/**/*_test.rb']
-   t.verbose = true
- end
-rescue LoadError
-end
-
-desc 'Test the blogify plugin.'
 Rake::TestTask.new(:test) do |t|
   t.libs << 'lib'
   t.libs << 'test'
   t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+  t.verbose = false
 end
 
-desc 'Generate documentation for the blogify plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Blogify'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
-desc 'Default: run unit tests.'
-task :default => :test
-
-task :unpack_gem do
-  require "rubygems/installer"
-  source_file = File.expand_path("#{File.dirname(__FILE__)}/pkg/will_filter-0.1.0.gem")
-  puts source_file
-  
-  target_dir = File.expand_path("#{File.dirname(__FILE__)}/pkg/unpacked")
-  puts target_dir
-
-  rm_rf target_dir
-  mkdir_p target_dir
-  
-  Gem::Installer.new(source_file).unpack(target_dir)    
-end
+task :default => :spec

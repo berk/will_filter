@@ -1,0 +1,16 @@
+<table class='values' cellspacing='0px' cellpadding='0px'>
+	<tr>
+    <td width='49%'>
+			<%=text_field_tag("wf_v#{index}_0", container.sanitized_value(0), :style => 'width:98%', :onChange => 'wfFilter.fieldChanged(this)')%>	
+    </td>
+		<td width='1%'>
+			<%=link_to_function(image_tag("will_filter/calendar.png", :title => "Select start date", :class => "wf_calendar_trigger"), "wfCalendar.selectDate('wf_v#{index}_0', this)")%>	
+    </td>
+    <td width='49%'>
+			<%=text_field_tag("wf_v#{index}_1", container.sanitized_value(1), :style => 'width:98%', :onChange => 'wfFilter.fieldChanged(this)')%>	
+    </td>
+    <td width='1%'>
+			<%=link_to_function(image_tag("will_filter/calendar.png", :title => "Select end date", :class => "wf_calendar_trigger"), "wfCalendar.selectDate('wf_v#{index}_1', this)")%>	
+    </td>
+	</tr>
+</table>

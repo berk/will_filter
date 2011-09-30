@@ -1,0 +1,43 @@
+@mixin rounded-corners($radius) {
+  border-radius: $radius;
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+}
+
+.wf_exporter {
+	background-color:#eee; 
+	position:absolute; 
+	width:230px; 
+	padding: 5px; 
+	font-size:10px; 
+	border:solid 1px #e8e8e8; 
+	border-color:#e8e8e8 #bababa #bababa #e8e8e8;
+ 	@include rounded-corners(10px);	
+}
+
+.wf_exporter_container {
+	background-color:white; 
+	padding: 5px; 
+	margin: 5px; 
+	font-size:10px; 
+	border:solid 1px #bababa; 
+	border-color:#bababa #e8e8e8 #e8e8e8 #bababa; 
+ 	@include rounded-corners(10px);	
+}
+
+.wf_exporter img                        {border: 0px;}
+.wf_exporter input {
+	border: 1px solid #ccc; 
+	font-size: 12px; 
+	font-family: Arial; 
+	@include rounded-corners(10px);		
+}
+.wf_exporter select  {
+	border: 1px solid #ccc; 
+	font-size: 12px; 
+	font-family: Arial; 
+	background-color:#EDEDED;
+	@include rounded-corners(10px);		
+}
+.wf_exporter table                      {width:100%;border-collapse: collapse; font-size:12px; padding:0px; margin:0px;}
+.wf_exporter td                         {vertical-align:top; padding: 0px; margin: 0px; }

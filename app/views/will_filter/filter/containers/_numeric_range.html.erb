@@ -1,0 +1,13 @@
+<table class='values' cellspacing='0px' cellpadding='0px'>
+	<tr>
+    <td width='49%'>
+			<%=text_field_tag("wf_v#{index}_0", container.sanitized_value(0), :style => 'width:99%', :onChange => 'wfFilter.fieldChanged(this)')%>	
+    </td>
+		<td width='2%'>
+			&nbsp;
+    </td>
+    <td width='49%'>
+			<%=text_field_tag("wf_v#{index}_1", container.sanitized_value(1), :style => 'width:97%', :onChange => 'wfFilter.fieldChanged(this)')%>	
+    </td>
+	</tr>
+</table>

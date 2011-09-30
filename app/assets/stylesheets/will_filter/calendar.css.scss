@@ -1,0 +1,55 @@
+@mixin rounded-corners($radius) {
+  border-radius: $radius;
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+}
+
+.wf_calendar_trigger {border:0px; padding-left:2px; padding-right:2px;}
+
+.wf_calendar {
+	background-color:#eee; 
+	position:absolute; 
+	font-size:10px; 
+	border:solid 1px #e8e8e8; 
+	border-color:#e8e8e8 #bababa #bababa #e8e8e8;
+	padding: 5px; 
+ 	@include rounded-corners(10px);	
+
+	input {
+		border: 1px solid #ccc; 
+		font-size: 12px; 
+		font-family: Arial; 
+		@include rounded-corners(10px);		
+	}
+	
+	select {
+		border: 1px solid #ccc; 
+		font-size: 12px; 
+		font-family: Arial; 
+		padding:2px;
+		background-color:#EDEDED;
+		@include rounded-corners(10px);	
+	}	
+}
+
+.wf_calendar_container {
+	background-color:white; 
+	padding: 5px; 
+	margin: 5px; 
+	font-size:10px; 
+	border:solid 1px #bababa; 
+	border-color:#bababa #e8e8e8 #e8e8e8 #bababa; 
+ 	@include rounded-corners(10px);	
+}
+
+.wf_calendar_table                      {width:100%;}
+.wf_calendar_table td                   {padding:2px; margin:2px; text-align:center; vertical-align:top;}
+.wf_calendar img                        {border: 0px;}
+
+.wf_calendar_cells                      {border:1px dotted #ccc; width:100%; padding:2px; margin:0px; }
+.wf_calendar_cells td                   {padding:2px; border: 0px; text-align:center; vertical-align:middle; font-size:8px; color:black; background-color:white;cursor:pointer;} 
+.wf_calendar_title                      {text-align:center; border-top:1px solid #ccc; border-bottom:1px solid #ccc; background: #eee;}
+.wf_calendar_date_cell                  {width:11px; border: 1px solid #ccc; padding:2px; margin:1px; cursor:pointer; vertical-align:middle; text-align:center; background-color:white;}
+.wf_calendar_date_cell.today            {background-color:light-blue; } 
+.wf_calendar_date_cell.selected         {background-color:#ccc; } 
+.wf_calendar_date_cell:hover            {background-color:#ccc; } 

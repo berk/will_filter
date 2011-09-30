@@ -1,0 +1,152 @@
+@mixin rounded-corners($radius) {
+  border-radius: $radius;
+  -moz-border-radius: $radius;
+  -webkit-border-radius: $radius;
+}
+
+.wf_container {
+	padding:0px; 
+	background:#f1f4f9; 
+	margin:0px; 
+	margin-bottom:10px; 
+	font-size: 12px; 
+	font-family: Arial; 
+	width: 100%; 
+	border:solid 1px #e8e8e8;
+	border-color:#e8e8e8 #bababa #bababa #e8e8e8; 
+ 	@include rounded-corners(10px);	
+	
+	.spinner {
+		font-size: 10px;
+	}
+	
+	.debugger {
+		padding:5px; 
+		margin:2px; 
+		background:white; 
+		border:solid 1px #bababa;
+		border-color:#bababa #e8e8e8 #e8e8e8 #bababa; 
+		font-size:10px; 
+		color: #777;
+	 	@include rounded-corners(10px);	
+	}
+
+	.footer {
+		padding:5px; 
+		margin-top:3px;
+		.actions {
+			float:right;
+		}
+	}
+	
+	.conditions {
+		padding:0px; 
+		margin:5px;
+		.header {
+			margin:0px; 
+			height:25px; 
+			padding:5px;
+		}
+		.body {
+			padding:5px; 
+			background:white; 
+			border:solid 1px #bababa;
+			border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
+		 	@include rounded-corners(10px);	
+		}
+		.condition {
+			padding-left:5px; 
+			padding-right:2px; 
+			padding-bottom:0px; 
+			width:20%; 
+			white-space:nowrap; 
+			vertical-align: top; 
+		}
+		.operator {
+			padding-right:2px; 
+			padding-bottom:0px; 
+			width:15%; 
+			white-space:nowrap; 
+			vertical-align: top; 
+		}
+		.values {
+			padding-right:2px; 
+			width:70%; 
+			margin:0px; 
+			vertical-align:top; 
+		}
+		.actions {
+			padding-right:5px; 
+			padding-bottom:2px; 
+			white-space:nowrap; 
+			text-align:right; 
+			width:100px; 
+			vertical-align: top; 
+		}
+		.table {
+			border:0px; 
+			width:100%; 
+			margin:0px; 
+			padding:0px;
+			td {
+				padding: 1px; 
+				vertical-align:top; 
+				white-space:nowrap; 
+			} 
+			.error {
+				padding: 2px;
+				padding-left:10px; 
+				padding-right:10px; 
+				margin:2px; 
+				font-size: 10px; 
+				background-color: #ffeded; 
+				font-family: Arial; 
+				border: 1px #f58a8a solid; 
+				color:#b60e0e;
+			 	@include rounded-corners(10px);	
+			}
+		}
+		
+		.values {
+			border:0px; 
+			width:100%; 
+			margin:0px; 
+			padding:0px; 
+			td {
+				vertical-align:top; 
+				padding: 0px; 
+				margin: 0px; 
+			}
+		}
+	}
+
+	input {
+		border: 1px solid #ccc; 
+		font-size: 12px; 
+		font-family: Arial; 
+		margin:0px; 
+		padding: 2px !important; 
+	 	@include rounded-corners(10px);	
+	}
+	
+	select {
+		border: 1px solid #ccc; 
+		font-size: 12px; 
+		font-family: Arial; 
+		margin:0px; 
+		padding: 1px !important; 
+		background-color:#EDEDED;
+	 	@include rounded-corners(10px);	
+	}
+
+	a {
+		text-decoration:none; 
+		color:#16b; 
+		outline:none; 
+		border:0px;
+	}
+	
+	img {
+		border:0px;
+	}
+}

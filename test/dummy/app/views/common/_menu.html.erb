@@ -1,0 +1,23 @@
+<div style="width:100%; padding-top:5px; padding-bottom:5px; background-color:#eee; border-bottom:1px dotted grey; font-size: 14px;">
+  <center>
+		<table style="width:900px;" cellpadding="0" cellspacing="0">
+		  <tr>
+		    <td style="text-align:left;">
+		        <%=link_to("Users", :action => :users) %>
+		      | <%=link_to("Events", :action => :events) %>
+		      | <%=link_to("Event Members", :action => :event_members) %>
+          <% unless controller.controller_name == 'simple' %>
+           | <%=link_to("Users with Actions", :action => :users_with_actions) %>
+					<% end %>
+		    </td>
+		    <td style="text-align:right;">
+				  <% if controller.controller_name == 'simple' %>
+  		      <%=link_to("Switch to Advanced Mode", :controller => :advanced, :action => :users) %>
+					<% else %>
+            <%=link_to("Switch to Simple Mode", :controller => :simple, :action => :users) %>
+					<% end %>	
+		    </td>
+		  </tr>
+		</table>
+	</center>
+</div>

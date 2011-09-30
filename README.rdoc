@@ -1,7 +1,6 @@
 = WillFilter
 
-will_filter is a Rails engine plugin that extends the functionality of will_paginate by adding filters to your pages.
-
+will_filter is a Rails engine plugin that provides a GUI for filtering your ActiveRecord models.
 
 == Preamble
  
@@ -9,27 +8,24 @@ If you ever had to build an admin tool for your web site that displayed a list o
 various criteria, this plugin will make your life easier. Adding a filtered page can now be 
 a matter of adding two lines of code - one to your controller and one to your view. See examples below.
 
-For advanced samples of how to use the filters, please download and install the following project: 
-
-http://github.com/berk/will_filter_examples
-
 == Installation Instructions
 
-Install the latest version of the will_paginate plugin or gem created by Mislav Marohnić. 
+Add the following gems to your Gemfile: 
 
-  $ script/plugin install git://github.com/mislav/will_paginate.git
+  gem 'will_filter', "~> 3.1.0" 
 
-To install, configure and initialize will_filter engine, run the following commands: 
+And run:
 
-  $ script/plugin install git://github.com/berk/will_filter.git
-  $ rake will_filter:sync  
+  $ bundle
+
+To configure and initialize will_filter engine, run the following commands: 
+
+  $ rails generate will_filter  
   $ rake db:migrate 
-
-  $ cd public; ln -s ../vendor/plugins/will_filter/public/wf wf
 
 == Examples
 
-To add a filtered resultset to your controller use the following method call:
+To add a filtered result-set to your controller use the following method call:
 
   class OrderController < ApplicationController
   
@@ -39,26 +35,23 @@ To add a filtered resultset to your controller use the following method call:
     
   end  
 
-Note: 'Profile' is a Rails ActiveRecord model 
+Note: 'Order' is a Rails ActiveRecord model 
 
 Now all you have to do is create a view for this action and add the following tag where you want the filter to be rendered:
 
-  <%= will_filter(@orders) %>
+  <%= will_filter_tag(@orders) %>
 	
 And optionally you can do (for results table):
 	
   <%= will_filter_table_tag(@orders) %>
 
-
 That's it. This will render a filter box with various conditions, operators and values for the model object you selected.
-
 
 Below are a couple of screenshot of what the filter looks like when it is rendered on a page:
 
 http://wiki.tr8n.org/images/d/da/Will_filter_1.png
 
 http://wiki.tr8n.org/images/e/ec/Will_filter_2.png
-
 
 will_filter_examples project contains some samples that show you how to customize filters and much more
 
@@ -68,9 +61,7 @@ Live will_filter_examples application is running here:
 
 http://wf.tr8n.org 
 
-
-If you have any questions, comments or suggestions, email me at michael@geni.com
-
+If you have any questions, comments or suggestions, email me at theiceberk@gmail.com
 
 == Authors and credits
 

@@ -1,0 +1,70 @@
+<div class="wf_calendar_container">
+<% form_tag(:action => :calendar) do %>
+	  <%=hidden_field_tag :wf_selected_date, @date %>
+		
+		<center>
+			  &nbsp; 				
+		  	<%=link_to_function("&laquo;", "wfCalendar.goToDate('#{@prev_month}', #{(@show_time==true)})", :style=>"font-size:16px;")%>	
+			  &nbsp;&nbsp;&nbsp; 				
+		 		<%= select_tag("month", options_for_select(@month_options, @month), {:id => "wf_cal_month", :onChange=>"wfCalendar.goToDate('', #{(@show_time==true)})"}) %>
+		 		<%= select_tag("year", options_for_select(@year_options, @year), {:id => "wf_cal_year",:onChange=>"wfCalendar.goToDate('', #{(@show_time==true)})"}) %>
+			  &nbsp;&nbsp;&nbsp; 				
+		  	<%=link_to_function("&raquo", "wfCalendar.goToDate('#{@next_month}', #{(@show_time==true)})", :style=>"font-size:16px;")%>	
+			  &nbsp; 				
+		</center>
+		
+		<br>
+		<table class="calendar_cells">
+			<tr>
+				<% @days.each_with_index do |day, index| %>
+					<td style="text-align:center;color:grey;font-size:10px;">
+							<b><%= day %></b>
+					</td>				
+				<% end %>
+			</tr>
+			<tr>
+				<% index = 0 %>
+				<% while @start_date <= @end_date do %>	
+					<% if @start_date.wday == 0 %>
+						</tr><tr>
+					<% end %>
+					
+					<% 0.upto(6) do |i| %>
+						<td valign="top" style="width:100px;border:1px solid #ccc;">
+							<% if @start_date.wday == i and @start_date <= @end_date %>
+								<% today = (@start_date==Date.today) ? "today" : "" %>
+								<% selected = (@start_date == @date and params[:skip_date].blank?) ? "selected" : "" %>
+								<% set_date = @show_time ? "" : "wfCalendar.setDate();" %>
+								<table cellpadding="0px" cellspacing="0px" style="width:100%; background-color:white;">
+									<tr>
+										<td id="wf_cal_cell_<%=index%>" class="date_cell <%=today%> <%=selected%>" onClick="wfCalendar.selectDateValue('<%=index%>', '<%=@start_date%>'); <%=set_date%>">
+										 <%=@start_date.day %>
+										</td>
+									</tr>
+								</table>
+								<% @start_date = @start_date + 1.day %>
+								<% index += 1 %>
+							<% end %>	
+						</td>
+					<% end %>
+				<% end %>		
+			</tr>
+		</table>
+		
+		<% if @show_time %>
+			<center>
+			<br>
+			Time: &nbsp; 
+			<%= select_tag("wf_cal_hour", options_for_select(@hour_options, @hour)) %>
+			:
+			<%= select_tag("wf_cal_minute", options_for_select(@minute_options, @minute)) %>
+			:
+			<%= select_tag("wf_cal_second", options_for_select(@second_options, @second)) %>
+			<br><br>
+			<%=link_to_function "SET", "wfCalendar.setDateTime();", :style => "font-size:14px;" %>
+			<br>
+			</center>
+		<% end %>
+	
+<% end %>
+</div>
