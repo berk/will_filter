@@ -49,9 +49,9 @@ That's it. This will render a filter box with various conditions, operators and 
 
 Below are a couple of screenshot of what the filter looks like when it is rendered on a page:
 
-http://wiki.tr8n.org/images/d/da/Will_filter_1.png
+http://wiki.tr8n.org/images/e/e1/Wf1.png
 
-http://wiki.tr8n.org/images/e/ec/Will_filter_2.png
+http://wiki.tr8n.org/images/5/50/Wf2.png
 
 
 This plugin comes with a dummy test project. To try out some of the examples, run the following commands:
