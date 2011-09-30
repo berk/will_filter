@@ -56,11 +56,11 @@ http://wiki.tr8n.org/images/e/ec/Will_filter_2.png
 
 This plugin comes with a dummy test project. To try out some of the examples, run the following commands:
 
-	$ git clone git://github.com/berk/will_filter.git
-	$ cd will_filter/test/dummy  
-	$ rake db:migrate 
-	$ rake samples:init
-	$ rails server
+  $ git clone git://github.com/berk/will_filter.git
+  $ cd will_filter/test/dummy  
+  $ rake db:migrate 
+  $ rake samples:init
+  $ rails server
 
 Open your browser and point to: 
 
