@@ -23,6 +23,11 @@ To configure and initialize will_filter engine, run the following commands:
   $ rails generate will_filter  
   $ rake db:migrate 
 
+At the top of your routes.rb file, add the following line:
+
+  mount WillFilter::Engine => "/will_filter"
+
+
 == Examples
 
 To add a filtered result-set to your controller use the following method call:
