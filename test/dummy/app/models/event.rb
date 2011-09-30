@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
   
   def self.generate_random_data(count = 500)
     0.upto(count) do |index|
-      create(:creator => User.random, :name => "Event #{index}", :headline => "Event Headline #{index}", :start_time => (Time.now + rand(100).hours))      
+      create(:user => User.random, :name => "Event #{index}", :headline => "Event Headline #{index}", :start_time => (Time.now + rand(100).hours))      
     end
   end
   

@@ -1,4 +1,4 @@
-namespace :dummy do 
+namespace :samples do 
 
   desc 'Initialize database with random data'
   task :init => :environment do
