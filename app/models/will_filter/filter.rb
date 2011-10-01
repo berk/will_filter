@@ -132,9 +132,8 @@ module WillFilter
         model_columns.each do |col|
           defs[col.name.to_sym] = default_condition_definition_for(col.name, col.sql_type)
         end
-        
         inner_joins.each do |inner_join|
-          join_class = inner_join.first.to_s.camelcase.constantize
+          join_class = association_class(inner_join)
           join_class.columns.each do |col|
             defs[:"#{join_class.to_s.underscore}.#{col.name.to_sym}"] = default_condition_definition_for(col.name, col.sql_type)
           end
@@ -238,7 +237,7 @@ module WillFilter
     # Can be overloaded for custom titles
     #############################################################################
     def condition_title_for(key)
-      title = key.to_s.gsub(".", ": ").gsub("_", " ")
+      title = key.to_s.gsub(".", ": ").gsub("_", " ").split("/").last
       title.split(" ").collect{|part| part.capitalize}.join(" ")
     end
     
@@ -531,7 +530,7 @@ module WillFilter
         
         all_conditions << cond
       end
-      all_conditions
+      all_conditions.join("")
     end
   
     def debug_sql_conditions
@@ -666,12 +665,20 @@ module WillFilter
     def process_custom_format
       ""
     end
+
+    def association_name(inner_join)
+      (inner_join.is_a?(Array) ? inner_join.first : inner_join).to_sym
+    end
     
+    def association_class(inner_join)
+      model_class.new.association(association_name(inner_join)).build.class
+    end  
+      
     # deprecated for Rails 3.0 and up
     def joins
       return nil if inner_joins.empty?
       inner_joins.collect do |inner_join|
-        join_table_name = inner_join.first.to_s.camelcase.constantize.table_name
+        join_table_name = association_class(inner_join).table_name
         join_on_field = inner_join.last.to_s
         "INNER JOIN #{join_table_name} ON #{join_table_name}.id = #{table_name}.#{join_on_field}"
       end
@@ -681,8 +688,8 @@ module WillFilter
       @results ||= begin
         handle_empty_filter! 
         recs = model_class.where(sql_conditions).order(order_clause)
-        inner_joins.each do |j|
-          recs = recs.joins(j.first)
+        inner_joins.each do |inner_join|
+          recs = recs.joins(association_name(inner_join))
         end
         recs = recs.page(page).per(per_page)
         recs.wf_filter = self

@@ -35,7 +35,7 @@ class EventFilter < WillFilter::Filter
   end
 
   def inner_joins
-    [[:user, :creator_id]]
+    [:user]
   end
 
 end

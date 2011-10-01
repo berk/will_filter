@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110924023807) do
+ActiveRecord::Schema.define(:version => 20111001193027) do
 
   create_table "event_users", :force => true do |t|
     t.integer  "event_id"
@@ -36,6 +36,21 @@ ActiveRecord::Schema.define(:version => 20110924023807) do
   end
 
   add_index "events", ["creator_id"], :name => "index_events_on_creator_id"
+
+  create_table "merchant_order_items", :force => true do |t|
+    t.integer  "order_id"
+    t.string   "name"
+    t.integer  "price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "merchant_orders", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "first_name"

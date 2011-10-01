@@ -25,7 +25,7 @@
     </div>
 
     <div id="wf_debugger" class="debugger" style="display:none;">
-        <%= wf_filter.debug_sql_conditions %>
+        <%= raw(wf_filter.debug_sql_conditions) %>
     </div>
 </div>
 <% end %>
