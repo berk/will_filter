@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    will_filter (3.1.1)
+    will_filter (3.1.2)
       coffee-script
       kaminari
       rails (>= 3.1.0)
@@ -136,7 +136,7 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.29)
+    tzinfo (0.3.30)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
