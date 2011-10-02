@@ -12,7 +12,7 @@
 defaults: &defaults
   effects_options:
     enabled:              false
-    script_path:          "/will_filter/javascripts/will_filter_prototype_effects.js"
+    script_path:          "will_filter/filter_prototype_effects.js"
     
   save_options: 
     enabled:              true
