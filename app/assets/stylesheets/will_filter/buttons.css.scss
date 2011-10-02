@@ -11,7 +11,7 @@
 * html div#frame .wf_pcb                      {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
 
 /* ie 7 hack */
-*:first-child+html .wf_pcb                    {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
+*:first-child + html .wf_pcb                    {color: #333; padding-top: 0px; padding-bottom: 0px; text-decoration: none; }
 
 .wf_pcb span                                  {background-position: right -326px; padding-right: 14px; }
 a.wf_grey_button                              {background-position: left -219px; padding-top: 3px; }
