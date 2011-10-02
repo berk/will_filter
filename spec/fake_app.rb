@@ -19,18 +19,11 @@ app.routes.draw do
 end
 
 # models
-class User < ActiveRecord::Base
-  has_many :events
-  has_many :events_users
-end
-class Event < ActiveRecord::Base
-  belongs_to :user, :class_name => 'User', :foreign_key => :creator_id
-  has_many :event_users
-end
-class EventUser < ActiveRecord::Base
-  belongs_to :event
-  belongs_to :user
-end
+Dir["#{File.dirname(__FILE__)}/../test/dummy/app/models/*.rb"].each do |f| 
+  if [:user, :event, :event_user].include?(f.split("/").last.gsub('.rb', '').to_sym)
+    require f 
+  end  
+end  
 
 # controllers
 class ApplicationController < ActionController::Base; end
@@ -39,6 +32,7 @@ class UsersController < ApplicationController
     @users = User.filter(:params => params)
     render :inline => <<-ERB
 <%= will_filter_tag(@users) %>
+<%= will_filter_table_tag(@users) %>
 ERB
   end
 end

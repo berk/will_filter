@@ -62,38 +62,27 @@ module WillFilter
     end  
   
   private
-  
-    def send_xml_data(wf_filter)
-      class_name = wf_filter.model_class_name.underscore
-      
-      result = ""
-      xml = Builder::XmlMarkup.new(:target => result, :indent => 1)
-      xml.instruct!
-      xml.tag!(class_name.pluralize) do
-        wf_filter.results.each do |obj|
-          xml.tag!(class_name.underscore) do
-            wf_filter.fields.each do |field|
-              xml.tag!(field.to_s, obj.send(field).to_s) 
-            end    
-          end
-        end
-      end
-      
-      send_data(result, :type => 'text/xml', :charset => 'utf-8')
-    end  
-  
-    def send_json_data(wf_filter)
-      result = []
+    
+    def results_from(wf_filter)
+      results = []
       
       wf_filter.results.each do |obj|
         hash = {}
         wf_filter.fields.each do |field|
           hash[field] = obj.send(field).to_s 
         end  
-        result << hash
+        results << hash
       end
       
-      send_data(result.to_json, :type => 'text', :charset => 'utf-8')
+      results
+    end
+  
+    def send_xml_data(wf_filter)
+      send_data(results_from(wf_filter).to_xml, :type => 'text/xml', :charset => 'utf-8')
+    end  
+  
+    def send_json_data(wf_filter)
+      send_data(results_from(wf_filter).to_json, :type => 'text', :charset => 'utf-8')
     end  
     
     def send_csv_data(wf_filter)
