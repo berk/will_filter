@@ -4,6 +4,12 @@
   -webkit-border-radius: $radius;
 }
 
+@mixin shadow($info) {
+	box-shadow:$info;
+	-moz-box-shadow:$info;
+	-webkit-box-shadow:$info;
+}
+
 .wf_exporter {
 	background-color:#eee; 
 	position:absolute; 
@@ -13,6 +19,40 @@
 	border:solid 1px #e8e8e8; 
 	border-color:#e8e8e8 #bababa #bababa #e8e8e8;
  	@include rounded-corners(10px);	
+ 	@include shadow(2px 3px 3px 2px rgba(0,0,0,0.6));	
+
+	img {
+		border: 0px;
+	}
+
+	input {
+		border: 1px solid #ccc; 
+		font-size: 12px; 
+		font-family: Arial; 
+		@include rounded-corners(10px);		
+	}
+	
+	select  {
+		border: 1px solid #ccc; 
+		font-size: 12px; 
+		font-family: Arial; 
+		background-color:#EDEDED;
+		@include rounded-corners(10px);		
+	}
+
+	table {
+		width:100%;
+		border-collapse: collapse; 
+		font-size:12px; 
+		padding:0px; 
+		margin:0px;
+	}
+	
+	td {
+		vertical-align:top; 
+		padding: 0px; 
+		margin: 0px; 
+	}
 }
 
 .wf_exporter_container {
@@ -24,20 +64,3 @@
 	border-color:#bababa #e8e8e8 #e8e8e8 #bababa; 
  	@include rounded-corners(10px);	
 }
-
-.wf_exporter img                        {border: 0px;}
-.wf_exporter input {
-	border: 1px solid #ccc; 
-	font-size: 12px; 
-	font-family: Arial; 
-	@include rounded-corners(10px);		
-}
-.wf_exporter select  {
-	border: 1px solid #ccc; 
-	font-size: 12px; 
-	font-family: Arial; 
-	background-color:#EDEDED;
-	@include rounded-corners(10px);		
-}
-.wf_exporter table                      {width:100%;border-collapse: collapse; font-size:12px; padding:0px; margin:0px;}
-.wf_exporter td                         {vertical-align:top; padding: 0px; margin: 0px; }

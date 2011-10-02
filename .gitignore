@@ -4,3 +4,14 @@ pkg/
 test/dummy/db/*.sqlite3
 test/dummy/log/*.log
 test/dummy/tmp/
+db/schema.rb*
+tmp/*
+log/*
+.DS_Store
+*.swp
+.project
+.loadpath
+*~
+.dotest*
+Thumbs.db
+.tmp*

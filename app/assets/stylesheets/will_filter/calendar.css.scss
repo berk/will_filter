@@ -4,6 +4,12 @@
   -webkit-border-radius: $radius;
 }
 
+@mixin shadow($info) {
+	box-shadow:$info;
+	-moz-box-shadow:$info;
+	-webkit-box-shadow:$info;
+}
+
 .wf_calendar_trigger {border:0px; padding-left:2px; padding-right:2px;}
 
 .wf_calendar {
@@ -14,6 +20,7 @@
 	border-color:#e8e8e8 #bababa #bababa #e8e8e8;
 	padding: 5px; 
  	@include rounded-corners(10px);	
+ 	@include shadow(2px 3px 3px 2px rgba(0,0,0,0.6));	
 
 	input {
 		border: 1px solid #ccc; 
@@ -42,14 +49,54 @@
  	@include rounded-corners(10px);	
 }
 
-.wf_calendar_table                      {width:100%;}
-.wf_calendar_table td                   {padding:2px; margin:2px; text-align:center; vertical-align:top;}
-.wf_calendar img                        {border: 0px;}
+.wf_calendar_table {
+	width:100%;
+  td {
+		padding:2px; 
+		margin:2px; 
+		text-align:center; 
+		vertical-align:top;
+	}
+	img {
+		border: 0px;
+	}
+}
 
-.wf_calendar_cells                      {border:1px dotted #ccc; width:100%; padding:2px; margin:0px; }
-.wf_calendar_cells td                   {padding:2px; border: 0px; text-align:center; vertical-align:middle; font-size:8px; color:black; background-color:white;cursor:pointer;} 
-.wf_calendar_title                      {text-align:center; border-top:1px solid #ccc; border-bottom:1px solid #ccc; background: #eee;}
-.wf_calendar_date_cell                  {width:11px; border: 1px solid #ccc; padding:2px; margin:1px; cursor:pointer; vertical-align:middle; text-align:center; background-color:white;}
+.wf_calendar_cells {
+	border:1px dotted #ccc; 
+	width:100%; 
+	padding:2px; 
+	margin:0px; 
+	td {
+		padding:2px; 
+		border: 0px; 
+		text-align:center; 
+		vertical-align:middle; 
+		font-size:8px; 
+		color:black; 
+		background-color:white;
+		cursor:pointer;
+	} 
+}
+
+.wf_calendar_title {
+	text-align:center; 
+	border-top:1px solid #ccc; 
+	border-bottom:1px solid #ccc; 
+	background: #eee;
+}
+
+.wf_calendar_date_cell {
+	width:11px; 
+	border: 1px solid #ccc; 
+	padding:2px; 
+	margin:1px; 
+	cursor:pointer; 
+	vertical-align:middle; 
+	text-align:center; 
+	background-color:white;
+}
+
 .wf_calendar_date_cell.today            {background-color:light-blue; } 
 .wf_calendar_date_cell.selected         {background-color:#ccc; } 
 .wf_calendar_date_cell:hover            {background-color:#ccc; } 
