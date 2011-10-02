@@ -97,15 +97,7 @@ module WillFilter
     end  
     
     def send_csv_data(wf_filter)
-      result = StringIO.new
-      
-#      CSV.open(result) do |csv|
-#         csv << ["row", "of", "CSV", "data"]
-#         csv << ["another", "row"]
-#         # ...
-#       end
-      
-      CSV::Writer.generate(result) do |csv|
+      csv_string = CSV.generate do |csv|
         csv << wf_filter.fields
         wf_filter.results.each do |obj|
           row = []
@@ -116,7 +108,8 @@ module WillFilter
         end
       end
       
-      send_data(result.string, :type => 'text/csv', :charset => 'utf-8')
+      send_data csv_string, :type => 'text/csv; charset=utf-8; header=present', :charset => 'utf-8', 
+                            :disposition => "attachment; filename=results.csv"      
     end
   end
 end

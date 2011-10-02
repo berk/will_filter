@@ -1,27 +1,28 @@
-# This file is copied to spec/ when you run 'rails generate rspec:install'
-ENV["RAILS_ENV"] ||= 'test'
-require File.expand_path("../../config/environment", __FILE__)
-require 'rspec/rails'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'rails'
+require 'kaminari'
+require 'database_cleaner'
+require 'will_filter'
 
-# Requires supporting ruby files with custom matchers and macros, etc,
-# in spec/support/ and its subdirectories.
-Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+# Ensure we use 'syck' instead of 'psych' in 1.9.2
+# RubyGems >= 1.5.0 uses 'psych' on 1.9.2, but
+# Psych does not yet support YAML 1.1 merge keys.
+# Merge keys is often used in mongoid.yml
+# See: http://redmine.ruby-lang.org/issues/show/4300
+if RUBY_VERSION >= '1.9.2'
+  YAML::ENGINE.yamler = 'syck'
+end
+require File.join(File.dirname(__FILE__), 'fake_app')
+
+require 'rspec/rails'
+# Requires supporting files with custom matchers and macros, etc,
+# in ./support/ and its subdirectories.
+Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
 RSpec.configure do |config|
-  # == Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
-  config.mock_with :rspec
-
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = true
+  config.mock_with :rr
+  config.before :all do
+    CreateAllTables.up unless ActiveRecord::Base.connection.table_exists? 'users'
+  end
 end
