@@ -10,6 +10,11 @@
   <% end %>
 
   <div class="filter_match_type">
+    <div class="end">
+      <small>
+        <%=link_to_function("Toggle Conditions", "wfFilter.toggleDebugger()") %>
+      </small>
+    </div>
     Match <%= select_tag(:wf_match, options_for_select(wf_filter.match_options, wf_filter.match), {:onChange=>"wfFilter.markDirty()"}) %>
     of the following conditions:
   </div>
@@ -28,5 +33,9 @@
       <% end %>
     </table>
   <% end %>
+
+  <div id="wf_debugger" class="debugger" style="display:none;">
+      <%= raw(wf_filter.debug_sql_conditions) %>
+  </div>
 
 </div>

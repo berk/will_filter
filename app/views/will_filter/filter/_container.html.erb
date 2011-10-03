@@ -11,9 +11,5 @@
     <%= render :partial => '/will_filter/filter/conditions_footer', :locals => { :wf_filter => wf_filter } %>
   </div>
 
-  <div id="wf_debugger" class="debugger" style="display:none;">
-      <%= raw(wf_filter.debug_sql_conditions) %>
-  </div>
-
 </div>
 <% end %>
