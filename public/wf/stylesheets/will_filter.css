@@ -1,19 +1,12 @@
-.wf_container {
-  padding:0px; 
-  background:#f1f4f9; 
-  margin:0px; 
-  margin-bottom:10px; 
-  font-size: 12px; 
-  font-family: Arial; 
-  width: 100%;
+.wf_container                           {padding:0px; background:#f1f4f9; margin:0px; margin-bottom:10px; font-size: 12px; font-family: Arial; width: 100%;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  border:solid 1px #e8e8e8;
-  border-color:#e8e8e8 #bababa #bababa #e8e8e8;
-  box-shadow:1px 2px 2px 1px rgba(0,0,0,0.6);
-  -moz-box-shadow:1px 2px 2px 1px rgba(0,0,0,0.6);
-  -webkit-box-shadow:1px 2px 2px 1px rgba(0,0,0,0.6);
+	border:solid 1px #e8e8e8;
+	border-color:#e8e8e8 #bababa #bababa #e8e8e8;
+	box-shadow:1px 2px 2px 1px rgba(0,0,0,0.6);
+	-moz-box-shadow:1px 2px 2px 1px rgba(0,0,0,0.6);
+	-webkit-box-shadow:1px 2px 2px 1px rgba(0,0,0,0.6);
 }
 .wf_container input                     {border: 1px solid #ccc; font-size: 12px; font-family: Arial; margin:0px; padding: 2px !important; }
 .wf_container select                    {border: 1px solid #ccc; font-size: 12px; font-family: Arial; margin:0px; padding: 1px !important; }
@@ -22,15 +15,14 @@
 .wf_container a                         {text-decoration:none; color:#16b; outline:none; border:0px;}
 .wf_container img                       {border:0px;}
 .wf_container .conditions               {padding:0px; margin:0px;}
-
 .wf_container_panel                     {padding:5px; background:white; border:solid 1px #bababa;
-  margin-left:3px;
-  margin-right:3px;
+	margin-left:3px;
+	margin-right:3px;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  border:solid 1px #e8e8e8;
-  border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
+	border:solid 1px #e8e8e8;
+	border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
 }
 .wf_debugger                            {padding:5px; margin:2px; background:white; border:solid 1px #bababa;border-color:#bababa #e8e8e8 #e8e8e8 #bababa; font-size:10px; color: #777;}
 
@@ -59,27 +51,27 @@
 .wf_calendar_trigger                    {border:0px; padding-left:2px; padding-right:2px;}
 
 .wf_calendar                            {background-color:#eee; position:absolute; padding: 10px; font-size:10px;
-  margin-left:3px;
-  margin-right:3px;
+	margin-left:3px;
+	margin-right:3px;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  border:solid 1px #e8e8e8;
-  border-color:#e8e8e8 #bababa #bababa #e8e8e8;
-  box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
-  -moz-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
-  -webkit-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
+	border:solid 1px #e8e8e8;
+	border-color:#e8e8e8 #bababa #bababa #e8e8e8;
+	box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
+	-moz-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
+	-webkit-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
 }
 .wf_calendar_table                      {width:100%;}
 .wf_calendar_table td                   {padding:2px; margin:2px; text-align:center; vertical-align:top;}
 .wf_calendar_container                  {background-color:white; padding: 1px; margin: 1px; font-size:10px; 
-  margin-left:3px;
-  margin-right:3px;
+	margin-left:3px;
+	margin-right:3px;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  border:solid 1px #e8e8e8;
-  border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
+	border:solid 1px #e8e8e8;
+	border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
 }
 .wf_calendar img                        {border: 0px;}
 .wf_calendar input                      {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
@@ -94,16 +86,16 @@
 
 
 .wf_exporter                            {background-color:#eee; position:absolute; width:230px; padding: 10px; font-size:10px; 
-  margin-left:3px;
-  margin-right:3px;
+	margin-left:3px;
+	margin-right:3px;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  border:solid 1px #e8e8e8;
-  border-color:#e8e8e8 #bababa #bababa #e8e8e8;
-  box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
-  -moz-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
-  -webkit-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
+	border:solid 1px #e8e8e8;
+	border-color:#e8e8e8 #bababa #bababa #e8e8e8;
+	box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
+	-moz-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
+	-webkit-box-shadow:2px 3px 3px 2px rgba(0,0,0,0.6);
 }
 .wf_exporter img                        {border: 0px;}
 .wf_exporter input                      {border: 1px solid #ccc; font-size: 12px; font-family: Arial; }
@@ -111,14 +103,13 @@
 .wf_exporter table                      {width:100%;border-collapse: collapse; font-size:12px; padding:0px; margin:0px;}
 .wf_exporter td                         {vertical-align:top; padding: 0px; margin: 0px; }
 .wf_exporter_container                  {background-color:white; padding: 5px; margin: 1px; font-size:10px; 
-  margin-left:3px;
-  margin-right:3px;
+	margin-left:3px;
+	margin-right:3px;
   border-radius: 10px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
-  border:solid 1px #e8e8e8;
-  border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
-
+	border:solid 1px #e8e8e8;
+	border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
 }
 
 .wf_filter_error                        {background-color: #ffeded; border: 1px #f58a8a solid; border-left:none; border-right:none; color:#b60e0e; padding:5px; margin-left:3px; margin-right:3px; }
