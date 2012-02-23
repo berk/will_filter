@@ -547,7 +547,7 @@ module WillFilter
         if include_default
           filters = default_filters
           if (filters.size > 0)
-            filters.insert(0, ["-- Select Default Filter --", "-1"])
+            filters.insert(0, ["Select default filter", "-1"])
           end
         end
   
@@ -569,7 +569,7 @@ module WillFilter
         user_filters = WillFilter::Filter.find(:all, :conditions => conditions)
         
         if user_filters.size > 0
-          filters << ["-- Select Saved Filter --", "-2"] if include_default
+          filters << ["Select saved filter", "-2"] if include_default
           
           user_filters.each do |filter|
             filters << [filter.name, filter.id.to_s]
@@ -638,12 +638,12 @@ module WillFilter
     #############################################################################
     def export_formats
       formats = []
-      formats << ["-- Generic Formats --", -1]
+      formats << ["Generic formats", -1]
       WillFilter::Config.default_export_formats.each do |frmt|
         formats << [frmt, frmt]
       end
       if custom_formats.size > 0
-        formats << ["-- Custom Formats --", -2]
+        formats << ["Custom formats", -2]
         custom_formats.each do |frmt|
           formats << frmt
         end

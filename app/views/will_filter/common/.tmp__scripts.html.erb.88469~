@@ -1,6 +1,0 @@
-<%= stylesheet_link_tag("/wf/stylesheets/will_filter.css") -%>
-<%= javascript_include_tag("/wf/javascripts/will_filter.js") -%>
-
-<script>
-	initializeWillFilter();
-</script>

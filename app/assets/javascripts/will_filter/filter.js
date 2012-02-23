@@ -235,7 +235,7 @@ Wf.Calendar.prototype = {
           var trigger_position = Wf.Utils.cumulativeOffset(wfCalendar.trigger);
           var calendar_container = Wf.element("wf_calendar");
           calendar_container.style.left = (trigger_position[0] - 273) + "px";
-          calendar_container.style.top = trigger_position[1] - 6 + "px";
+          calendar_container.style.top = trigger_position[1] - 38 + "px";
           calendar_container.style.width = "260px";
           Wf.Effects.appear("wf_calendar");
       } 
@@ -261,7 +261,7 @@ Wf.Calendar.prototype = {
           var width = (mode=='annual' ? 760 : 400);
           var calendar_container = Wf.element("wf_calendar");
           calendar_container.style.left = (trigger_position[0] - width - 13) + "px";
-          calendar_container.style.top = trigger_position[1] - 6 + "px";
+          calendar_container.style.top = trigger_position[1] - 38 + "px";
           calendar_container.style.width = width + "px";
       } 
     });
@@ -340,8 +340,8 @@ Wf.Exporter.prototype = {
 	    onComplete: function(transport) {
           var trigger_position = Wf.Utils.cumulativeOffset(trigger);
           var exporter_container = Wf.element("wf_exporter");
-          exporter_container.style.left = (trigger_position[0] - 245) + "px";
-          exporter_container.style.top = trigger_position[1] + "px";
+          exporter_container.style.left = (trigger_position[0] - 240) + "px";
+          exporter_container.style.top = (trigger_position[1] - 32) + "px";
 				  Wf.Effects.appear("wf_exporter");
 	    } 
 	  });
