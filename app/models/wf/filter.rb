@@ -377,7 +377,7 @@ class Wf::Filter < ActiveRecord::Base
   def condition_at(index)
     conditions[index]
   end
-  
+
   def condition_by_key(key)
     conditions.each do |c|
       return c if c.key==key
@@ -542,6 +542,8 @@ class Wf::Filter < ActiveRecord::Base
         all_sql_conditions = [""]
         0.upto(size - 1) do |index|
           condition = condition_at(index)
+          next if custom_condition?(condition)
+
           sql_condition = condition.container.sql_condition
           
           unless sql_condition
@@ -755,11 +757,59 @@ class Wf::Filter < ActiveRecord::Base
       required_joins
     end 
   end
-  
+
+  # overload this method to indicate which conditions are custom
+  def custom_conditions
+    []
+  end
+
+  # overload this method to evaluate a custom condition on an object
+  def custom_condition_met?(condition, object)
+    false
+  end
+
+  def custom_condition?(condition)
+    custom_conditions.include?(condition.key)
+  end
+
+  def custom_conditions?
+    return if custom_conditions.empty?
+    conditions.each do |condition|
+      return true if custom_condition?(condition)
+    end
+  end
+
+  def process_custom_conditions(objects)
+    filtered = []
+    objects.each do |obj|
+      condition_flags = []
+      
+      0.upto(size - 1) do |index|
+        condition = condition_at(index)
+        next unless custom_condition?(condition)
+        condition_flags << custom_condition_met?(condition, obj)
+      end
+       
+      if condition_flags.size > 0
+        next if match.to_s == "all" and condition_flags.include?(false)
+        next unless condition_flags.include?(true)        
+      end 
+       
+      filtered << obj 
+    end
+    filtered
+  end
+
   def results
     @results ||= begin
       handle_empty_filter! 
-      recs = model_class.paginate(:order => order_clause, :page => page, :per_page => per_page, :conditions => sql_conditions, :joins => joins)
+      if custom_conditions?
+        recs = model_class.find(:all, :conditions => sql_conditions, :joins => joins, :order => order_clause)
+        recs = process_custom_conditions(recs)
+        recs = recs.paginate(:page => page, :per_page => per_page)
+      else 
+        recs = model_class.paginate(:order => order_clause, :page => page, :per_page => per_page, :conditions => sql_conditions, :joins => joins)
+      end 
       recs.wf_filter = self
       recs
     end
