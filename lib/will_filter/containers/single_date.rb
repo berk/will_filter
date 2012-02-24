@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2011 Michael Berkovich
+# Copyright (c) 2010-2012 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -49,8 +49,8 @@ module WillFilter
       end
     
       def sql_condition
-        return [" #{condition.full_key} >= ? and #{condition.full_key} < ? ", start_date_time, end_date_time]  if operator == :is_on
-        return [" #{condition.full_key} < ? and #{condition.full_key} >= ? ", start_date_time, end_date_time]  if operator == :is_not_on
+        return [" #{condition.full_key} >= ? and #{condition.full_key} < ? ", time, time + 1.day]  if operator == :is_on
+        return [" #{condition.full_key} < ? and #{condition.full_key} >= ? ", time, time + 1.day]  if operator == :is_not_on
       end
     end
   end

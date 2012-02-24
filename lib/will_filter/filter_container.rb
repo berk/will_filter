@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2011 Michael Berkovich
+# Copyright (c) 2010-2012 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -36,6 +36,20 @@ module WillFilter
       values.first
     end
   
+    def date(dt = value)
+      return nil unless dt
+      Time.parse(dt).to_date
+    rescue 
+      nil
+    end
+
+    def time(tm = value)
+      return nil unless tm
+      Time.parse(tm)
+    rescue 
+      nil
+    end
+
     def sanitized_value(index = 0)
       return '' if index >= values.size 
       return '' if values[index].blank?
@@ -64,9 +78,13 @@ module WillFilter
         params["wf_v#{index}_#{v_index}"] = v
       end
     end
-  
+
+    def is_floating_point?(s)
+      s.to_s.match(/\A[-+]?[0-9]*\.?[0-9]+\Z/) == nil ? false : true
+    end
+
     def is_numeric?(s)
-      s.to_s.match(/\A[+-]?\d+?(\.\d+)?\Z/) == nil ? false : true
+      s.to_s.match(/\A[-+]?[0-9]*\Z/) == nil ? false : true
     end
   
   end

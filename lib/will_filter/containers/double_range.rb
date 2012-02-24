@@ -23,28 +23,41 @@
 
 module WillFilter
   module Containers
-    class TextDelimited < WillFilter::FilterContainer
-      TEXT_DELIMITER = ","  unless defined?(TEXT_DELIMITER)
+    class DoubleRange < WillFilter::FilterContainer
+      attr_accessor :start_value, :end_value
     
       def self.operators
-        [:is_in, :is_not_in]
+        [:is_in_the_range]
       end
     
-      def template_name
-        'text'
+      def initialize(filter, criteria_key, operator, values)
+        super(filter, criteria_key, operator, values)
+    
+        @start_value = values[0]
+        @end_value = values[1] if values.size > 1
       end
     
       def validate
-        return "Values must be provided. Separate values with '#{TEXT_DELIMITER}'" if value.blank?
+        return "Start value must be provided" 					if start_value.blank?
+        return "Start value must be a floating point number"  	unless is_floating_point?(start_value)
+        return "End value must be provided"   					if end_value.blank?
+        return "End value must be a floating point number"    	unless is_floating_point?(end_value)
       end
     
-      def split_values
-        value.split(TEXT_DELIMITER)
+      def template_name
+        'numeric_range'
+      end
+
+      def numeric_start_value
+        start_value.to_f
+      end
+    
+      def numeric_end_value
+        end_value.to_f
       end
     
       def sql_condition
-        return [" #{condition.full_key} in (?) ", split_values] if operator == :is_in
-        return [" #{condition.full_key} not in (?) ", split_values] if operator == :is_not_in
+        return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", numeric_start_value, numeric_end_value] if operator == :is_in_the_range
       end
     end
   end

@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010-2011 Michael Berkovich
+# Copyright (c) 2010-2012 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -23,9 +23,5 @@
 
 namespace :will_filter do
 
-  desc "Sync extra files from will_filter plugin."
-  task :sync do
-    system "rsync -ruv vendor/plugins/will_filter/config/wf ./config"
-  end
   
 end

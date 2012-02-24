@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2011 Michael Berkovich
+# Copyright (c) 2010-2012 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -36,15 +36,9 @@ module WillFilter
     
       def validate
         return "Start value must be provided" if @start_date.blank?
-        return "Start value must be a valid date (2008-01-01)" if date(@start_date) == nil
+        return "Start value must be a valid date (2008-01-01)" if date(@start_date).nil?
         return "End value must be provided" if @end_date.blank?
-        return "End value must be a valid date (2008-01-01)" if date(@end_date) == nil
-      end
-    
-      def date(dt)
-        Time.parse(dt).to_date
-      rescue ArgumentError
-        nil
+        return "End value must be a valid date (2008-01-01)" if date(@end_date).nil?
       end
     
       def sql_condition

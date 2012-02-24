@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010-2011 Michael Berkovich
+# Copyright (c) 2010-2012 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -476,14 +476,14 @@ module WillFilter
     # SQL Conditions 
     #############################################################################
     def sql_conditions
-      @sql_conditions  ||= begin
-  
+      @sql_conditions ||= begin
         if errors? 
-          all_sql_conditions = [" 1 = 2 "] 
+          [" 1 = 2 "] 
         else
           all_sql_conditions = [""]
           0.upto(size - 1) do |index|
             condition = condition_at(index)
+
             sql_condition = condition.container.sql_condition
             
             unless sql_condition
@@ -493,15 +493,17 @@ module WillFilter
             if all_sql_conditions[0].size > 0
               all_sql_conditions[0] << ( match.to_sym == :all ? " AND " : " OR ")
             end
-            
+
             all_sql_conditions[0] << sql_condition[0]
+
             sql_condition[1..-1].each do |c|
               all_sql_conditions << c
             end
+
           end
+
+          all_sql_conditions
         end
-        
-        all_sql_conditions
       end
     end
     

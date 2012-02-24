@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2011 Michael Berkovich
+# Copyright (c) 2010-2012 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -30,13 +30,7 @@ module WillFilter
     
       def validate
         return "Value must be provided" if value.blank?
-        return "Value must be a valid date/time (2008-01-01 14:30:00)" if time == nil
-      end
-    
-      def time
-        Time.parse(value)
-      rescue ArgumentError
-        nil
+        return "Value must be a valid date/time (2008-01-01 14:30:00)" if time.nil?
       end
     
       def sql_condition

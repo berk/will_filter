@@ -29,6 +29,9 @@ defaults: &defaults
     numeric:              WillFilter::Containers::Numeric
     numeric_range:        WillFilter::Containers::NumericRange
     numeric_delimited:    WillFilter::Containers::NumericDelimited
+    double:               WillFilter::Containers::Double
+    double_range:         WillFilter::Containers::DoubleRange
+    double_delimited:     WillFilter::Containers::DoubleDelimited
     date_time_range:      WillFilter::Containers::DateTimeRange
     single_date:          WillFilter::Containers::SingleDate
     date:                 WillFilter::Containers::Date
@@ -46,10 +49,12 @@ defaults: &defaults
     smallint:             [nil, numeric, numeric_range, numeric_delimited]
     integer:              [nil, numeric, numeric_range, numeric_delimited]
     int:                  [nil, numeric, numeric_range, numeric_delimited]
-    double:               [nil, numeric, numeric_range, numeric_delimited]
+    float:                [nil, double, double_range, double_delimited]
+    double:               [nil, double, double_range, double_delimited]
     timestamp:            [nil, date_time, date_time_range, single_date]
     datetime:             [nil, date_time, date_time_range, single_date]
     date:                 [nil, date, date_range]
+    char:                 [nil, text, text_delimited]
     character:            [nil, text, text_delimited]
     varchar:              [nil, text, text_delimited]
     text:                 [nil, text, text_delimited]

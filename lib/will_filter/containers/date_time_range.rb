@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2011 Michael Berkovich
+# Copyright (c) 2010-2012 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -39,25 +39,13 @@ module WillFilter
     
       def validate
         return "Start value must be provided" if start_value.blank?
-        return "Start value must be a valid date/time (2008-01-01 14:30:00)" if start_time == nil
+        return "Start value must be a valid date/time (2008-01-01 14:30:00)" if start_time.nil?
         return "End value must be provided" if end_value.blank?
-        return "End value must be a valid date/time (2008-01-01 14:30:00)" if end_time == nil
-      end
-    
-      def start_time
-        Time.parse(start_value)
-      rescue ArgumentError
-        nil
-      end
-    
-      def end_time
-        Time.parse(end_value)
-      rescue ArgumentError
-        nil
+        return "End value must be a valid date/time (2008-01-01 14:30:00)" if end_time.nil?
       end
     
       def sql_condition
-        return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", start_time, end_time] if operator == :is_in_the_range
+        return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", time(start_value), time(end_value)] if operator == :is_in_the_range
       end
     end
   end 
