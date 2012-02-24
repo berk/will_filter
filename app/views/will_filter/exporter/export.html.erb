@@ -3,9 +3,33 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
     <title>Filter Export Data Table</title>
-		<%=will_filter_scripts_tag %>
+    <style>
+    	body {
+    		font:Arial 12pt;
+    	}
+    	th {
+    		padding:5px;
+    		border-bottom:1px solid #ccc;
+    	}
+    	td {
+    		padding:5px;
+    	}
+    </style>
   </head>
   <body>
-  	<%= will_filter_table_tag(@wf_filter.results, :columns => @wf_filter.fields) %>
+  	<table>
+  		<tr>
+		  	<% @wf_filter.fields.each do |field| %>  	
+		    	<th><%=field %></th>
+		    <% end %>	
+		</tr>   
+		<% @wf_filter.results.each do |obj| %>
+			<tr>
+				<% @wf_filter.fields.each do |field| %>  	
+					<td><%=obj.send(field).to_s %></td>
+				<% end %>
+			</tr>	
+		<% end %>
+	 </table>		
   </body>
 </html>
