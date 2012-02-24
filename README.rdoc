@@ -72,9 +72,6 @@ Open your browser and point to:
 
   http://localhost:3000
 
-Live will_filter_examples application is running here:
-
-http://wf.tr8n.org 
 
 If you have any questions, comments or suggestions, email me at theiceberk@gmail.com
 
