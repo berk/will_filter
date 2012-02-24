@@ -4,12 +4,19 @@ class UserFilter < WillFilter::Filter
     defs = super  
     defs[:sex][:is] = :list
     defs[:sex][:is_not] = :list
+    defs[:custom_condition] = {
+      :is => :list
+    }
     defs
   end
 
-  def value_options_for(criteria_key)
-    if criteria_key == :sex
+  def value_options_for(condition_key)
+    if condition_key == :sex
       return ["male", "female"]
+    end
+
+    if condition_key == :custom_condition
+      return [["Third letter in the First Name is an 'a'", 'a'], ['Id is divisible by 3', '3']]
     end
 
     return []
@@ -52,6 +59,24 @@ class UserFilter < WillFilter::Filter
   
   def default_filter_if_empty
     "male_only"
+  end
+
+  def custom_conditions
+    [:custom_condition]
+  end
+
+  def custom_condition_met?(condition, object)
+    if condition.key == :custom_condition
+      if condition.operator == :is
+        if (condition.container.value == 'a')
+          return (object.first_name[2..2] == 'a')
+        elsif (condition.container.value == '3')  
+          return (object.id % 3 == 0)
+        end
+      end 
+    end
+
+    return false
   end
 
 end

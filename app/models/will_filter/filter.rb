@@ -483,6 +483,7 @@ module WillFilter
           all_sql_conditions = [""]
           0.upto(size - 1) do |index|
             condition = condition_at(index)
+            next if custom_condition?(condition)
 
             sql_condition = condition.container.sql_condition
             
@@ -685,7 +686,49 @@ module WillFilter
         "INNER JOIN #{join_table_name} ON #{join_table_name}.id = #{table_name}.#{join_on_field}"
       end
     end
-    
+
+    # overload this method to indicate which conditions are custom
+    def custom_conditions
+      []
+    end
+
+    # overload this method to evaluate a custom condition on an object
+    def custom_condition_met?(condition, object)
+      false
+    end
+
+    def custom_condition?(condition)
+      custom_conditions.include?(condition.key)
+    end
+
+    def custom_conditions?
+      return if custom_conditions.empty?
+      conditions.each do |condition|
+        return true if custom_condition?(condition)
+      end
+    end
+
+    def process_custom_conditions(objects)
+      filtered = []
+      objects.each do |obj|
+        condition_flags = []
+        
+        0.upto(size - 1) do |index|
+          condition = condition_at(index)
+          next unless custom_condition?(condition)
+          condition_flags << custom_condition_met?(condition, obj)
+        end
+         
+        if condition_flags.size > 0
+          next if match.to_s == "all" and condition_flags.include?(false)
+          next unless condition_flags.include?(true)        
+        end 
+         
+        filtered << obj 
+      end
+      filtered
+    end
+
     def results
       @results ||= begin
         handle_empty_filter! 
@@ -693,6 +736,12 @@ module WillFilter
         inner_joins.each do |inner_join|
           recs = recs.joins(association_name(inner_join))
         end
+
+        if custom_conditions?
+          recs = process_custom_conditions(recs.all)
+          recs = Kaminari.paginate_array(recs)
+        end  
+
         recs = recs.page(page).per(per_page)
         recs.wf_filter = self
         recs
