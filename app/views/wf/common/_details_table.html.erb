@@ -1,0 +1,49 @@
+<%= stylesheet_link_tag("/wf/stylesheets/will_filter.css") -%>
+
+<table class="<%=opts[:table_class]%>" style="<%=opts[:table_style]%>">
+	<%  opts[:columns].each_with_index do |column, column_index| 
+      style = 'padding:3px;'
+      if column.is_a?(Array)
+        key = column.first
+        if column.second.is_a?(Proc)
+          value = column.second.call(object)
+        else
+          value = column.second.to_s
+        end
+        style << column.last if column.size > 2  
+
+      elsif column.is_a?(Hash)
+        key = column[:key] || "key_#{column_index}"
+        if column[:value]   
+	        value = column[:value]
+	        value = value.call(object) if value.is_a?(Proc)
+        else
+          value = object.send(key) 
+        end
+        style << column[:style] if column[:style]
+      else
+        key = column
+        value = object.send(key)
+      end
+  %>
+	<tr>
+		<th style="<%=opts[:key_style]%>">
+			<%= key.to_s.titleize %>
+		</th>
+		<td style="<%=opts[:value_style]%>">
+      <% if value.is_a?(Hash) %>
+        <%= value.to_json %>
+                            
+      <% elsif value.is_a?(Time) %>   
+        <%= value.strftime("%m/%d/%Y %l:%M:%S") %>
+
+      <% elsif value.is_a?(Date) %>  
+        <%= value.strftime("%m/%d/%Y") %>
+                            
+      <% else %>
+        <%= value.to_s %> 
+      <% end %>  
+		</td>	
+	</tr>	
+	<% end %>
+</table>	
