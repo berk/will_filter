@@ -1,5 +1,9 @@
 class UserFilter < WillFilter::Filter
 
+  def model_class
+    User
+  end
+
   def definition
     defs = super  
     defs[:sex][:is] = :list

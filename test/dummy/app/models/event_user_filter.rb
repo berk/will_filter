@@ -1,5 +1,9 @@
 class EventUserFilter < WillFilter::Filter
 
+  def model_class
+    EventUser
+  end
+
   def inner_joins
     [:user, :event]
   end

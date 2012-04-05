@@ -1,5 +1,9 @@
 class EventFilter < WillFilter::Filter
 
+  def model_class
+    Event
+  end
+
   def definition
     defs = super  
     defs[:"user.first_name"] = {:is => :text, :is_not => :text, :contains => :text}

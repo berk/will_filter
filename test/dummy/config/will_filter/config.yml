@@ -10,6 +10,9 @@
 #############################################################################
 
 defaults: &defaults
+
+  require_filter_extensions: false   
+
   effects_options:
     enabled:              false
     script_path:          "will_filter/filter_prototype_effects.js"
