@@ -23,7 +23,7 @@
 
 class ActiveRecord::Base
   def self.filter(opts = {})
-    if ActiveRecord::Base == self.class
+    if ActiveRecord::Base == self.to_s
       raise WillFilter::FilterException.new("Cannot apply filter to the ActiveRecord::Base object")
     end
 

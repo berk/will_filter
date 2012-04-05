@@ -385,10 +385,14 @@ module WillFilter
     
     def deserialize_from_params(params)
       params = HashWithIndifferentAccess.new(params) unless params.is_a?(HashWithIndifferentAccess)
+
+      # Validate sanity of user provided parameters
+      params.delete(:wf_order_type) unless [ 'asc', 'desc' ].include? params[:wf_order_type]
+      params.delete(:wf_order) unless self.class.columns.map(&:name).include? params[:wf_order]
+
       @conditions = []
       @match                = params[:wf_match]       || :all
       @key                  = params[:wf_key]         || self.id.to_s
-      self.model_class_name = params[:wf_model]       if params[:wf_model]
       
       @per_page             = params[:wf_per_page]    || default_per_page
       @page                 = params[:page]           || 1
