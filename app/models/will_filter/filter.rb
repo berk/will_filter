@@ -31,13 +31,13 @@ module WillFilter
     #############################################################################
     # Basics 
     #############################################################################
-    def initialize(model_class)
+    def initialize(model_class = nil)
       super()
 
       if WillFilter::Config.require_filter_extensions? and self.class.name == "WillFilter::Filter"
         raise WillFilter::FilterException.new("Your configuration requires you to subclass the filter. Default filter cannot be created.")
       end
-      
+
       self.model_class_name = model_class.to_s
     end
     
@@ -94,8 +94,16 @@ module WillFilter
       []
     end
     
+    # For extra security, this method must be overloaded by the extending class.
     def model_class
-      return nil unless model_class_name
+      if WillFilter::Config.require_filter_extensions?
+        raise WillFilter::FilterException.new("model_class method must be overloaded in the extending class.") 
+      end
+
+      if model_class_name.blank?
+        raise WillFilter::FilterException.new("model_class_name was not specified.") 
+      end
+
       @model_class ||= model_class_name.constantize
     end
     
@@ -193,6 +201,8 @@ module WillFilter
     
     def order
       @order ||= default_order
+      @order = default_order unless contains_column?(@order.to_sym)
+      @order
     end
     
     def default_order_type
@@ -201,6 +211,8 @@ module WillFilter
   
     def order_type
       @order_type ||= default_order_type
+      @order_type = default_order_type unless ['asc', 'desc'].include?(@order_type.to_s)
+      @order_type
     end
   
     def order_clause
@@ -385,7 +397,18 @@ module WillFilter
     def self.deserialize_from_params(params)
       params = HashWithIndifferentAccess.new(params) unless params.is_a?(HashWithIndifferentAccess)
       params[:wf_type] = self.name unless params[:wf_type]
-      params[:wf_type].constantize.new(params[:wf_model]).deserialize_from_params(params)
+      filter_class = params[:wf_type].constantize
+      filter_instance = filter_class.new
+
+      unless filter_instance.kind_of?(WillFilter::Filter)
+        raise WillFilter::FilterException.new("Invalid filter class. Filter classes must extand WillFilter::Filter.")
+      end  
+      
+      if WillFilter::Config.require_filter_extensions?
+        filter_instance.deserialize_from_params(params) 
+      else  
+        filter_class.new(params[:wf_model]).deserialize_from_params(params) 
+      end
     end
     
     def deserialize_from_params(params)
