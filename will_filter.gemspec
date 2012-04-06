@@ -1,7 +1,8 @@
 Gem::Specification.new do |spec|
   spec.name = "will_filter"
-  spec.version = "0.0.1"
-  spec.summary = "WillFilter"
-  spec.authors = ["Me"]
+  spec.version = "3.0.4"
+  spec.summary = "Rails engine for filtering ActiveRecord model objects."
+  spec.authors = ["Michael Berkovich"]
   spec.files = Dir["{app,config,public,lib}/**/*"]
+  spec.homepage = "http://github.com/berk/will_filter"
 end
