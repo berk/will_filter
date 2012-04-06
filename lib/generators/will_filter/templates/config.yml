@@ -10,6 +10,34 @@
 #############################################################################
 
 defaults: &defaults
+
+  ###########################################################################
+  # 
+  # require_filter_extension makes the filter into an abstract class
+  # and will require you to subclass it in order for the filter to be 
+  # serializeable. The following will no longer work:
+  #
+  # @users = User.filter(:params => params) 
+  #
+  # Use your own filter class instead:
+  # 
+  # @users = User.filter(:params => params, :filter => UserFilter) 
+  # 
+  # In the subclass you must provide the model name to be filtered by overloading:
+  #
+  #  def model_class
+  #    User     
+  #  end
+  # 
+  ###########################################################################
+
+  require_filter_extensions: false   
+  
+  ###########################################################################
+  # If you would like to see some JavaScript effects
+  # provide your own effects class and implement required methods
+  ###########################################################################
+
   effects_options:
     enabled:              false
     script_path:          "/will_filter/javascripts/will_filter_prototype_effects.js"

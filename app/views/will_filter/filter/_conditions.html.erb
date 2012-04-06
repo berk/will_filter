@@ -5,6 +5,10 @@
 <%= hidden_field_tag(:wf_name, wf_filter.name) %>
 <%= hidden_field_tag(:wf_export_format, "") %>
 <%= hidden_field_tag(:wf_export_fields, "") %>
+
+<% unless WillFilter::Config.require_filter_extensions? %>
+	<%= hidden_field_tag(:wf_model, wf_filter.model_class_name) %>
+<% end %>
 	
 <div class="wf_header">
   <% if wf_filter.show_save_options? %>

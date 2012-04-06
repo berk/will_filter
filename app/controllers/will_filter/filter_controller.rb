@@ -64,6 +64,8 @@ module WillFilter
     end
   
     def save_filter
+      raise WillFilter::FilterException.new("Saving functions are disabled") unless  WillFilter::Config.saving_enabled?
+
       params.delete(:wf_id)
       
       wf_filter = WillFilter::Filter.deserialize_from_params(params)
@@ -79,6 +81,8 @@ module WillFilter
     end
   
     def update_filter
+      raise WillFilter::FilterException.new("Saving functions are disabled") unless  WillFilter::Config.saving_enabled?
+
       wf_filter = WillFilter::Filter.find_by_id(params.delete(:wf_id))
       wf_filter.deserialize_from_params(params)
       wf_filter.validate!
@@ -93,6 +97,8 @@ module WillFilter
     end
   
     def delete_filter
+      raise WillFilter::FilterException.new("Saving functions are disabled") unless  WillFilter::Config.saving_enabled?
+
       wf_filter = WillFilter::Filter.find_by_id(params[:wf_id])
       wf_filter.destroy if wf_filter
   

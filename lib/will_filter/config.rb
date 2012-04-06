@@ -45,6 +45,10 @@ module WillFilter
       @config ||= load_yml("/config/will_filter/config.yml")
     end
   
+    def self.require_filter_extensions?
+      config[:require_filter_extensions]
+    end
+  
     def self.effects_options
       config[:effects_options]
     end
