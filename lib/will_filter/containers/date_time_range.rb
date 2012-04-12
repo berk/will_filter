@@ -39,9 +39,9 @@ module WillFilter
     
       def validate
         return "Start value must be provided" if start_value.blank?
-        return "Start value must be a valid date/time (2008-01-01 14:30:00)" if start_time.nil?
+        return "Start value must be a valid date/time (2008-01-01 14:30:00)" if time(start_value).nil?
         return "End value must be provided" if end_value.blank?
-        return "End value must be a valid date/time (2008-01-01 14:30:00)" if end_time.nil?
+        return "End value must be a valid date/time (2008-01-01 14:30:00)" if time(end_value).nil?
       end
     
       def sql_condition
