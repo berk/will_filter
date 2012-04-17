@@ -1,64 +1,21 @@
 Rails.application.routes.draw do 
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
 
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
+  namespace :will_filter do
+    match 'filter/index',                 :to => 'filter#index'
+    match 'filter/add_condition',         :to => 'filter#add_condition'
+    match 'filter/update_condition',      :to => 'filter#update_condition'
+    match 'filter/remove_condition',      :to => 'filter#remove_condition'
+    match 'filter/remove_all_conditions', :to => 'filter#remove_all_conditions'
+    match 'filter/load_filter',           :to => 'filter#load_filter'
+    match 'filter/save_filter',           :to => 'filter#save_filter'
+    match 'filter/update_filter',         :to => 'filter#update_filter'
+    match 'filter/delete_filter',         :to => 'filter#delete_filter'
 
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
+    match 'calendar',                     :to => 'calendar#index'
+    match 'calendar/index',               :to => 'calendar#index'
 
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  root :to => "will_filter/filter#index"
-
-#  mount_at = WillFilter::Engine.config.mount_at
-#  match mount_at => 'will_filter/filter#index'
-#  map.resources :filter, :controller => "will_filter/filter", :path_prefix => mount_at, :name_prefix => "will_filter_"
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  match ':controller(/:action(/:id(.:format)))'
-  match ':controller(/:action(/:id))', :controller => /will_filter\/[^\/]+/
-  
+    match 'exporter',                     :to => 'exporter#index'
+    match 'exporter/index',               :to => 'exporter#index'
+    match 'exporter/export',              :to => 'exporter#export'
+  end
 end
