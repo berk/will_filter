@@ -37,8 +37,8 @@ module WillFilter
     end
   
     def serialize_to_params(params, index)
-      params["wf_c#{index}"] = key
-      params["wf_o#{index}"] = operator
+      params["wf_c#{index}".to_sym] = key
+      params["wf_o#{index}".to_sym] = operator
       container.serialize_to_params(params, index)
       params
     end

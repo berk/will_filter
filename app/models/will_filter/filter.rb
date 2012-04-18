@@ -20,10 +20,32 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
+#
+#-- WillFilter::Filter Schema Information
+#
+# Table name: will_filter_filters
+#
+#  id                  INTEGER         not null, primary key
+#  type                varchar(255)    
+#  name                varchar(255)    
+#  data                text            
+#  user_id             integer         
+#  model_class_name    varchar(255)    
+#  created_at          datetime        
+#  updated_at          datetime        
+#
+# Indexes
+#
+#  index_will_filter_filters_on_user_id    (user_id) 
+#
+#++
 
 module WillFilter
   class Filter < ActiveRecord::Base
-    set_table_name  :will_filter_filters
+    self.table_name = :will_filter_filters 
+    attr_accessible :type, :name, :data, :user_id, :model_class_name
+
+    # set_table_name  :will_filter_filters
     serialize       :data
     before_save     :prepare_save
     after_find      :process_find
@@ -40,7 +62,7 @@ module WillFilter
 
       self.model_class_name = model_class.to_s
     end
-    
+
     def dup
       super.tap {|ii| ii.conditions = self.conditions.dup}
     end
@@ -155,10 +177,14 @@ module WillFilter
         defs
       end
     end
-  
-    def container_by_sql_type(type)
+
+    def self.container_by_sql_type(type)
       raise WillFilter::FilterException.new("Unsupported data type #{type}") unless WillFilter::Config.data_types[type]
       WillFilter::Config.data_types[type]
+    end
+
+    def container_by_sql_type(type)
+      self.class.container_by_sql_type(type)
     end
     
     def default_condition_definition_for(name, sql_data_type)
@@ -386,10 +412,10 @@ module WillFilter
         condition = condition_at(index)
         condition.serialize_to_params(params, index)
       end
-      
-      params.merge(merge_params)
+      HashWithIndifferentAccess.new(params.merge(merge_params))
     end
-    
+    alias_method :to_params, :serialize_to_params
+
     #############################################################################
     # allows to create a filter from params only
     #############################################################################
@@ -465,6 +491,7 @@ module WillFilter
   
       self
     end
+    alias_method :from_params, :deserialize_from_params
     
     #############################################################################
     # Validations 

@@ -1,9 +1,14 @@
-require File.expand_path('../spec_helper', File.dirname(__FILE__))
+require File.expand_path('../../../spec_helper', File.dirname(__FILE__))
 
 describe WillFilter::ActiveRecordExtension do
-  describe '#filter' do
+  describe 'filter' do
+
     before :all do
       5.times {|i| User.create(:first_name => "User #{i}")}
+    end
+
+    after :all do
+      User.delete_all
     end
 
     context "filtering with no params" do
