@@ -35,23 +35,35 @@ module WillFilter
       def template_name
         'list'
       end
+
+      def linked_filter
+        @linked_filter ||= begin
+          if condition.key == :id
+            model_class_name = filter.model_class_name
+          else
+            model_class_name = condition.key.to_s[0..-4].camelcase
+          end
+          WillFilter::Filter.new(model_class_name)
+        end
+      end
     
       def options
-        if condition.key == :id
-          model_class_name = filter.model_class_name
-        else
-          model_class_name = condition.key.to_s[0..-4].camelcase
-        end
-        
-        WillFilter::Filter.new(model_class_name).saved_filters(false)
+        linked_filter.saved_filters(false)
       end
     
       def sql_condition
         return nil unless operator == :is_filtered_by
-        sub_filter = WillFilter::Filter.find_by_id(value)
+        sub_filter = WillFilter::Filter.find_by_id(value) || linked_filter.user_filters.first
+        return [""] unless sub_filter
+
         sub_conds = sub_filter.sql_conditions
-        sub_sql = "SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}"
-        sub_conds[0] = " #{condition.full_key} IN (#{sub_sql}) "
+
+        if sub_conds[0].blank?
+          sub_conds[0] = " #{condition.full_key} IN (SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name}) "
+        else
+          sub_conds[0] = " #{condition.full_key} IN (SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}) "
+        end  
+
         sub_conds
       end
     end

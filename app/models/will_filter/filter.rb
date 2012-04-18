@@ -519,6 +519,7 @@ module WillFilter
           0.upto(size - 1) do |index|
             condition = condition_at(index)
             next if custom_condition?(condition)
+            next unless condition.container
 
             sql_condition = condition.container.sql_condition
             
@@ -578,6 +579,24 @@ module WillFilter
     #############################################################################
     # Saved Filters 
     #############################################################################
+
+    def user_filters
+      @user_filters ||= begin
+        conditions = ["model_class_name = ?", self.model_class_name]
+
+        if WillFilter::Config.user_filters_enabled?
+          conditions[0] << " and user_id = ? "
+          if WillFilter::Config.current_user and WillFilter::Config.current_user.id
+            conditions << WillFilter::Config.current_user.id
+          else
+            conditions << "0"
+          end
+        end
+  
+        WillFilter::Filter.find(:all, :conditions => conditions)
+      end
+    end
+
     def saved_filters(include_default = true)
       @saved_filters ||= begin
         filters = []
@@ -589,26 +608,8 @@ module WillFilter
           end
         end
   
-        if include_default
-          conditions = ["type = ? and model_class_name = ?", self.class.name, self.model_class_name]
-        else
-          conditions = ["model_class_name = ?", self.model_class_name]
-        end
-  
-        if WillFilter::Config.user_filters_enabled?
-          conditions[0] << " and user_id = ? "
-          if WillFilter::Config.current_user and WillFilter::Config.current_user.id
-            conditions << WillFilter::Config.current_user.id
-          else
-            conditions << "0"
-          end
-        end
-  
-        user_filters = WillFilter::Filter.find(:all, :conditions => conditions)
-        
-        if user_filters.size > 0
+        if user_filters.any?
           filters << ["Select saved filter", "-2"] if include_default
-          
           user_filters.each do |filter|
             filters << [filter.name, filter.id.to_s]
           end
@@ -617,7 +618,7 @@ module WillFilter
         filters
       end
     end
-    
+
     #############################################################################
     # overload this method if you don't want to allow empty filters
     #############################################################################
