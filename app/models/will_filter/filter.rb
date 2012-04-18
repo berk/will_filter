@@ -458,8 +458,12 @@ module WillFilter
       if params[:wf_submitted] == 'true'
         validate!
       end
+
+      if WillFilter::Config.user_filters_enabled? and WillFilter::Config.current_user
+        self.user_id = WillFilter::Config.current_user.id
+      end
   
-      return self
+      self
     end
     
     #############################################################################

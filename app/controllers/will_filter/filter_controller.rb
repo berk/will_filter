@@ -70,7 +70,7 @@ module WillFilter
       
       wf_filter = WillFilter::Filter.deserialize_from_params(params)
       wf_filter.validate!
-      
+
       unless wf_filter.errors?
         wf_filter.save
       end

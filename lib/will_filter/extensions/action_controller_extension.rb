@@ -37,7 +37,7 @@ module WillFilter
         begin
           wf_current_user = eval(WillFilter::Config.current_user_method)
         rescue Exception => ex
-          raise WillFilter::Exception.new("will_filter cannot be initialized because #{WillFilter::Config.current_user_method} failed with: #{ex.message}")
+          raise WillFilter::FilterException.new("will_filter cannot be initialized because #{WillFilter::Config.current_user_method} failed with: #{ex.message}")
         end
 
         WillFilter::Config.init(wf_current_user)

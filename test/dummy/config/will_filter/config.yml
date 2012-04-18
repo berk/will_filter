@@ -19,7 +19,7 @@ defaults: &defaults
     
   save_options: 
     enabled:              true
-    user_filters_enabled: false   # if set to true, the filters will be private
+    user_filters_enabled: true   # if set to true, the filters will be private
     user_class_name:      User 
     current_user_method:  current_user 
 
