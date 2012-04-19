@@ -46,18 +46,26 @@ Note: 'User' is a Rails ActiveRecord model
 Now all you have to do is create a view for this action and add the following tag where you want the filter to be rendered:
 
   <%= will_filter_tag(@users) %>
-	
+
 And optionally you can do (for results table):
 	
   <%= will_filter_table_tag(@users) %>
 
 That's it. This will render a filter box with various conditions, operators and values for the model object you selected.
 
-Please view the following document to learn more about table tag customization:
+
+= Documentation
+
+Please read the following document to learn more about filter customization:
+
+https://github.com/berk/will_filter/wiki/Customizing-Filters
+
+Please read the following document to learn more about table tag customization:
 
 https://github.com/berk/will_filter/wiki/Customizing-Table-View
 
 
+= Screenshots
 
 Below are a couple of screenshot of what the filter looks like when it is rendered on a page:
 
@@ -65,6 +73,8 @@ http://wiki.tr8n.org/images/e/e1/Wf1.png
 
 http://wiki.tr8n.org/images/5/50/Wf2.png
 
+
+= Dummy Application
 
 This plugin comes with a dummy test project. To try out some of the examples, run the following commands:
 
