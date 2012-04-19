@@ -23,6 +23,7 @@
 
 module WillFilter
   class FilterController < ApplicationController
+    
     def index
       @filters = WillFilter::Filter.new(WillFilter::Filter).deserialize_from_params(params).results
     end

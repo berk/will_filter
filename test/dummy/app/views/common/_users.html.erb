@@ -1,2 +1,21 @@
 <%= will_filter_tag(@users) %>
-<%= will_filter_table_tag(@users) %>
+
+<%= will_filter_table_tag(@users, :columns => [
+	:id, 
+	
+	[:first_name, lambda { |obj| 
+		unless obj.first_name.blank?
+			link_to(obj.first_name, @users.add_filter_condition(:first_name, :is, obj.first_name).to_params)
+		end
+	}, 'font-weight:bold'], 
+	
+	[:last_name, lambda { |obj| 
+		unless obj.last_name.blank?
+			link_to(obj.last_name, @users.add_filter_condition(:last_name, :is, obj.last_name).to_params)
+		end
+	}], 
+
+	:birthday, 
+	:sex, 
+	:created_at
+]) %>

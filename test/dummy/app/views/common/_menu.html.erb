@@ -12,9 +12,9 @@
 		    </td>
 		    <td style="text-align:right;">
 				  <% if controller.controller_name == 'simple' %>
-  		      <%=link_to("Switch to Advanced Mode", :controller => :advanced, :action => :users) %>
+  		      <%=link_to("Extended Filters", :controller => :advanced, :action => :users) %>
 					<% else %>
-            <%=link_to("Switch to Simple Mode", :controller => :simple, :action => :users) %>
+            <%=link_to("Basic Filters", :controller => :simple, :action => :users) %>
 					<% end %>	
 		    </td>
 		  </tr>

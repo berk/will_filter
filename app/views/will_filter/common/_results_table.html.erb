@@ -17,81 +17,95 @@
   <thead>
     <tr>
       <% 
+        carray = [] # stores the order of the columns
+
         opts[:columns].each_with_index do |column, index|
+          cmeta = {}
+
           if column.is_a?(Array)
-            key = column.first
+            cmeta[:key] = column[0]
+            cmeta[:value] = column[1]
+            unless column[2].nil?
+              if column[2].is_a?(Hash)
+                cmeta.merge!(column[2])           
+              elsif column[2].is_a?(String) 
+                cmeta[:style] = column[2]
+              else
+                raise WillFilter::FilterException.new("Unsupported table column format #{column[2]}")  
+              end
+            end    
           elsif column.is_a?(Hash)
-            key = column[:key] || "key_#{index}"
+            cmeta = column
+            cmeta[:key] ||= "key_#{index}"
           else
-            key = column
+            cmeta[:key] = column
           end
           
-          style = ""
-          sort_direction       = filter.column_sorted?(key) ? filter.order_type : "asc"
-          sort_direction_click = filter.column_sorted?(key) ? (sort_direction == "asc" ? "desc" : "asc") : "asc"
-          column_title   = filter.condition_title_for(key)  
-          the_class_name =  key.to_s
-          the_class_name << " sortable"                 if filter.contains_column?(key)              
-          the_class_name << " current_sort"             if filter.column_sorted?(key)
-          the_class_name << " #{sort_direction}"
+          cmeta[:title] ||= filter.condition_title_for(cmeta[:key])  
 
-          style << "width:15px" if key == :checkbox          
+          carray << cmeta
+
+          sort_direction        = filter.column_sorted?(cmeta[:key]) ? filter.order_type : "asc"
+          sort_direction_click  = filter.column_sorted?(cmeta[:key]) ? (sort_direction == "asc" ? "desc" : "asc") : "asc"
+
+          # column class name 
+          title_class_name      = cmeta[:title_class] || cmeta[:key].to_s
+          title_class_name      << " sortable"                 if filter.contains_column?(cmeta[:key])              
+          title_class_name      << " current_sort"             if filter.column_sorted?(cmeta[:key])
+          title_class_name      << " #{sort_direction}"
+
+          # extra styling that can be applied on a column
+          title_style           = cmeta[:title_style] || "" 
+          title_style           << ";width:15px" if cmeta[:key] == :checkbox          
         %>
-        <th class="<%= the_class_name %>" style="<%=style%>">
+
+        <th class="<%= title_class_name %>" style="<%=title_style%>">
           <div class="table_head_container">
-            <% if filter.contains_column?(key) %>
+            <% if filter.contains_column?(cmeta[:key]) %>
               <div class="sort_control">
-                <%= link_to "", filter.serialize_to_params(:wf_order => key, :wf_order_type => 'asc'), :title => "sort by #{key} ascending", :class => 'up' %>
-                <%= link_to "", filter.serialize_to_params(:wf_order => key, :wf_order_type => 'desc'), :title => "sort by #{key} descending", :class => 'down' %>
+                <%= link_to "", filter.to_params(:wf_order => cmeta[:key], :wf_order_type => 'asc'), :title => "sort by #{cmeta[:title]} ascending", :class => 'up' %>
+                <%= link_to "", filter.to_params(:wf_order => cmeta[:key], :wf_order_type => 'desc'), :title => "sort by #{cmeta[:title]} descending", :class => 'down' %>
               </div>
     
-              <%= link_to column_title, filter.serialize_to_params(:wf_order => key, :wf_order_type => sort_direction_click), :class => "sort_link" %>
-            <% elsif key == :checkbox %>
+              <%= link_to(cmeta[:title], filter.to_params(:wf_order => cmeta[:key], :wf_order_type => sort_direction_click), :class => "sort_link") %>
+
+            <% elsif cmeta[:key] == :checkbox %>
               <%= check_box_tag("wf_check_all", "", false, :onClick => "wfCheckAll(this)") %>
+
             <% else %>
-              <%= column_title %> 
+              <%= cmeta[:title] %> 
+
             <% end %> 
           </div>
         </th>
       <% end %>
     </tr>
   </thead>  
-    
+   
+  <% pp carray %>  
+
   <tbody>
     <% results.each_with_index do |obj, index| %>
       <tr class='data_row <%=(index % 2 == 0) ? "wf_row_even" : "wf_row_odd"%>'>
-        <% opts[:columns].each_with_index do |column, column_index| %>
+        <% carray.each_with_index do |cmeta, column_index| %>
           <%
-            style = 'padding:3px;'
-            if column.is_a?(Array)
-              key = column.first
+            value_style = cmeta[:style] || 'padding-top:2px;padding-bottom:2px;' # should be moved to css
+            value_class = cmeta[:class] || ''
 
-              if column.second.is_a?(Proc)
-                value = column.second.call(obj)
-              else
-                value = column.second.to_s
-              end
-              style << column.last if column.size > 2  
-
-            elsif column.is_a?(Hash)
-              key = column[:key] || "key_#{column_index}"
-              if column[:value]   
-                value = column[:value]
-                value = value.call(obj) if value.is_a?(Proc)
-              else
-                value = obj.send(key) 
-              end
-              style << column[:style] if column[:style]
-
+            if cmeta[:value].nil?
+              value = obj.send(cmeta[:key]) 
+            elsif cmeta[:value].is_a?(Proc)
+              value = cmeta[:value].call(obj)
             else
-              key = column
-              value = obj.send(key)
+              value = cmeta[:value]
             end
 
-            style << "padding-left:10px;" if key == :checkbox
+            value_style << 'width:30px;' if cmeta[:key] == :checkbox
+            value_class << ' current_sort' if filter.column_sorted?(cmeta[:key])
+
           %>
-          <td style='<%=style%>' <%= " class='current_sort'" if filter.column_sorted?(key) %>>
-               <% if key == :checkbox %>
+          <td style='<%=value_style%>' class='<%=value_class%>'>
+               <% if cmeta[:key] == :checkbox %>
                   <%= check_box_tag("#{value}[]", obj.id, false, :id => "wf_check_#{index}", :onClick => "wfVerifyTrigger(this)") %>
             
                <% elsif value.is_a?(Hash) %>

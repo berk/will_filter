@@ -319,7 +319,20 @@ module WillFilter
       oper
     end
     
+    def conditions_for(condition_key)
+      @conditions.select{|cond| cond.key == condition_key}
+    end
+
+    def remove_condition(condition_key)
+      @conditions -= conditions_for(condition_key)
+    end
+
     def add_condition(condition_key, operator_key, values = [])
+      add_condition_at(size, condition_key, operator_key, values)
+    end
+
+    def replace_condition(condition_key, operator_key, values = [])
+      remove_condition(condition_key)
       add_condition_at(size, condition_key, operator_key, values)
     end
     

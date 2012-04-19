@@ -31,4 +31,10 @@ class Array
     @wf_filter
   end
   
+	def add_filter_condition(condition_key, operator_key, values = [])
+		sub_filter = wf_filter.dup
+    sub_filter.replace_condition(condition_key, operator_key, values)
+		sub_filter
+	end
+
 end
