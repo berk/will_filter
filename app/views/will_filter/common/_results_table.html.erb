@@ -40,18 +40,37 @@
           else
             cmeta[:key] = column
           end
-          
-          cmeta[:title] ||= filter.condition_title_for(cmeta[:key])  
 
           carray << cmeta
 
           sort_direction        = filter.column_sorted?(cmeta[:key]) ? filter.order_type : "asc"
           sort_direction_click  = filter.column_sorted?(cmeta[:key]) ? (sort_direction == "asc" ? "desc" : "asc") : "asc"
 
+          if cmeta[:sort_key]
+            sort_key = cmeta[:sort_key].call(filter)
+          else  
+            sort_key = cmeta[:key]
+          end
+
+          if cmeta[:sortable].nil?
+            sortable = filter.contains_column?(cmeta[:key])
+          else
+            sortable = cmeta[:sortable]
+          end
+
+          if cmeta[:title].is_a?(Proc)
+            column_title = cmeta[:title].call(filter)
+          else
+            column_title = cmeta[:title] || filter.condition_title_for(cmeta[:key])  
+            if sortable
+              column_title = link_to(column_title, filter.to_params(:wf_order => cmeta[:key], :wf_order_type => sort_direction_click), :title => "sort by #{cmeta[:key]} ascending", :class => "sort_link")
+            end  
+          end  
+
           # column class name 
           title_class_name      = cmeta[:title_class] || cmeta[:key].to_s
-          title_class_name      << " sortable"                 if filter.contains_column?(cmeta[:key])              
-          title_class_name      << " current_sort"             if filter.column_sorted?(cmeta[:key])
+          title_class_name      << " sortable"                 if sortable            
+          title_class_name      << " current_sort"             if filter.column_sorted?(sort_key)
           title_class_name      << " #{sort_direction}"
 
           # extra styling that can be applied on a column
@@ -61,19 +80,21 @@
 
         <th class="<%= title_class_name %>" style="<%=title_style%>">
           <div class="table_head_container">
-            <% if filter.contains_column?(cmeta[:key]) %>
+            <% if sortable %>
               <div class="sort_control">
-                <%= link_to "", filter.to_params(:wf_order => cmeta[:key], :wf_order_type => 'asc'), :title => "sort by #{cmeta[:title]} ascending", :class => 'up' %>
-                <%= link_to "", filter.to_params(:wf_order => cmeta[:key], :wf_order_type => 'desc'), :title => "sort by #{cmeta[:title]} descending", :class => 'down' %>
+                <%= link_to "", filter.to_params(:wf_order => sort_key, :wf_order_type => 'asc'), :title => "sort by #{sort_key} ascending", :class => 'up' %>
+                <%= link_to "", filter.to_params(:wf_order => sort_key, :wf_order_type => 'desc'), :title => "sort by #{sort_key} descending", :class => 'down' %>
               </div>
-    
-              <%= link_to(cmeta[:title], filter.to_params(:wf_order => cmeta[:key], :wf_order_type => sort_direction_click), :class => "sort_link") %>
+            
+              <div style='white-space: nowrap;'>
+                <%= column_title %>
+              </div>
 
             <% elsif cmeta[:key] == :checkbox %>
               <%= check_box_tag("wf_check_all", "", false, :onClick => "wfCheckAll(this)") %>
 
             <% else %>
-              <%= cmeta[:title] %> 
+              <%= column_title %> 
 
             <% end %> 
           </div>
@@ -81,8 +102,6 @@
       <% end %>
     </tr>
   </thead>  
-   
-  <% pp carray %>  
 
   <tbody>
     <% results.each_with_index do |obj, index| %>

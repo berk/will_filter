@@ -1,21 +1,40 @@
 <%= will_filter_tag(@users) %>
 
 <%= will_filter_table_tag(@users, :columns => [
-	:id, 
-	
-	[:first_name, lambda { |obj| 
-		unless obj.first_name.blank?
-			link_to(obj.first_name, @users.add_filter_condition(:first_name, :is, obj.first_name).to_params)
-		end
-	}, 'font-weight:bold'], 
-	
-	[:last_name, lambda { |obj| 
-		unless obj.last_name.blank?
-			link_to(obj.last_name, @users.add_filter_condition(:last_name, :is, obj.last_name).to_params)
-		end
-	}], 
+   :id, 
+   {:key => :name, 
+	   :value => lambda{ |obj| 
+		   if @users.wf_filter.column_sorted?(:last_name)
+			   raw("<span style='font-weight:normal'>#{h(obj.first_name)} <strong>#{h(obj.last_name)}</strong></span>")
+		   elsif @users.wf_filter.column_sorted?(:first_name)	
+			   raw("<span style='font-weight:normal'><strong>#{h(obj.first_name)}</strong> #{h(obj.last_name)}</span>")
+		   else
+			   "#{obj.first_name} #{obj.last_name}"
+		   end	
+	  }, 
+	  :title => lambda{ |filter| 
+		  if filter.column_sorted?(:last_name)
+    	  first_name_link = link_to("First Name", filter.to_params(:wf_order => :first_name, :wf_order_type => 'asc'), :title => "sort by first name ascending")
+    	  last_name_link = link_to("Last Name", filter.to_params(:wf_order => :last_name, :wf_order_type => (filter.order_type == 'asc' ? 'desc' : 'asc')), 
+    		                        :title => "sort by last name #{(filter.order_type == 'asc' ? 'descending' : 'ascending')}", 
+    		                        :style=>'color:black;font-weight:bold')
+    	
+		   elsif filter.column_sorted?(:first_name)	
+    	   last_name_link = link_to("Last Name", filter.to_params(:wf_order => :last_name, :wf_order_type => 'asc'), :title => "sort by last name ascending")
+    	   first_name_link = link_to("First Name", filter.to_params(:wf_order => :first_name, :wf_order_type => (filter.order_type == 'asc' ? 'desc' : 'asc')), 
+    		                        :title => "sort by first name #{(filter.order_type == 'asc' ? 'descending' : 'ascending')}", 
+    		                        :style=>'color:black;font-weight:bold')
+    	
+		   else
+         last_name_link = link_to("Last Name", filter.to_params(:wf_order => :last_name, :wf_order_type => 'asc'), :title => "sort by last name ascending")
+    	   first_name_link = link_to("First Name", filter.to_params(:wf_order => :first_name, :wf_order_type => 'asc'), :title => "sort by first name ascending")
+		   end	
 
-	:birthday, 
-	:sex, 
-	:created_at
+  	   [first_name_link, last_name_link].join(' / ').html_safe
+	  },
+	  :sortable => true,
+	  :sort_key => lambda{ |filter| filter.column_sorted?(:first_name) ? :first_name : :last_name}    	
+  }, 
+  :birthday,
+  { :key => :sex, :title => 'Gender' }
 ]) %>
