@@ -1,7 +1,6 @@
 <%= will_filter_tag(@orders) %>
-<%= will_filter_table_tag(@orders, :columns => [
-	:id, :user_id, [:amount, :filterable => true], :created_at
-	],
+<%= will_filter_table_tag(@orders, 
+	:columns => [:id, :user_id, [:amount, :filterable => true], :created_at],
 	:header => {
 		:label => "Total Amount",	
 		:value => lambda{ |key|
