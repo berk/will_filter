@@ -1,0 +1,53 @@
+<% if data[:label] %>
+<tr>
+  <td colspan="<%=carray.size%>" style="height:10px; padding:2px; font-size:10px; background-color:#FFF8EF;"><%=data[:label]%></td>
+</tr> 
+<% end %>
+
+<tr>
+<% carray.each_with_index do |cmeta, column_index|
+     vmeta = { }
+     if data[:value] 
+        if data[:value].is_a?(Proc)
+          vmeta[:value] = data[:value].call(cmeta[:key])
+        elsif data[:value].is_a?(Hash)
+          vmeta[:value] = data[:value][cmeta[:key]]
+
+          if vmeta[:value].is_a?(Hash)
+            vmeta.merge!(vmeta[:value])
+          elsif vmeta[:value].is_a?(Array)
+            vmeta.merge!(vmeta[:value].last)
+            vmeta[:value] = vmeta[:value].first
+          end
+            
+          if vmeta[:value].is_a?(Symbol)  
+            case vmeta[:value]
+            when :total
+              vmeta[:value] = number_to_currency(filter.sum(cmeta[:key]))
+            when :sum
+              vmeta[:value] = filter.sum(cmeta[:key])
+            when :count
+              vmeta[:value] = filter.count(cmeta[:key])
+            when :min
+              vmeta[:value] = filter.min(cmeta[:key])
+            when :max
+              vmeta[:value] = filter.max(cmeta[:key])
+            when :avg
+              vmeta[:value] = filter.avg(cmeta[:key])
+            when :range
+              vmeta[:value] = [filter.min(cmeta[:key]), filter.max(cmeta[:key])].join(" - ")
+            end
+          end  
+
+        end
+      end
+
+      vmeta[:class] ||= ""
+      vmeta[:style] ||= ""
+    %>   
+
+  <td style="background-color:#FFF8EF;<%=vmeta[:style]%>" class="<%=vmeta[:class]%>">
+    <%= vmeta[:value] %>
+  </td>
+<% end %>
+</tr>

@@ -35,6 +35,6 @@
 	  :sortable => true,
 	  :sort_key => lambda{ |filter| filter.column_sorted?(:first_name) ? :first_name : :last_name}    	
   }, 
-  :birthday,
-  { :key => :sex, :title => 'Gender' }
+  [:birthday, :filterable => true],
+  [:sex, {:title => 'Gender', :filterable => true}]
 ]) %>

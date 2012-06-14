@@ -828,5 +828,22 @@ module WillFilter
     def sum(column_name)
       model_class.sum(column_name, :conditions => sql_conditions)
     end
+
+    def max(column_name)
+      model_class.maximum(column_name, :conditions => sql_conditions)
+    end
+
+    def min(column_name)
+      model_class.minimum(column_name, :conditions => sql_conditions)
+    end
+
+    def avg(column_name)
+      model_class.average(column_name, :conditions => sql_conditions)
+    end
+
+    def count(column_name)
+      model_class.count(column_name, :conditions => sql_conditions)
+    end
+
   end
 end

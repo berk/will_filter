@@ -1,2 +1,28 @@
 <%= will_filter_tag(@orders) %>
-<%= will_filter_table_tag(@orders) %>
+<%= will_filter_table_tag(@orders, :columns => [
+	:id, :user_id, [:amount, :filterable => true], :created_at
+	],
+	:header => {
+		:label => "Total Amount",	
+		:value => lambda{ |key|
+			if (key == :amount) 
+				total = @orders.wf_filter.sum(key)
+				if total < 1000
+					raw("<span style='color:red'>#{number_to_currency(total)}</span>")
+				else	
+					raw("<span style='color:green'>#{number_to_currency(total)}</span>")	
+				end
+			end	
+		},
+		:value1 => {
+			:id => "<strong>Totals:</strong>".html_safe,
+			:amount => :total
+		}
+	},
+	:footer => {
+		:value => {
+			:id => "<strong>Range:</strong>".html_safe,
+			:amount => [:range, {:style=>"color:blue; font-weight:bold;"}]
+		}
+	}	
+) %>

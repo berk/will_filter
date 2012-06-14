@@ -22,18 +22,37 @@
         opts[:columns].each_with_index do |column, index|
           cmeta = {}
 
+          # supported notations for columns => [
+          #  :id,
+          #  [:id, lambda{|obj| obj.id}], 
+          #  [:id, lambda{|obj| obj.id}, "color: white"], 
+          #  [:id, lambda{|obj| obj.id}, {:style => "color: white"}], 
+          #  [:id, {:filterable => true, :value => lambda{|obj| obj.id}}],
+          #  [:id, {:filterable => true, :value => lambda{|obj| obj.id}}],
+          #  {:key => :id, :filterable => true} 
+          # ]
+
           if column.is_a?(Array)
-            cmeta[:key] = column[0]
-            cmeta[:value] = column[1]
-            unless column[2].nil?
-              if column[2].is_a?(Hash)
-                cmeta.merge!(column[2])           
-              elsif column[2].is_a?(String) 
-                cmeta[:style] = column[2]
-              else
-                raise WillFilter::FilterException.new("Unsupported table column format #{column[2]}")  
-              end
-            end    
+            if column.size < 2
+              raise WillFilter::FilterException.new("Array table column definition must have at least two elements") 
+            end
+
+            cmeta[:key] = column[0]  # first param must always be the column key
+
+            if column[1].is_a?(Hash)  # second param is a hash
+              cmeta.merge!(column[1])  
+            else  
+              cmeta[:value] = column[1]
+              unless column[2].nil?
+                if column[2].is_a?(Hash)   # third param can be a set of attributes
+                  cmeta.merge!(column[2])
+                elsif column[2].is_a?(String)  # third param can be a string, which represents a style
+                  cmeta[:style] = column[2]
+                else
+                  raise WillFilter::FilterException.new("Unsupported table column format #{column[2]}")  
+                end
+              end    
+            end
           elsif column.is_a?(Hash)
             cmeta = column
             cmeta[:key] ||= "key_#{index}"
@@ -104,6 +123,11 @@
   </thead>  
 
   <tbody>
+
+    <% if opts[:header] %>
+      <%=render(:partial => "/will_filter/common/results_table_summary", :locals => {:data => opts[:header], :filter => filter, :carray => carray}) %>
+    <% end -%>
+
     <% results.each_with_index do |obj, index| %>
       <tr class='data_row <%=(index % 2 == 0) ? "wf_row_even" : "wf_row_odd"%>'>
         <% carray.each_with_index do |cmeta, column_index| %>
@@ -124,13 +148,17 @@
 
           %>
           <td style='<%=value_style%>' class='<%=value_class%>'>
+              <% if cmeta[:filterable] %>
+                <div style='float:right;'><%=link_to(image_tag("will_filter/filter.png", :style=>"width:12px;"), results.add_filter_condition(cmeta[:key], :is, value.to_s).to_params, {:title => "Show only #{value}"}) %></div>
+              <% end -%>  
+
                <% if cmeta[:key] == :checkbox %>
                   <%= check_box_tag("#{value}[]", obj.id, false, :id => "wf_check_#{index}", :onClick => "wfVerifyTrigger(this)") %>
             
                <% elsif value.is_a?(Hash) %>
                   <% value.each do |key, value| %>
                     <strong><%=key%>:</strong> <%= value %>;
-                  <% end %>
+                  <% end -%>
                   
                 <% elsif value.is_a?(Time) %> 
                   <%= value.strftime("%m/%d/%Y %l:%M:%S") %>
@@ -139,12 +167,18 @@
                   <%= value.strftime("%m/%d/%Y") %>
                   
                <% else %>
+
                   <%= value.to_s %> 
-               <% end %>  
+               <% end -%>  
           </td>
-        <% end %>
+        <% end -%>
       </tr>
-    <% end  %>
+    <% end -%>
+
+    <% if opts[:footer] %>
+      <%=render(:partial => "/will_filter/common/results_table_summary", :locals => {:data => opts[:footer], :filter => filter, :carray => carray}) %>
+    <% end -%>
+
   </tbody>
 </table>    
     
