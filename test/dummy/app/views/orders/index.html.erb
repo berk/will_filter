@@ -1,3 +1,5 @@
+<h1>Custom Header and Footer</h1>
+
 <%= will_filter_tag(@orders) %>
 <%= will_filter_table_tag(@orders, 
 	:columns => [:id, :user_id, [:amount, :filterable => true], :created_at],
@@ -7,14 +9,15 @@
 			if (key == :amount) 
 				total = @orders.wf_filter.sum(key)
 				if total < 1000
-					raw("<span style='color:red'>#{number_to_currency(total)}</span>")
+					raw("<span style='color:red;'>#{number_to_currency(total)}</span>")
 				else	
-					raw("<span style='color:green'>#{number_to_currency(total)}</span>")	
+					raw("<span style='color:green;'>#{number_to_currency(total)}</span>")	
 				end
 			end	
 		}
 	},
 	:footer => {
+		:style => "background-color: #eee;",
 		:value => {
 			:id => "<strong>Range:</strong>".html_safe,
 			:amount => [:range, {:style=>"color:blue; font-weight:bold;"}]

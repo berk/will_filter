@@ -146,10 +146,13 @@
             value_style << 'width:30px;' if cmeta[:key] == :checkbox
             value_class << ' current_sort' if filter.column_sorted?(cmeta[:key])
 
+            if cmeta[:filterable]
+              filter_value = cmeta[:value].nil? ? value : obj.send(cmeta[:key])
+            end
           %>
           <td style='<%=value_style%>' class='<%=value_class%>'>
               <% if cmeta[:filterable] %>
-                <div style='float:right;'><%=link_to(image_tag("will_filter/filter.png", :style=>"width:12px;"), results.add_filter_condition(cmeta[:key], :is, value.to_s).to_params, {:title => "Show only #{value}"}) %></div>
+                <div style='float:right;'><%=link_to(image_tag("will_filter/filter.png", :style=>"width:12px;"), results.add_filter_condition(cmeta[:key], :is, filter_value.to_s).to_params, {:title => "Show only #{filter_value}"}) %></div>
               <% end -%>  
 
                <% if cmeta[:key] == :checkbox %>

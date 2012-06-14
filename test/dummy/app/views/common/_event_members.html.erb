@@ -2,14 +2,11 @@
 
 <%= will_filter_table_tag(@event_users, :columns => [
 	:id, 
-	[:event_id, lambda { |obj| 
-		link_to(obj.event ? obj.event.name : obj.event_id, @event_users.add_filter_condition(:event_id, :is, obj.event_id).to_params)
-	}], 
-	[:user_id, lambda { |obj| 
-		link_to(obj.user_id ? obj.user.name : obj.user_id, @event_users.add_filter_condition(:user_id, :is, obj.user_id).to_params)
-	}, {
-		:title => 'User Name',
-		:style => 'font-weight:bold'
+	[:event_id, :value => lambda{|e| e.event.name}, :filterable => true], 
+	[:user_id, {
+		:value => lambda{|e| e.user.name},
+		:filterable => true,
+		:title => 'User Name'
 	}], 
 	:created_at
 ]) %>
