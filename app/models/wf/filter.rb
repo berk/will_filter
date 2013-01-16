@@ -424,8 +424,9 @@ class Wf::Filter < ActiveRecord::Base
     
     params.merge!(extra_params)
     params.merge!(merge_params)
-    params
+    HashWithIndifferentAccess.new(params)
   end
+  alias_method :to_params, :serialize_to_params
   
   def to_url_params
     params = []
