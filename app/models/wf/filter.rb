@@ -106,6 +106,10 @@ class Wf::Filter < ActiveRecord::Base
     @match = new_match
   end
   
+  def extra_params
+    @extra_params ||= {}
+  end
+
   #############################################################################
   # Inner Joins come in a form of 
   # [[joining_model_name, column_name], [joining_model_name, column_name]]
@@ -418,7 +422,9 @@ class Wf::Filter < ActiveRecord::Base
       condition.serialize_to_params(params, index)
     end
     
-    params.merge(merge_params)
+    params.merge!(extra_params)
+    params.merge!(merge_params)
+    params
   end
   
   def to_url_params
