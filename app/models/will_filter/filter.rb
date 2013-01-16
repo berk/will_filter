@@ -108,6 +108,9 @@ module WillFilter
       @fields ||= []
     end
     
+    def extra_params
+      @extra_params ||= {}
+    end    
     #############################################################################
     # a list of indexed fields where at least one of them has to be in a query
     # otherwise the filter may hang the database
@@ -425,7 +428,11 @@ module WillFilter
         condition = condition_at(index)
         condition.serialize_to_params(params, index)
       end
-      HashWithIndifferentAccess.new(params.merge(merge_params))
+      
+      params.merge!(extra_params)
+      params.merge!(merge_params)
+
+      HashWithIndifferentAccess.new(params)
     end
     alias_method :to_params, :serialize_to_params
 
