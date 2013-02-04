@@ -32,7 +32,7 @@ module WillFilter
   
     def export
       params[:page] = 1
-      params[:per_page] = 10000 # mas export limit
+      params[:wf_per_page] = 10000 # mas export limit
   
       @wf_filter = WillFilter::Filter.deserialize_from_params(params)
       
