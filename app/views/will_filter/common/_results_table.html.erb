@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag("will_filter/filter") -%>
+
 <table class='wf_paginator' style="margin-top:10px; margin-bottom:10px;">
     <tr>
         <td style='text-align:left'>
@@ -62,8 +64,8 @@
 
           carray << cmeta
 
-          sort_direction        = filter.column_sorted?(cmeta[:key]) ? filter.order_type : "asc"
-          sort_direction_click  = filter.column_sorted?(cmeta[:key]) ? (sort_direction == "asc" ? "desc" : "asc") : "asc"
+          sort_direction        = filter && filter.column_sorted?(cmeta[:key]) ? filter.order_type : "asc"
+          sort_direction_click  = filter && filter.column_sorted?(cmeta[:key]) ? (sort_direction == "asc" ? "desc" : "asc") : "asc"
 
           if cmeta[:sort_key]
             sort_key = cmeta[:sort_key].call(filter)
@@ -72,7 +74,7 @@
           end
 
           if cmeta[:sortable].nil?
-            sortable = filter.contains_column?(cmeta[:key])
+            sortable = filter && filter.contains_column?(cmeta[:key])
           else
             sortable = cmeta[:sortable]
           end
@@ -80,7 +82,13 @@
           if cmeta[:title].is_a?(Proc)
             column_title = cmeta[:title].call(filter)
           else
-            column_title = cmeta[:title] || filter.condition_title_for(cmeta[:key])  
+            # column_title = cmeta[:title] || filter ? filter.condition_title_for(cmeta[:key]) : "Undefined"
+            if filter 
+              column_title = cmeta[:title] || filter.condition_title_for(cmeta[:key])
+            else
+              column_title = cmeta[:key].to_s.titleize
+            end
+
             if sortable
               column_title = link_to(column_title, filter.to_params(:wf_order => cmeta[:key], :wf_order_type => sort_direction_click), :title => "sort by #{cmeta[:key]} ascending", :class => "sort_link")
             end  
@@ -89,7 +97,7 @@
           # column class name 
           title_class_name      = cmeta[:title_class] || cmeta[:key].to_s
           title_class_name      << " sortable"                 if sortable            
-          title_class_name      << " current_sort"             if filter.column_sorted?(sort_key)
+          title_class_name      << " current_sort"             if filter && filter.column_sorted?(sort_key)
           title_class_name      << " #{sort_direction}"
 
           # extra styling that can be applied on a column

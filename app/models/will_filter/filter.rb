@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010-2012 Michael Berkovich
+# Copyright (c) 2010-2013 Michael Berkovich
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -50,6 +50,8 @@ module WillFilter
     before_save     :prepare_save
     after_find      :process_find
     
+    JOIN_NAME_INDICATOR = '>'
+
     #############################################################################
     # Basics 
     #############################################################################
@@ -111,6 +113,7 @@ module WillFilter
     def extra_params
       @extra_params ||= {}
     end    
+
     #############################################################################
     # a list of indexed fields where at least one of them has to be in a query
     # otherwise the filter may hang the database
@@ -247,6 +250,28 @@ module WillFilter
       "#{order} #{order_type}"
     end
   
+    def order_model
+      @order_model ||= begin
+        order_parts = order.split('.')
+        if order_parts.size > 1
+          order_parts.first.camelcase
+        else
+          model_class_name
+        end
+      end  
+    end
+
+    def order_clause
+      @order_clause ||= begin
+        order_parts = order.split('.')
+        if order_parts.size > 1
+          "#{order_parts.first.camelcase.constantize.table_name}.#{order_parts.last} #{order_type}"
+        else
+          "#{model_class_name.constantize.table_name}.#{order_parts.first} #{order_type}"
+        end
+      end  
+    end
+
     def column_sorted?(key)
       key.to_s == order
     end
@@ -283,8 +308,14 @@ module WillFilter
     # Can be overloaded for custom titles
     #############################################################################
     def condition_title_for(key)
-      title = key.to_s.gsub(".", ": ").gsub("_", " ").split("/").last
-      title.split(" ").collect{|part| part.capitalize}.join(" ")
+      title_parts = key.to_s.split('.')
+      title = key.to_s.gsub(".", ": ").gsub("_", " ")
+      title = title.split(" ").collect{|part| part.split("/").last.capitalize}.join(" ")
+      if title_parts.size > 1
+        "#{JOIN_NAME_INDICATOR} #{title}"
+      else
+        title  
+      end
     end
     
     def condition_options
@@ -293,7 +324,22 @@ module WillFilter
         definition.keys.each do |cond|
           opts << [condition_title_for(cond), cond.to_s]
         end
-        opts.sort_by{ |i| i[0] }
+        opts = opts.sort_by{|opt| opt.first.gsub(JOIN_NAME_INDICATOR, 'zzz') }
+        
+        separated = []
+        opts.each_with_index do |opt, index|
+          if index > 0
+            prev_opt_parts = opts[index-1].first.split(":")
+            curr_opt_parts = opt.first.split(":")
+            
+            if (prev_opt_parts.size != curr_opt_parts.size) or (curr_opt_parts.size > 1 and (prev_opt_parts.first != curr_opt_parts.first))
+              key_parts = opt.last.split('.')
+              separated << ["-------------- #{curr_opt_parts.first.gsub("#{JOIN_NAME_INDICATOR} ", '')} --------------", "#{key_parts.first}.id"]
+            end
+          end
+          separated << opt
+        end
+        separated
       end
     end
     
@@ -332,6 +378,15 @@ module WillFilter
 
     def add_condition(condition_key, operator_key, values = [])
       add_condition_at(size, condition_key, operator_key, values)
+    end
+
+    def add_condition!(condition_key, operator_key, values = [])
+      add_condition(condition_key, operator_key, values)
+      self
+    end
+
+    def clone_with_condition(condition_key, operator_key, values = [])
+      dup.add_condition!(condition_key, operator_key, values)
     end
 
     def replace_condition(condition_key, operator_key, values = [])
@@ -431,10 +486,21 @@ module WillFilter
       
       params.merge!(extra_params)
       params.merge!(merge_params)
-
       HashWithIndifferentAccess.new(params)
     end
     alias_method :to_params, :serialize_to_params
+
+    def to_url_params
+      params = []
+      serialize_to_params.each do |name, value|
+        params << "#{name.to_s}=#{ERB::Util.url_encode(value)}"
+      end
+      params.join("&")
+    end
+    
+    def to_s
+      to_url_params
+    end
 
     #############################################################################
     # allows to create a filter from params only
@@ -626,7 +692,6 @@ module WillFilter
     #############################################################################
     # Saved Filters 
     #############################################################################
-
     def user_filters
       @user_filters ||= begin
         conditions = ["model_class_name = ?", self.model_class_name]
@@ -651,12 +716,12 @@ module WillFilter
         if include_default
           filters = default_filters
           if (filters.size > 0)
-            filters.insert(0, ["Select default filter", "-1"])
+            filters.insert(0, ["-- Select Default Filter --", "-1"])
           end
         end
   
         if user_filters.any?
-          filters << ["Select saved filter", "-2"] if include_default
+          filters << ["-- Select Saved Filter --", "-2"] if include_default
           user_filters.each do |filter|
             filters << [filter.name, filter.id.to_s]
           end
@@ -724,12 +789,12 @@ module WillFilter
     #############################################################################
     def export_formats
       formats = []
-      formats << ["Generic formats", -1]
+      formats << ["-- Generic Formats --", -1]
       WillFilter::Config.default_export_formats.each do |frmt|
         formats << [frmt, frmt]
       end
       if custom_formats.size > 0
-        formats << ["Custom formats", -2]
+        formats << ["-- Custom Formats --", -2]
         custom_formats.each do |frmt|
           formats << frmt
         end
