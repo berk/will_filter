@@ -83,7 +83,7 @@
             if filter 
               column_title = cmeta[:title] || filter.condition_title_for(cmeta[:key])
             else
-              column_title = cmeta[:key].to_s.titleize
+              column_title = cmeta[:title] || cmeta[:key].to_s.titleize
             end
 
             if sortable
