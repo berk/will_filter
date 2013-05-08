@@ -149,7 +149,7 @@
             end
 
             value_style << 'width:30px;' if cmeta[:key] == :checkbox
-            value_class << ' current_sort' if filter.column_sorted?(cmeta[:key])
+            value_class << ' current_sort' if filter and filter.column_sorted?(cmeta[:key])
 
             if cmeta[:filterable]
               filter_value = cmeta[:value].nil? ? value : obj.send(cmeta[:key])
