@@ -1,16 +1,13 @@
 <%= stylesheet_link_tag("will_filter/filter") -%>
 
+<% if results.size > 0 %>
 <table class='wf_paginator' style="margin-top:10px; margin-bottom:10px;">
     <tr>
         <td style='text-align:left'>
             <%= paginate(results) %>
         </td>
         <td style='text-align:right'>
-						<% if results.total_count > 0 %>
-							Showing <%= results.offset_value + 1 %> - <%= results.offset_value + results.length %> of <%= results.total_count %>
-						<% else %>	
-							No results found
-						<% end %>
+						Showing <%= results.offset_value + 1 %> - <%= results.offset_value + results.length %> of <%= results.total_count %>
         </td>
     </tr>
 </table>
@@ -210,3 +207,17 @@
     }
   }
 </script>
+
+<% else %>
+
+<table class='wf_paginator' style="margin-top:10px; margin-bottom:10px;">
+    <tr>
+        <td style='text-align:left'>
+            No results found
+        </td>
+        <td style='text-align:right'>
+        </td>
+    </tr>
+</table>
+
+<% end %>

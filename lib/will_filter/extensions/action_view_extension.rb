@@ -35,7 +35,11 @@ module WillFilter
 
     def will_filter_table_tag(results, opts = {})
      filter = results.wf_filter
-     opts[:columns] ||= filter.model_column_keys
+     if results.size > 0
+        opts[:columns] ||= (filter ? filter.model_column_keys : results.first.class.columns.collect{|col| col.name.to_sym})
+     else
+        opts[:columns] = []
+     end
      render(:partial => "/will_filter/common/results_table", :locals => {:results => results, :filter => filter, :opts => opts})
     end
 
