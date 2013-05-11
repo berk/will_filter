@@ -137,7 +137,7 @@
       <tr class='data_row <%=(index % 2 == 0) ? "wf_row_even" : "wf_row_odd"%>'>
         <% carray.each_with_index do |cmeta, column_index| %>
           <%
-            value_style = cmeta[:style] || 'padding-top:2px;padding-bottom:2px;' # should be moved to css
+            value_style = cmeta[:style] || 'padding-top:2px;padding-bottom:2px;vertical-align:middle;' # should be moved to css
             value_class = cmeta[:class] || ''
 
             if cmeta[:value].nil?
