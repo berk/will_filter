@@ -29,7 +29,7 @@ WillFilter::Engine.routes.draw do
   match 'filter/remove_all_conditions', :to => 'filter#remove_all_conditions', :via => [:get,:post]
   match 'filter/load_filter', :to => 'filter#load_filter', :via => [:get,:post]
   match 'filter/save_filter', :to => 'filter#save_filter', :via => [:get,:post]
-  match 'filter/update_filter', :to => 'filter#update_filter', :via => [:get,:post,:pit]
+  match 'filter/update_filter', :to => 'filter#update_filter', :via => [:get,:post,:put]
   match 'filter/delete_filter', :to => 'filter#delete_filter', :via => [:get,:post,:delete]
 
   match 'calendar', :to => 'calendar#index', :via => [:get,:post]
