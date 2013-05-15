@@ -139,7 +139,7 @@
     font-family: Arial;
     margin:0px;
     padding: 2px !important;
-     @include rounded-corners(10px);
+    @include rounded-corners(10px);
   }
 
   select {
@@ -149,7 +149,7 @@
     margin:0px;
     padding: 1px !important;
     background-color:#EDEDED;
-     @include rounded-corners(10px);
+    @include rounded-corners(10px);
   }
 
   a {
@@ -167,7 +167,7 @@
 .end {float:right;}
 .begin {float:left;}
 .center {text-align:center;}
-.full_width {width:100%;}
+.full_width {width:100% !important;}
 
 .boolean_container {
   vertical-align:middle;
