@@ -11,6 +11,9 @@ Gem::Specification.new do |gem|
   gem.homepage      = "https://github.com/berk/will_filter"
   gem.license       = 'MIT'
 
+  gem.add_dependency 'rails', '~> 2.3.0'
+  gem.add_dependency 'will_paginate', '~> 2.3.0'
+
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
