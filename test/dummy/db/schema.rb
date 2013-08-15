@@ -16,8 +16,8 @@ ActiveRecord::Schema.define(:version => 20120223232000) do
   create_table "event_users", :force => true do |t|
     t.integer  "event_id"
     t.integer  "user_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "event_users", ["event_id", "user_id"], :name => "index_event_users_on_event_id_and_user_id"
@@ -31,8 +31,8 @@ ActiveRecord::Schema.define(:version => 20120223232000) do
     t.string   "headline"
     t.datetime "start_time"
     t.datetime "end_time"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.float    "rank"
   end
 
@@ -42,15 +42,15 @@ ActiveRecord::Schema.define(:version => 20120223232000) do
     t.integer  "order_id"
     t.string   "name"
     t.integer  "price"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "merchant_orders", :force => true do |t|
     t.integer  "user_id"
     t.integer  "amount"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(:version => 20120223232000) do
     t.string   "last_name"
     t.date     "birthday"
     t.string   "sex"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "will_filter_filters", :force => true do |t|
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20120223232000) do
     t.text     "data"
     t.integer  "user_id"
     t.string   "model_class_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   add_index "will_filter_filters", ["user_id"], :name => "index_will_filter_filters_on_user_id"
