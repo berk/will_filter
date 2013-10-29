@@ -92,7 +92,7 @@
           end  
 
           # column class name 
-          title_class_name      = cmeta[:title_class] || cmeta[:key].to_s
+          title_class_name      = "wf_#{cmeta[:title_class] || cmeta[:key].to_s}"
           title_class_name      << " sortable"                 if sortable            
           title_class_name      << " current_sort"             if filter && filter.column_sorted?(sort_key)
           title_class_name      << " #{sort_direction}"
