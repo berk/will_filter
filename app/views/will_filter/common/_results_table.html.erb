@@ -1,12 +1,12 @@
 <%= stylesheet_link_tag("will_filter/filter") -%>
 
 <% if results.size > 0 %>
-<table class='wf_paginator' style="margin-top:10px; margin-bottom:10px;">
+<table class='wf_paginator'>
     <tr>
-        <td style='text-align:left'>
+        <td style='text-align:left;vertical-align:middle;'>
             <%= paginate(results) %>
         </td>
-        <td style='text-align:right'>
+        <td style='text-align:right;vertical-align:middle;'>
 						Showing <%= results.offset_value + 1 %> - <%= results.offset_value + results.length %> of <%= results.total_count %>
         </td>
     </tr>
