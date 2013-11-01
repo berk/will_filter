@@ -22,22 +22,22 @@
 #++
 
 WillFilter::Engine.routes.draw do
-  match 'filter/index', :to => 'filter#index'
-  match 'filter/add_condition', :to => 'filter#add_condition'
-  match 'filter/update_condition', :to => 'filter#update_condition'
-  match 'filter/remove_condition', :to => 'filter#remove_condition'
-  match 'filter/remove_all_conditions', :to => 'filter#remove_all_conditions'
-  match 'filter/load_filter', :to => 'filter#load_filter'
-  match 'filter/save_filter', :to => 'filter#save_filter'
-  match 'filter/update_filter', :to => 'filter#update_filter'
-  match 'filter/delete_filter', :to => 'filter#delete_filter'
+  match 'filter/index', :to => 'filter#index', :via => [:get,:post]
+  match 'filter/add_condition', :to => 'filter#add_condition', :via => [:get,:post]
+  match 'filter/update_condition', :to => 'filter#update_condition', :via => [:get,:post]
+  match 'filter/remove_condition', :to => 'filter#remove_condition', :via => [:get,:post]
+  match 'filter/remove_all_conditions', :to => 'filter#remove_all_conditions', :via => [:get,:post]
+  match 'filter/load_filter', :to => 'filter#load_filter', :via => [:get,:post]
+  match 'filter/save_filter', :to => 'filter#save_filter', :via => [:get,:post]
+  match 'filter/update_filter', :to => 'filter#update_filter', :via => [:get,:post,:put]
+  match 'filter/delete_filter', :to => 'filter#delete_filter', :via => [:get,:post,:delete]
 
-  match 'calendar', :to => 'calendar#index'
-  match 'calendar/index', :to => 'calendar#index'
+  match 'calendar', :to => 'calendar#index', :via => [:get,:post]
+  match 'calendar/index', :to => 'calendar#index', :via => [:get,:post]
 
-  match 'exporter', :to => 'exporter#index'
-  match 'exporter/index', :to => 'exporter#index'
-  match 'exporter/export', :to => 'exporter#export'
+  match 'exporter', :to => 'exporter#index', :via => [:get,:post]
+  match 'exporter/index', :to => 'exporter#index', :via => [:get,:post]
+  match 'exporter/export', :to => 'exporter#export', :via => [:get,:post]
 
-  root :to => "filter#index"
+  root :to => "filter#index", :via => [:get,:post]
 end
