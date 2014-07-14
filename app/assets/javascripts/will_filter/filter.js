@@ -90,7 +90,7 @@ Wf.Effects = {
 
 Wf.Filter = function(options){
 	var self = this;
-  this.original_form_action = null;
+  this.original_form_action = "";
 }
 
 Wf.Filter.prototype = {
