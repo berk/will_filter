@@ -1,6 +1,6 @@
 <div class="wf_exporter_header">
   <div class="end">
-    <%=link_to_function("&times;".html_safe, "wfExporter.hide()", :title=>"Close", :class => "close")%>
+    <%=link_to("&times;".html_safe, "#", :onclick => "wfExporter.hide();", :title=>"Close", :class => "close")%>
   </div>
   Exporter
 </div>
@@ -13,7 +13,7 @@
         <td><input type="checkbox" id="wf_fld_all" onClick="wfExporter.selectAllFields(this);" style="width:20px;"></td>
         <td>Name</td>
         <td>Type</td>
-      </tr>        
+      </tr>
     </thead>
     <tbody>
       <% @wf_filter.model_class.columns.each_with_index do |col, index| %>
@@ -27,13 +27,13 @@
       <% end %>
     </tbody>
   </table>
-  
+
   <hr>
   <div class="center">
     Format: <%= select_tag("wf_export_format_selector", options_for_select(@wf_filter.export_formats,  @wf_filter.format)) %>
   </div>
   <div class="center">
-      <%=link_to_function("<span>Export</span>".html_safe, "wfExporter.exportFilter()", :class => "wf_grey_button wf_pcb") %>
-      <%=link_to_function("<span>Cancel</span>".html_safe, "wfExporter.hide()", :class => "wf_grey_button wf_pcb") %>
-  </div>
+    <%=link_to("<span>Export</span>".html_safe, "#", :onclick => "wfExporter.exportFilter();", :class => "wf_grey_button wf_pcb") %>
+    <%=link_to("<span>Cancel</span>".html_safe, "#", :onclick => "wfExporter.hide();", :class => "wf_grey_button wf_pcb") %>
+</div>
 </div>

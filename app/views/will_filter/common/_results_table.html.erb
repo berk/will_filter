@@ -15,7 +15,7 @@
 <table class='wf_results_table'>
   <thead>
     <tr>
-      <% 
+      <%
         carray = [] # stores the order of the columns
 
         opts[:columns].each_with_index do |column, index|
@@ -23,34 +23,32 @@
 
           # supported notations for columns => [
           #  :id,
-          #  [:id, lambda{|obj| obj.id}], 
-          #  [:id, lambda{|obj| obj.id}, "color: white"], 
-          #  [:id, lambda{|obj| obj.id}, {:style => "color: white"}], 
+          #  [:id, lambda{|obj| obj.id}],
+          #  [:id, lambda{|obj| obj.id}, "color: white"],
+          #  [:id, lambda{|obj| obj.id}, {:style => "color: white"}],
           #  [:id, {:filterable => true, :value => lambda{|obj| obj.id}}],
           #  [:id, {:filterable => true, :value => lambda{|obj| obj.id}}],
-          #  {:key => :id, :filterable => true} 
+          #  {:key => :id, :filterable => true}
           # ]
 
           if column.is_a?(Array)
             if column.size < 2
-              raise WillFilter::FilterException.new("Array table column definition must have at least two elements") 
+              raise WillFilter::FilterException.new("Array table column definition must have at least two elements")
             end
 
             cmeta[:key] = column[0]  # first param must always be the column key
 
             if column[1].is_a?(Hash)  # second param is a hash
-              cmeta.merge!(column[1])  
-            else  
+              cmeta.merge!(column[1])
+            else
               cmeta[:value] = column[1]
               unless column[2].nil?
                 if column[2].is_a?(Hash)   # third param can be a set of attributes
                   cmeta.merge!(column[2])
-                elsif column[2].is_a?(String)  # third param can be a string, which represents a style
+                else  # third param can be a string, which represents a style
                   cmeta[:style] = column[2]
-                else
-                  raise WillFilter::FilterException.new("Unsupported table column format #{column[2]}")  
                 end
-              end    
+              end
             end
           elsif column.is_a?(Hash)
             cmeta = column
@@ -66,7 +64,7 @@
 
           if cmeta[:sort_key]
             sort_key = cmeta[:sort_key].call(filter)
-          else  
+          else
             sort_key = cmeta[:key]
           end
 
@@ -80,7 +78,7 @@
             column_title = cmeta[:title].call(filter)
           else
             # column_title = cmeta[:title] || filter ? filter.condition_title_for(cmeta[:key]) : "Undefined"
-            if filter 
+            if filter
               column_title = cmeta[:title] || filter.condition_title_for(cmeta[:key])
             else
               column_title = cmeta[:title] || cmeta[:key].to_s.titleize
@@ -88,18 +86,18 @@
 
             if sortable
               column_title = link_to(column_title, filter.to_params(:wf_order => cmeta[:key], :wf_order_type => sort_direction_click), :title => "sort by #{cmeta[:key]} ascending", :class => "sort_link")
-            end  
-          end  
+            end
+          end
 
-          # column class name 
+          # column class name
           title_class_name      = "wf_#{cmeta[:title_class] || cmeta[:key].to_s}"
-          title_class_name      << " sortable"                 if sortable            
+          title_class_name      << " sortable"                 if sortable
           title_class_name      << " current_sort"             if filter && filter.column_sorted?(sort_key)
           title_class_name      << " #{sort_direction}"
 
           # extra styling that can be applied on a column
-          title_style           = cmeta[:title_style] || "" 
-          title_style           << ";width:15px" if cmeta[:key] == :checkbox          
+          title_style           = cmeta[:title_style] || ""
+          title_style           << ";width:15px" if cmeta[:key] == :checkbox
         %>
 
         <th class="<%= title_class_name %>" style="<%=title_style%>">
@@ -109,7 +107,7 @@
                 <%= link_to "", filter.to_params(:wf_order => sort_key, :wf_order_type => 'asc'), :title => "sort by #{sort_key} ascending", :class => 'up' %>
                 <%= link_to "", filter.to_params(:wf_order => sort_key, :wf_order_type => 'desc'), :title => "sort by #{sort_key} descending", :class => 'down' %>
               </div>
-            
+
               <div style='white-space: nowrap;'>
                 <%= column_title %>
               </div>
@@ -118,14 +116,14 @@
               <%= check_box_tag("wf_check_all", "", false, :onClick => "wfCheckAll(this)") %>
 
             <% else %>
-              <%= column_title %> 
+              <%= column_title %>
 
-            <% end %> 
+            <% end %>
           </div>
         </th>
       <% end %>
     </tr>
-  </thead>  
+  </thead>
 
   <tbody>
 
@@ -137,11 +135,18 @@
       <tr class='data_row <%=(index % 2 == 0) ? "wf_row_even" : "wf_row_odd"%>'>
         <% carray.each_with_index do |cmeta, column_index| %>
           <%
-            value_style = cmeta[:style] || 'padding-top:2px;padding-bottom:2px;vertical-align:middle;' # should be moved to css
+           if cmeta[:style].nil?
+		value_style = 'padding-top:2px;padding-bottom:2px;vertical-align:middle;'
+           elsif cmeta[:style].is_a?(Proc)
+              value_style = cmeta[:style].call(obj)
+            else
+              value_style = cmeta[:style]
+            end
+
             value_class = cmeta[:class] || ''
 
             if cmeta[:value].nil?
-              value = obj.send(cmeta[:key]) 
+              value = obj.send(cmeta[:key])
             elsif cmeta[:value].is_a?(Proc)
               value = cmeta[:value].call(obj)
             else
@@ -158,26 +163,26 @@
           <td style='<%=value_style%>' class='<%=value_class%>'>
               <% if cmeta[:filterable] %>
                 <div style='float:right;'><%=link_to(image_tag("will_filter/filter.png", :style=>"width:12px;"), results.add_filter_condition(cmeta[:key], :is, filter_value.to_s).to_params, {:title => "Show only #{filter_value}"}) %></div>
-              <% end -%>  
+              <% end -%>
 
                <% if cmeta[:key] == :checkbox %>
                   <%= check_box_tag("#{value}[]", obj.id, false, :id => "wf_check_#{index}", :onClick => "wfVerifyTrigger(this)") %>
-            
+
                <% elsif value.is_a?(Hash) %>
                   <% value.each do |key, value| %>
                     <strong><%=key%>:</strong> <%= value %>;
                   <% end -%>
-                  
-                <% elsif value.is_a?(Time) %> 
-                  <%= value.strftime("%m/%d/%Y %l:%M:%S") %>
 
-                <% elsif value.is_a?(Date) %>  
+                <% elsif value.is_a?(Time) %>
+                  <%= value.strftime("%m/%d/%Y %l:%M:%S %p %Z") %>
+
+                <% elsif value.is_a?(Date) %>
                   <%= value.strftime("%m/%d/%Y") %>
-                  
+
                <% else %>
 
-                  <%= value.to_s %> 
-               <% end -%>  
+                  <%= value.to_s %>
+               <% end -%>
           </td>
         <% end -%>
       </tr>
@@ -188,8 +193,19 @@
     <% end -%>
 
   </tbody>
-</table>    
-    
+</table>
+
+<table class='wf_paginator'>
+    <tr>
+        <td style='text-align:left;vertical-align:middle;'>
+            <%= paginate(results) %>
+        </td>
+        <td style='text-align:right;vertical-align:middle;'>
+            Showing <%= results.offset_value + 1 %> - <%= results.offset_value + results.length %> of <%= results.total_count %>
+        </td>
+    </tr>
+</table>
+  
 <script>
   function wfVerifyTrigger(check) {
     if (!check.checked) {
@@ -197,7 +213,7 @@
       check_all.checked = false;
     }
   }
-  
+
   function wfCheckAll(trigger) {
     var index = 0;
     var check = document.getElementById("wf_check_" + index);

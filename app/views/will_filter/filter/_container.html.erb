@@ -1,15 +1,16 @@
 <%= will_filter_scripts_tag %>
 
-<%= form_tag({}, {:method => :get, :name=>'wf_form', :id => 'wf_form', :class => 'wf_form' }) do %>
-<div class="wf_container">
+<%= form_tag({}, {:method => :get, :name => 'wf_form', :id => 'wf_form', :class => 'wf_form'}) do %>
 
-  <div id="wf_filter_conditions" class="conditions">
-    <%= render :partial=> '/will_filter/filter/conditions', :locals => { :wf_filter => wf_filter } %>
+  <div class="wf_container">
+
+    <div id="wf_filter_conditions" class="conditions">
+      <%= render :partial => '/will_filter/filter/conditions', :locals => {:wf_filter => wf_filter} %>
+    </div>
+
+    <div class="footer">
+      <%= render :partial => '/will_filter/filter/conditions_footer', :locals => {:wf_filter => wf_filter} %>
+    </div>
+
   </div>
-
-  <div class="footer">
-    <%= render :partial => '/will_filter/filter/conditions_footer', :locals => { :wf_filter => wf_filter } %>
-  </div>
-
-</div>
 <% end %>

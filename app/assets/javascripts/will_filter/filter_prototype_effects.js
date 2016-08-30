@@ -35,4 +35,4 @@ Wf.Effects = {
   fade: function(element_id) {
     Effect.Fade(element_id, { duration: 0.25 });
   }
-}
+};

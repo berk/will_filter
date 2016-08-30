@@ -8,7 +8,7 @@
   <% unless WillFilter::Config.require_filter_extensions? %>
     <%= hidden_field_tag(:wf_model, wf_filter.model_class_name) %>
   <% end %>
-    
+
   <%= hidden_field_tag(:wf_export_format, "") %>
   <%= hidden_field_tag(:wf_export_fields, "") %>
 </div>
@@ -16,23 +16,28 @@
 <div class="header">
   <% if wf_filter.show_export_options? %>
     <div class="end" style="padding-left:3px;">
-      <%=link_to_function("<span>Export Data...</span>".html_safe, "wfExporter.show(this)", :class => "wf_grey_button wf_pcb") %>
-    </div>  
+      <button type="button" class="btn btn-default btn-xs" onclick="wfExporter.show(this)">
+        Export Data...
+      </button>
+    </div>
   <% end %>
-  
+
   <% if wf_filter.show_save_options? %>
     <div class="end">
-      <%=link_to_function("<span>Save As New...</span>".html_safe, "wfFilter.saveFilter()", :class => "wf_grey_button wf_pcb") %>
+      <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.saveFilter()">
+        Save As New...
+      </button>
+
       <% if wf_filter.id %>
-        <%=link_to_function("<span>Update</span>".html_safe, "wfFilter.updateFilter()", :class => "wf_grey_button wf_pcb") %>
-        <%=link_to_function("<span>Delete</span>".html_safe, "wfFilter.deleteFilter()", :class => "wf_grey_button wf_pcb") %>
+        <%= link_to("<span>Update</span>".html_safe, "#", :onclick => "wfFilter.updateFilter();", :class => "wf_grey_button wf_pcb") %>
+        <%= link_to("<span>Delete</span>".html_safe, "#", :onclick => "wfFilter.deleteFilter();", :class => "wf_grey_button wf_pcb") %>
       <% end %>
     </div>
   <% end %>
 
   <div>
     <% unless wf_filter.saved_filters.empty? %>
-       <%= select_tag(:wf_key, options_for_select(wf_filter.saved_filters, wf_filter.key), {:onChange=>"wfFilter.loadSavedFilter()"}) %>
+      <%= select_tag(:wf_key, options_for_select(wf_filter.saved_filters, wf_filter.key), {:onChange => "wfFilter.loadSavedFilter()"}) %>
     <% end %>
   </div>
 </div>

@@ -1,7 +1,7 @@
 <% if results.size > 0 %>
 <div class="<%=opts[:class]%>" style="<%=opts[:style]%>">
   <% actions.each do |action| %>
-      <%=link_to_function("<span>#{action.first}</span>".html_safe, "#{action.last}", :class => "wf_grey_button wf_pcb") %>
-	<% end %>  
-</div>    
+  <%=link_to("<span>#{action.first}</span>".html_safe, "#", :onclick => "#{action.last};", :class => "wf_grey_button wf_pcb") %>
+	<% end %>
+</div>
 <% end %>

@@ -3,7 +3,7 @@ class Event < ActiveRecord::Base
   has_many :event_users
   
   def self.random
-    find(:first, :offset => rand(count - 1))
+    Event.offset(rand(Event.count)).first
   end
   
   def self.generate_random_data(count = 500)

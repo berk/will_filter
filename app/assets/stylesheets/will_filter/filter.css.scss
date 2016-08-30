@@ -6,15 +6,15 @@
 
 .wf_container {
   padding:0px;
-  background:#f1f4f9;
+  background:white;
   margin:0px;
   margin-bottom:10px;
   font-size: 12px;
   font-family: Arial;
   width: 100%;
-  border:solid 1px #e8e8e8;
-  border-color:#e8e8e8 #bababa #bababa #e8e8e8;
-   @include rounded-corners(10px);
+  //border:solid 1px #e8e8e8;
+  //border-color:#e8e8e8 #bababa #bababa #e8e8e8;
+  // @include rounded-corners(3px);
 
   .spinner {
     font-size: 10px;
@@ -53,9 +53,9 @@
     .body {
       padding:5px;
       background:white;
-      border:solid 1px #bababa;
-      border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
-      @include rounded-corners(10px);
+      //border:solid 1px #bababa;
+      //border-color:#bababa #e8e8e8 #e8e8e8 #bababa;
+      //@include rounded-corners(3px);
 
       .no_filter_hint {
         font-style:italic;
@@ -116,7 +116,7 @@
         font-family: Arial;
         border: 1px #f58a8a solid;
         color:#b60e0e;
-        @include rounded-corners(10px);
+        @include rounded-corners(3px);
       }
     }
 
@@ -139,7 +139,7 @@
     font-family: Arial;
     margin:0px;
     padding: 2px !important;
-    @include rounded-corners(10px);
+    @include rounded-corners(3px);
   }
 
   select {
@@ -149,7 +149,7 @@
     margin:0px;
     padding: 1px !important;
     background-color:#EDEDED;
-    @include rounded-corners(10px);
+    @include rounded-corners(3px);
   }
 
   a {

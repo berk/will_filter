@@ -1,3 +1,7 @@
+= My Modifications
+Probably not sutable for everyone, I got rid of some of the hard coded paths and modified the table view to accept a lambda for styling cells.
+
+
 = WillFilter
 
 will_filter is a Rails engine plugin that provides a GUI for filtering your ActiveRecord models.

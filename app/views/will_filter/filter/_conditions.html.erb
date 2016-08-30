@@ -1,4 +1,3 @@
-
 <%= render :partial => '/will_filter/filter/conditions_header', :locals => {:wf_filter => wf_filter} %>
 
 <div class="body">
@@ -12,30 +11,34 @@
   <div class="filter_match_type">
     <div class="end">
       <small>
-        <%=link_to_function("Toggle Conditions", "wfFilter.toggleDebugger()") %>
+        <%= link_to("Toggle Conditions", "#", :onclick => "wfFilter.toggleDebugger();") %>
       </small>
     </div>
-    Match <%= select_tag(:wf_match, options_for_select(wf_filter.match_options, wf_filter.match), {:onChange=>"wfFilter.markDirty()"}) %>
+    Match <%= select_tag(:wf_match, options_for_select(wf_filter.match_options, wf_filter.match), {:onChange => "wfFilter.markDirty()"}) %>
     of the following conditions:
   </div>
 
   <% if wf_filter.size == 0 %>
     <div class="no_filter_hint">
-      You haven't added any filter conditions, so all of the results were returned.
+      No filter conditions have been specified and all results were returned.
       Use the "Add" button in the bottom left corner to add a new condition or select
       a predefined filter from a drop-down list above.
     </div>
   <% else %>
-    <table class="table" cellpadding="0" cellspacing="0">
+    <table class="">
       <% 0.upto(wf_filter.size-1) do |index| %>
         <% condition = wf_filter.condition_at(index) %>
-        <%= render :partial => "/will_filter/filter/condition", :locals => {:wf_filter => wf_filter, :condition => condition, :index => index}%>
+        <%= render :partial => '/will_filter/filter/condition', :locals => {
+            :wf_filter => wf_filter,
+            :condition => condition,
+            :index => index
+        } %>
       <% end %>
     </table>
   <% end %>
 
   <div id="wf_debugger" class="debugger" style="display:none;">
-      <%= raw(wf_filter.debug_sql_conditions) %>
+    <%= raw(wf_filter.debug_sql_conditions) %>
   </div>
 
 </div>

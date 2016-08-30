@@ -4,7 +4,7 @@
 
   Licensed under GPL and MIT.
 */
-.wf_pcb, .wf_pcb span                         {background: url('/assets/will_filter/buttons.png') no-repeat; height: 23px; line-height: 23px; padding: 3px 0 7px 0; }
+.wf_pcb, .wf_pcb span                         {background: url('buttons.png') no-repeat; height: 23px; line-height: 23px; padding: 3px 0 7px 0; }
 .wf_pcb, a.wf_pcb:link, a.wf_pcb:visited      {color: #333; font-size: 12px; font-style:bold; font-family:arial; padding-left: 14px; text-decoration: none !important; }
 
 /* ie 6 hack */
@@ -22,3 +22,10 @@ a.wf_grey_button:active, .grey_active_button  {background-position: left -273px;
 a.wf_grey_button:active span, .grey_active_button span {background-position: right -599px; }
 body.wf_grey_disabled_button                  {background-position: left -300px; color: #bbb !important; }
 body.wf_grey_disabled_button span             {background-position: right -626px; }
+
+
+
+
+.wf_pcb, .wf_pcb span                         {background: url('buttons.png') no-repeat; height: 23px; line-height: 23px; padding: 3px 0 7px 0; }
+.wf_pcb, a.wf_pcb:link, a.wf_pcb:visited      {color: #333; font-size: 12px; font-style:bold; font-family:arial; padding-left: 14px; text-decoration: none !important; }
+

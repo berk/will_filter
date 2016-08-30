@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   end
   
   def self.random
-    find(:first, :offset => rand(count - 1))
+    User.offset(rand(User.count)).first
   end
   
   def self.generate_random_data(count = 500)
