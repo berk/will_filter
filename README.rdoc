@@ -12,7 +12,7 @@ a matter of adding two lines of code - one to your controller and one to your vi
 
 Add the following gems to your Gemfile: 
 
-  gem 'will_filter', "~> 3.1.0" 
+  gem 'will_filter'
   gem 'kaminari'
 
 And run:
