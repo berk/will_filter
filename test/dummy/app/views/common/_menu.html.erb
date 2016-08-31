@@ -1,28 +1,26 @@
-<div style="width:100%; padding-top:5px; padding-bottom:5px; background-color:#eee; border-bottom:1px dotted grey; font-size: 14px;">
-  <center>
-		<table style="width:900px;" cellpadding="0" cellspacing="0">
-		  <tr>
-		  	<% 
-		  		controller_name = controller.controller_name 
-		  		controller_name = "simple" if controller_name == "orders"
-		  	%>
-		    <td style="text-align:left;">
-		    	<%= controller_name == 'simple' ? "Basic" : "Advanced" %>: 
-		        <%=link_to("Users", :controller => controller_name, :action => :users) %>
-		      | <%=link_to("Events", :controller => controller_name, :action => :events) %>
-		      | <%=link_to("Event Members", :controller => controller_name, :action => :event_members) %>
-		      ||
-				  <% if controller_name == 'simple' %>
-  		      <%=link_to("Switch to Advanced Filters", :controller => :advanced, :action => :users) %>
-					<% else %>
-            <%=link_to("Switch to Basic Filters", :controller => :simple, :action => :users) %>
-					<% end %>	
-		    </td>
-		    <td style="text-align:right;">
-          <%=link_to("Users with Actions", :controller => :advanced, :action => :users_with_actions) %> |
-		      <%=link_to("Custom Header/Footer", :controller => :orders, :action => :index) %> 
-		    </td>
-		  </tr>
-		</table>
-	</center>
+<div style="width:100%; padding-top:5px; padding-bottom:15px; font-size: 14px;">
+  <div style="width:900px; margin: auto">
+    <%
+      controller_name = controller.controller_name
+      controller_name = "simple" if controller_name == "orders"
+    %>
+    <div style="float:right;">
+      <%= link_to("Users with Actions", :controller => :advanced, :action => :users_with_actions) %> |
+      <%= link_to("Custom Header/Footer", :controller => :orders, :action => :index) %>
+    </div>
+
+    <div style="text-align:left;">
+      <%= controller_name == 'simple' ? "Basic" : "Advanced" %>:
+      <%= link_to("Users", :controller => controller_name, :action => :users) %>
+      | <%= link_to("Events", :controller => controller_name, :action => :events) %>
+      | <%= link_to("Event Members", :controller => controller_name, :action => :event_members) %>
+
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <% if controller_name == 'simple' %>
+        <%= link_to("Switch to Advanced Filters", :controller => :advanced, :action => :users) %>
+      <% else %>
+        <%= link_to("Switch to Basic Filters", :controller => :simple, :action => :users) %>
+      <% end %>
+    </div>
+  </div>
 </div>

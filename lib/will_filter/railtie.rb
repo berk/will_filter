@@ -1,5 +1,14 @@
 #--
-# Copyright (c) 2010-2013 Michael Berkovich
+# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+#
+#  __    __  ____  _      _          _____  ____  _     ______    ___  ____
+# |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \
+# |  |  |  | |  | | |    | |        |   __| |  | | |   |      | /  [_ |  D  )
+# |  |  |  | |  | | |___ | |___     |  |_   |  | | |___|_|  |_||    _]|    /
+# |  `  '  | |  | |     ||     |    |   _]  |  | |     | |  |  |   [_ |    \
+#  \      /  |  | |     ||     |    |  |    |  | |     | |  |  |     ||  .  \
+#   \_/\_/  |____||_____||_____|    |__|   |____||_____| |__|  |_____||__|\_|
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -25,8 +34,8 @@ require 'rails'
 require 'pp'
 
 [
- ".",
- "./containers"
+ '.',
+ './containers'
 ].each do |dir|
     Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
       require(file)

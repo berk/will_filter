@@ -1,8 +1,8 @@
 <div class="wf_exporter_header">
-  <div class="end">
-    <%=link_to("&times;".html_safe, "#", :onclick => "wfExporter.hide();", :title=>"Close", :class => "close")%>
+  <div class="end" style="margin-top: -3px;">
+    <%=link_to("&times;".html_safe, "#", :onclick => "wfExporter.hide(); return false;", :title=>"Close", :class => "close")%>
   </div>
-  Exporter
+  Export Data
 </div>
 
 <div class="wf_exporter_container">
@@ -28,12 +28,16 @@
     </tbody>
   </table>
 
-  <hr>
-  <div class="center">
+
+  <div class="center" style="border-top: 1px solid #ccc; padding-top: 5px; margin-top: 5px;">
     Format: <%= select_tag("wf_export_format_selector", options_for_select(@wf_filter.export_formats,  @wf_filter.format)) %>
   </div>
   <div class="center">
-    <%=link_to("<span>Export</span>".html_safe, "#", :onclick => "wfExporter.exportFilter();", :class => "wf_grey_button wf_pcb") %>
-    <%=link_to("<span>Cancel</span>".html_safe, "#", :onclick => "wfExporter.hide();", :class => "wf_grey_button wf_pcb") %>
+    <button type="button" class="btn btn-default" onclick="wfExporter.exportFilter()">
+      Export
+    </button>
+    <button type="button" class="btn btn-default" onclick="wfExporter.hide()">
+      Cancel
+    </button>
 </div>
 </div>

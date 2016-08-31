@@ -1,52 +1,64 @@
-<div style="font-size:12px;font-weight:bold;">
+<div class="wf_calendar_header">
   <div style="float:right; padding-right:2px;">
-	  <% if @calendar.mode == 'month' %>
-    <%=link_to("&laquo; expand".html_safe, "#", :onclick => "wfCalendar.changeMode('quarter', #{@calendar.show_time?});", :style => "font-size:10px; padding-bottom: 3px")%> &nbsp;
-   <% elsif @calendar.mode == 'quarter' %>
-       <%=link_to("&laquo; expand".html_safe, "#",  :onclick => "wfCalendar.changeMode('annual', #{@calendar.show_time?});", :style => "font-size:10px; padding-bottom: 3px")%> &nbsp;
-       <% end %>
+    <% if @calendar.mode == 'month' %>
+      <%= link_to("&laquo; expand".html_safe, "#", :onclick => "wfCalendar.changeMode('quarter', #{@calendar.show_time?});", :style => "font-size:10px; padding-bottom: 3px") %> &nbsp;
+    <% elsif @calendar.mode == 'quarter' %>
+      <%= link_to("&laquo; expand".html_safe, "#", :onclick => "wfCalendar.changeMode('annual', #{@calendar.show_time?});", :style => "font-size:10px; padding-bottom: 3px") %> &nbsp;
+    <% end %>
 
-<%=link_to(image_tag("will_filter/close.gif", :title=>"Close"), "#", :onclick => "wfCalendar.hide();")%>
+    <%= link_to('&times;'.html_safe, '#', :title=>"Close", :onclick => "wfCalendar.hide(); return false;") %>
   </div>
 
-  Calendar
+  <% if @calendar.show_time? %>
+    Select Date/Time
+  <% else %>
+    Select Date
+  <% end %>
 </div>
+
 <div class="wf_calendar_container">
-<%= form_tag({:controller => "/will_filter/calendar"}, {:method => :get, :id => "wf_calendar_form"}) do %>
+  <%= form_tag({:controller => "/will_filter/calendar"}, {:method => :get, :id => "wf_calendar_form"}) do %>
     <%= hidden_field_tag :wf_calendar_start_date, @calendar.start_date.strftime("%Y/%m/%d") %>
-	  <%= hidden_field_tag :wf_calendar_selected_date, @calendar.selected_date.strftime("%Y/%m/%d") %>
+    <%= hidden_field_tag :wf_calendar_selected_date, @calendar.selected_date.strftime("%Y/%m/%d") %>
     <%= hidden_field_tag :wf_calendar_mode, @calendar.mode %>
     <%= hidden_field_tag :wf_calendar_show_time, @calendar.show_time? %>
 
-	  <div style="padding:5px;text-align:center; margin-bottom:5px; border-bottom: 1px solid #ccc;">
-			  &nbsp;
-        <%=link_to("&laquo;".html_safe, "#", :onclick => "wfCalendar.goToStartDate('#{@calendar.previous_start_date}');", :style=>"font-size:16px;")%>
-			  &nbsp;&nbsp;&nbsp;
-				<% if @calendar.mode != 'annual' %>
-  		 		 <%= select_tag("month", options_for_select(WillFilter::Calendar.month_options, @calendar.month), {:id => "wf_calendar_month", :onChange=>"wfCalendar.goToStartDate('')", :style => "width:auto;"}) %>
-				<% end %>
-		 		<%= select_tag("year", options_for_select(WillFilter::Calendar.year_options, @calendar.year), {:id => "wf_calendar_year",:onChange=>"wfCalendar.goToStartDate('')", :style => "width:auto;"}) %>
-			  &nbsp;&nbsp;&nbsp;
-        <%=link_to("&raquo".html_safe, "#", :onclick => "wfCalendar.goToStartDate('#{@calendar.next_start_date}');", :style=>"font-size:16px;")%>
-			  &nbsp;
-		</div>
+    <div style="padding:5px;text-align:center; margin-bottom:5px; border-bottom: 1px solid #ccc;">
+      &nbsp;
+      <%= link_to("&laquo;".html_safe, "#", :onclick => "wfCalendar.goToStartDate('#{@calendar.previous_start_date}');", :style => "font-size:16px;") %>
+      &nbsp;&nbsp;&nbsp;
+      <% if @calendar.mode != 'annual' %>
+        <%= select_tag("month", options_for_select(WillFilter::Calendar.month_options, @calendar.month), {:id => "wf_calendar_month", :onChange => "wfCalendar.goToStartDate('')", :style => "width:auto;"}) %>
+      <% end %>
+      <%= select_tag("year", options_for_select(WillFilter::Calendar.year_options, @calendar.year), {:id => "wf_calendar_year", :onChange => "wfCalendar.goToStartDate('')", :style => "width:auto;"}) %>
+      &nbsp;&nbsp;&nbsp;
+      <%= link_to("&raquo".html_safe, "#", :onclick => "wfCalendar.goToStartDate('#{@calendar.next_start_date}');", :style => "font-size:16px;") %>
+      &nbsp;
+    </div>
 
     <%= render :partial => @calendar.mode, :locals => {:calendar => @calendar} %>
 
-		<% if @calendar.show_time? %>
-		  <div style="text-align:center; margin-top:10px; padding:5px; border-top:1px solid #ccc;">
- 	        <div style="margin:5px;">
-				      Time: &nbsp;
-				      <%= select_tag("wf_calendar_hour", options_for_select(WillFilter::Calendar.hour_options, @calendar.hour), :style => "width:auto;") %>
-				      :
-				      <%= select_tag("wf_calendar_minute", options_for_select(WillFilter::Calendar.minute_options, @calendar.minute), :style => "width:auto;") %>
-				      :
-				      <%= select_tag("wf_calendar_second", options_for_select(WillFilter::Calendar.second_options, @calendar.second), :style => "width:auto;") %>
-			    </div>
-          <%=link_to("<span>Set Date and Time</span>".html_safe, "#", :onclick => "wfCalendar.setDateTime();", :class => "wf_grey_button wf_pcb") %>
-          <%=link_to("<span>Cancel</span>".html_safe, "#", :onclick => "wfCalendar.hide();", :class => "wf_grey_button wf_pcb") %>
-</div>
-		<% end %>
+    <% if @calendar.show_time? %>
+      <div style="text-align:center; margin-top:10px; padding:5px; border-top:1px solid #ccc;">
+        <div style="margin:10px;">
+          Time: &nbsp;
+          <%= select_tag("wf_calendar_hour", options_for_select(WillFilter::Calendar.hour_options, @calendar.hour), :style => "width:auto;") %>
+          :
+          <%= select_tag("wf_calendar_minute", options_for_select(WillFilter::Calendar.minute_options, @calendar.minute), :style => "width:auto;") %>
+          :
+          <%= select_tag("wf_calendar_second", options_for_select(WillFilter::Calendar.second_options, @calendar.second), :style => "width:auto;") %>
+        </div>
 
-<% end %>
+
+        <button type="button" class="btn btn-default btn-xs" onclick="wfCalendar.setDateTime()">
+          Select Date and Time
+        </button>
+
+        <button type="button" class="btn btn-default btn-xs" onclick="wfCalendar.hide()">
+          Cancel
+        </button>
+      </div>
+    <% end %>
+
+  <% end %>
 </div>

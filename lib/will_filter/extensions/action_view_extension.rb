@@ -1,5 +1,14 @@
 #--
-# Copyright (c) 2010-2013 Michael Berkovich
+# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+#
+#  __    __  ____  _      _          _____  ____  _     ______    ___  ____
+# |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \
+# |  |  |  | |  | | |    | |        |   __| |  | | |   |      | /  [_ |  D  )
+# |  |  |  | |  | | |___ | |___     |  |_   |  | | |___|_|  |_||    _]|    /
+# |  `  '  | |  | |     ||     |    |   _]  |  | |     | |  |  |   [_ |    \
+#  \      /  |  | |     ||     |    |  |    |  | |     | |  |  |     ||  .  \
+#   \_/\_/  |____||_____||_____|    |__|   |____||_____| |__|  |_____||__|\_|
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -26,11 +35,11 @@ module WillFilter
     extend ActiveSupport::Concern
 
     def will_filter_tag(results, opts = {})
-     render(:partial => "/will_filter/filter/container", :locals => {:wf_filter => results.wf_filter, :opts => opts})
+     render(:partial => '/will_filter/filter/container', :locals => {:wf_filter => results.wf_filter, :opts => opts})
     end
 
     def will_filter_scripts_tag(opts = {})
-     render(:partial => "/will_filter/common/scripts", :locals => {:opts => opts})
+     render(:partial => '/will_filter/common/scripts', :locals => {:opts => opts})
     end
 
     def will_filter_table_tag(results, opts = {})

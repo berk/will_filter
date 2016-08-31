@@ -189,6 +189,8 @@ Wf.Filter.prototype = {
         });
     },
     submit: function () {
+        this.showSpinner();
+
         if (this.original_form_action != "")
             Wf.element('wf_form').action = this.original_form_action;
 

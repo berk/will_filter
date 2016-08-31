@@ -20,12 +20,12 @@
 
   <% if wf_filter.size == 0 %>
     <div class="no_filter_hint">
-      No filter conditions have been specified and all results were returned.
-      Use the "Add" button in the bottom left corner to add a new condition or select
+      No filter conditions have been specified and all results have been returned.
+      Use the "+ Add Condition" button in the bottom left corner to add a new condition or select
       a predefined filter from a drop-down list above.
     </div>
   <% else %>
-    <table class="">
+    <table>
       <% 0.upto(wf_filter.size-1) do |index| %>
         <% condition = wf_filter.condition_at(index) %>
         <%= render :partial => '/will_filter/filter/condition', :locals => {

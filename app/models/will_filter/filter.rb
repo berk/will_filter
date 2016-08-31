@@ -1,5 +1,14 @@
 #--
-# Copyright (c) 2010-2013 Michael Berkovich
+# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+#
+#  __    __  ____  _      _          _____  ____  _     ______    ___  ____
+# |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \
+# |  |  |  | |  | | |    | |        |   __| |  | | |   |      | /  [_ |  D  )
+# |  |  |  | |  | | |___ | |___     |  |_   |  | | |___|_|  |_||    _]|    /
+# |  `  '  | |  | |     ||     |    |   _]  |  | |     | |  |  |   [_ |    \
+#  \      /  |  | |     ||     |    |  |    |  | |     | |  |  |     ||  .  \
+#   \_/\_/  |____||_____||_____|    |__|   |____||_____| |__|  |_____||__|\_|
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -43,7 +52,6 @@
 module WillFilter
   class Filter < ActiveRecord::Base
     self.table_name = :will_filter_filters
-    #attr_accessible :type, :name, :data, :user_id, :model_class_name
 
     # set_table_name  :will_filter_filters
     serialize       :data
@@ -58,8 +66,8 @@ module WillFilter
     def initialize(model_class = nil)
       super()
 
-      if WillFilter::Config.require_filter_extensions? and self.class.name == "WillFilter::Filter"
-        raise WillFilter::FilterException.new("Your configuration requires you to subclass the filter. Default filter cannot be created.")
+      if WillFilter::Config.require_filter_extensions? and self.class.name == 'WillFilter::Filter'
+        raise WillFilter::FilterException.new('Your configuration requires you to subclass the filter. Default filter cannot be created.')
       end
 
       self.model_class_name = model_class.to_s
@@ -184,6 +192,16 @@ module WillFilter
       end
     end
 
+    def sql_attribute_for_key(key)
+      if key.to_s.index('.')
+        parts = key.to_s.split('.')
+        join_class = parts.first.camelcase.constantize
+        "#{join_class.table_name}.#{parts.last}"
+      else
+        "#{table_name}.#{key}"
+      end
+    end
+
     def self.container_by_sql_type(type)
       raise WillFilter::FilterException.new("Unsupported data type #{type}") unless WillFilter::Config.data_types[type]
       WillFilter::Config.data_types[type]
@@ -246,10 +264,6 @@ module WillFilter
       @order_type
     end
 
-    def order_clause
-      "#{order} #{order_type}"
-    end
-
     def order_model
       @order_model ||= begin
         order_parts = order.split('.')
@@ -292,12 +306,20 @@ module WillFilter
       [10, 20, 30, 40, 50, 100, 500, 1000]
     end
 
+    def per_page_configurable?
+      true
+    end
+
     def per_page_options
       @per_page_options ||= default_per_page_options.collect{ |n| [n.to_s, n.to_s] }
     end
 
     def match_options
       [["all", "all"], ["any", "any"]]
+    end
+
+    def order_configurable?
+      true
     end
 
     def order_type_options
@@ -575,6 +597,10 @@ module WillFilter
         self.user_id = WillFilter::Config.current_user.id
       end
 
+      if WillFilter::Config.project_filters_enabled? and WillFilter::Config.current_project
+        self.project_id = WillFilter::Config.current_project.id
+      end
+
       self
     end
     alias_method :from_params, :deserialize_from_params
@@ -623,25 +649,30 @@ module WillFilter
     #############################################################################
     # SQL Conditions
     #############################################################################
+
+    def to_sql_condition(condition)
+      condition.container.sql_condition
+    end
+
     def sql_conditions
       @sql_conditions ||= begin
         if errors?
-          [" 1 = 2 "]
+          [' 1 = 2 ']
         else
-          all_sql_conditions = [""]
+          all_sql_conditions = ['']
           0.upto(size - 1) do |index|
             condition = condition_at(index)
             next if custom_condition?(condition)
             next unless condition.container
 
-            sql_condition = condition.container.sql_condition
+            sql_condition = to_sql_condition(condition)
 
             unless sql_condition
               raise WillFilter::FilterException.new("Unsupported operator #{condition.operator_key} for container #{condition.container.class.name}")
             end
 
             if all_sql_conditions[0].size > 0
-              all_sql_conditions[0] << ( match.to_sym == :all ? " AND " : " OR ")
+              all_sql_conditions[0] << ( match.to_sym == :all ? ' AND ' : ' OR ')
             end
 
             all_sql_conditions[0] << sql_condition[0]
@@ -694,14 +725,23 @@ module WillFilter
     #############################################################################
     def user_filters
       @user_filters ||= begin
-        conditions = ["model_class_name = ?", self.model_class_name]
+        conditions = ['model_class_name = ?', self.model_class_name]
 
         if WillFilter::Config.user_filters_enabled?
-          conditions[0] << " and user_id = ? "
+          conditions[0] << ' and user_id = ? '
           if WillFilter::Config.current_user and WillFilter::Config.current_user.id
             conditions << WillFilter::Config.current_user.id
           else
-            conditions << "0"
+            conditions << '0'
+          end
+        end
+
+        if WillFilter::Config.project_filters_enabled?
+          conditions[0] << ' and project_id = ? '
+          if WillFilter::Config.current_project and WillFilter::Config.current_project.id
+            conditions << WillFilter::Config.current_project.id
+          else
+            conditions << '0'
           end
         end
 

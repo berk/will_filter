@@ -1,5 +1,14 @@
 #--
-# Copyright (c) 2010-2013 Michael Berkovich
+# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+#
+#  __    __  ____  _      _          _____  ____  _     ______    ___  ____
+# |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \
+# |  |  |  | |  | | |    | |        |   __| |  | | |   |      | /  [_ |  D  )
+# |  |  |  | |  | | |___ | |___     |  |_   |  | | |___|_|  |_||    _]|    /
+# |  `  '  | |  | |     ||     |    |   _]  |  | |     | |  |  |   [_ |    \
+#  \      /  |  | |     ||     |    |  |    |  | |     | |  |  |     ||  .  \
+#   \_/\_/  |____||_____||_____|    |__|   |____||_____| |__|  |_____||__|\_|
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -23,16 +32,22 @@
 
 module WillFilter
   class Config
-    def self.init(site_current_user)
+    def self.init(site_current_user, site_current_project = nil)
       Thread.current[:current_user] = site_current_user
+      Thread.current[:current_project] = site_current_project
     end
     
     def self.current_user
       Thread.current[:current_user]
     end
-    
+
+    def self.current_project
+      Thread.current[:current_project]
+    end
+
     def self.reset!
       Thread.current[:current_user] = nil
+      Thread.current[:current_project] = nil
     end
     
     def self.load_yml(file_path)
@@ -99,7 +114,19 @@ module WillFilter
     def self.current_user_method
       save_options[:current_user_method]
     end
-  
+
+    def self.project_filters_enabled?
+      save_options[:project_filters_enabled]
+    end
+
+    def self.project_class_name
+      save_options[:project_class_name]
+    end
+
+    def self.current_project_method
+      save_options[:current_project_method]
+    end
+
     def self.exporting_enabled?
       export_options[:enabled]
     end

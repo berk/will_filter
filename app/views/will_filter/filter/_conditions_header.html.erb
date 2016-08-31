@@ -1,19 +1,17 @@
-<div style="margin:0;padding:0;display:inline">
-  <%= hidden_field_tag(:wf_id, wf_filter.id) %>
-  <%= hidden_field_tag(:wf_type, wf_filter.class.name) %>
-  <%= hidden_field_tag(:wf_dirty, "false") %>
-  <%= hidden_field_tag(:wf_submitted, "false") %>
-  <%= hidden_field_tag(:wf_name, wf_filter.name) %>
+<%= hidden_field_tag(:wf_id, wf_filter.id) %>
+<%= hidden_field_tag(:wf_type, wf_filter.class.name) %>
+<%= hidden_field_tag(:wf_dirty, "false") %>
+<%= hidden_field_tag(:wf_submitted, "false") %>
+<%= hidden_field_tag(:wf_name, wf_filter.name) %>
 
-  <% unless WillFilter::Config.require_filter_extensions? %>
-    <%= hidden_field_tag(:wf_model, wf_filter.model_class_name) %>
-  <% end %>
+<% unless WillFilter::Config.require_filter_extensions? %>
+  <%= hidden_field_tag(:wf_model, wf_filter.model_class_name) %>
+<% end %>
 
-  <%= hidden_field_tag(:wf_export_format, "") %>
-  <%= hidden_field_tag(:wf_export_fields, "") %>
-</div>
+<%= hidden_field_tag(:wf_export_format, "") %>
+<%= hidden_field_tag(:wf_export_fields, "") %>
 
-<div class="header">
+<div class="wf_header">
   <% if wf_filter.show_export_options? %>
     <div class="end" style="padding-left:3px;">
       <button type="button" class="btn btn-default btn-xs" onclick="wfExporter.show(this)">
@@ -29,8 +27,12 @@
       </button>
 
       <% if wf_filter.id %>
-        <%= link_to("<span>Update</span>".html_safe, "#", :onclick => "wfFilter.updateFilter();", :class => "wf_grey_button wf_pcb") %>
-        <%= link_to("<span>Delete</span>".html_safe, "#", :onclick => "wfFilter.deleteFilter();", :class => "wf_grey_button wf_pcb") %>
+        <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.updateFilter()">
+          Update
+        </button>
+        <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.deleteFilter()">
+          Delete
+        </button>
       <% end %>
     </div>
   <% end %>

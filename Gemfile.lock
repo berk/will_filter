@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    will_filter (3.1.11)
+    will_filter (4.0.1)
       kaminari
       rails (>= 3.2.3)
       sass

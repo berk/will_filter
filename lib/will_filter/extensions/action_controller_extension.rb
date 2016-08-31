@@ -1,5 +1,14 @@
 #--
-# Copyright (c) 2010-2013 Michael Berkovich
+# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+#
+#  __    __  ____  _      _          _____  ____  _     ______    ___  ____
+# |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \
+# |  |  |  | |  | | |    | |        |   __| |  | | |   |      | /  [_ |  D  )
+# |  |  |  | |  | | |___ | |___     |  |_   |  | | |___|_|  |_||    _]|    /
+# |  `  '  | |  | |     ||     |    |   _]  |  | |     | |  |  |   [_ |    \
+#  \      /  |  | |     ||     |    |  |    |  | |     | |  |  |     ||  .  \
+#   \_/\_/  |____||_____||_____|    |__|   |____||_____| |__|  |_____||__|\_|
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -26,21 +35,36 @@ module WillFilter
     def self.included(base)
       base.send(:include, InstanceMethods) 
       base.before_filter :init_will_filter
+      base.after_filter :reset_will_filter
     end
 
     module InstanceMethods
       def init_will_filter
-        # only if the filters need to be  
-        return unless WillFilter::Config.user_filters_enabled?
-
         wf_current_user = nil
-        begin
-          wf_current_user = eval(WillFilter::Config.current_user_method)
-        rescue Exception => ex
-          raise WillFilter::FilterException.new("will_filter cannot be initialized because #{WillFilter::Config.current_user_method} failed with: #{ex.message}")
+        wf_current_project = nil
+
+        # only if the filters need to be
+        if WillFilter::Config.user_filters_enabled?
+          begin
+            wf_current_user = eval(WillFilter::Config.current_user_method)
+          rescue Exception => ex
+            raise WillFilter::FilterException.new("will_filter cannot be initialized because #{WillFilter::Config.current_user_method} failed with: #{ex.message}")
+          end
         end
 
-        WillFilter::Config.init(wf_current_user)
+        if WillFilter::Config.project_filters_enabled?
+          begin
+            wf_current_project = eval(WillFilter::Config.current_project_method)
+          rescue Exception => ex
+            raise WillFilter::FilterException.new("will_filter cannot be initialized because #{WillFilter::Config.current_project_method} failed with: #{ex.message}")
+          end
+        end
+
+        WillFilter::Config.init(wf_current_user, wf_current_project)
+      end
+
+      def reset_will_filter
+        WillFilter::Config.reset!
       end
     end
   end

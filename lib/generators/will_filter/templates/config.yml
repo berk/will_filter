@@ -1,5 +1,14 @@
 #--
-# Copyright (c) 2010-2013 Michael Berkovich
+# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+#
+#  __    __  ____  _      _          _____  ____  _     ______    ___  ____
+# |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \
+# |  |  |  | |  | | |    | |        |   __| |  | | |   |      | /  [_ |  D  )
+# |  |  |  | |  | | |___ | |___     |  |_   |  | | |___|_|  |_||    _]|    /
+# |  `  '  | |  | |     ||     |    |   _]  |  | |     | |  |  |   [_ |    \
+#  \      /  |  | |     ||     |    |  |    |  | |     | |  |  |     ||  .  \
+#   \_/\_/  |____||_____||_____|    |__|   |____||_____| |__|  |_____||__|\_|
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -66,10 +75,13 @@ defaults: &defaults
     script_path:          "will_filter/filter_prototype_effects.js"
     
   save_options: 
-    enabled:              true
-    user_filters_enabled: false   # if set to true, the filters will be private
-    user_class_name:      User 
-    current_user_method:  current_user 
+    enabled:                  true
+    user_filters_enabled:     false   # if set to true, the filters will be private
+    user_class_name:          User
+    current_user_method:      current_user
+    project_filters_enabled:  false   # if set to true, the filters will be project based
+    project_class_name:       Project
+    current_project_method:   current_project
 
   export_options:         
     enabled:              true
@@ -119,6 +131,7 @@ defaults: &defaults
     is_not:               200
     is_on:                300
     is_in:                400
+    is_not_in:            450
     is_provided:          500
     is_not_provided:      600 
     is_after:             700
