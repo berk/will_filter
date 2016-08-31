@@ -33,7 +33,7 @@
     Format: <%= select_tag("wf_export_format_selector", options_for_select(@wf_filter.export_formats, @wf_filter.format)) %>
   </div>
   <div class="center">
-    <button type="button" class="btn btn-default btn-xs" onclick="wfExporter.exportFilter()">
+    <button type="button" class="btn btn-primary btn-xs" onclick="wfExporter.exportFilter()">
       Export
     </button>
     <button type="button" class="btn btn-default btn-xs" onclick="wfExporter.hide()">
