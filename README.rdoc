@@ -69,15 +69,6 @@ Please read the following document to learn more about table tag customization:
 https://github.com/berk/will_filter/wiki/Customizing-Table-View
 
 
-= Screenshots
-
-Below are a couple of screenshot of what the filter looks like when it is rendered on a page:
-
-http://wiki.tr8n.org/images/e/e1/Wf1.png
-
-http://wiki.tr8n.org/images/5/50/Wf2.png
-
-
 = Dummy Application
 
 This plugin comes with a dummy test project. To try out some of the examples, run the following commands:
