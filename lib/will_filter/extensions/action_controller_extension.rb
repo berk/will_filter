@@ -46,17 +46,17 @@ module WillFilter
         # only if the filters need to be
         if WillFilter::Config.user_filters_enabled?
           begin
-            wf_current_user = eval(WillFilter::Config.current_user_method)
+            wf_current_user = self.send(WillFilter::Config.current_user_method)
           rescue Exception => ex
-            raise WillFilter::FilterException.new("will_filter cannot be initialized because #{WillFilter::Config.current_user_method} failed with: #{ex.message}")
+            wf_current_user = nil
           end
         end
 
         if WillFilter::Config.project_filters_enabled?
           begin
-            wf_current_project = eval(WillFilter::Config.current_project_method)
+            wf_current_project = self.send(WillFilter::Config.current_project_method)
           rescue Exception => ex
-            raise WillFilter::FilterException.new("will_filter cannot be initialized because #{WillFilter::Config.current_project_method} failed with: #{ex.message}")
+            wf_current_project = nil
           end
         end
 
