@@ -164,22 +164,24 @@ module WillFilter
     end
 
     def model_columns
-      model_class.columns
+      @model_columns ||= model_class.columns
     end
 
     def model_column_keys
-      model_columns.collect{|col| col.name.to_sym}
+      @model_column_keys ||= model_columns.collect{|col| col.name.to_sym}
     end
 
     def contains_column?(key)
-      model_column_keys.index(key) != nil
+      model_column_keys.index(key.to_sym) != nil
     end
 
     def definition
       @definition ||= begin
         defs = {}
         model_columns.each do |col|
-          defs[col.name.to_sym] = default_condition_definition_for(col.name, col.sql_type)
+          key = col.name.to_sym
+          next unless contains_column?(key)
+          defs[key] = default_condition_definition_for(col.name, col.sql_type)
         end
         inner_joins.each do |inner_join|
           join_class = association_class(inner_join)
@@ -234,6 +236,10 @@ module WillFilter
       end
 
       operators
+    end
+
+    def model_class_for_column_key(key)
+      nil
     end
 
     def sorted_operators(opers)
