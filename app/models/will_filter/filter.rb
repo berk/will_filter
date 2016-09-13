@@ -755,26 +755,22 @@ module WillFilter
       end
     end
 
-    def saved_filters(include_default = true)
-      @saved_filters ||= begin
-        filters = []
+    def filter_options
+      filters = [['', [['', '']]]]
 
-        if include_default
-          filters = default_filters
-          if (filters.size > 0)
-            filters.insert(0, ["-- Select Default Filter --", "-1"])
-          end
-        end
-
-        if user_filters.any?
-          filters << ["-- Select Saved Filter --", "-2"] if include_default
-          user_filters.each do |filter|
-            filters << [filter.name, filter.id.to_s]
-          end
-        end
-
-        filters
+      if default_filters.any?
+        filters << ['Pre-defined Filters', default_filters]
       end
+
+      if saved_filters.any?
+        filters << ['Saved Filters', saved_filters]
+      end
+
+      filters
+    end
+
+    def saved_filters(include_default = true)
+      @saved_filters ||= user_filters.collect{|f| [f.name, f.id.to_s]}
     end
 
     #############################################################################

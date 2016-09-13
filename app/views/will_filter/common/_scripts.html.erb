@@ -1,14 +1,5 @@
 <%= stylesheet_link_tag('will_filter/filter') -%>
-<%= stylesheet_link_tag('will_filter/calendar') -%>
-<%= stylesheet_link_tag('will_filter/exporter') -%>
-<%= stylesheet_link_tag('will_filter/actions') -%>
-<%= stylesheet_link_tag('will_filter/results') -%>
-
 <%= javascript_include_tag('will_filter/filter') -%>
-
-<% if WillFilter::Config.effects_options[:enabled] %>
-  <%= javascript_include_tag(WillFilter::Config.effects_options[:script_path]) -%>
-<% end %>
 
 <script>
 	initializeWillFilter();

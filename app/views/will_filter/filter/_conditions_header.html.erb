@@ -38,8 +38,15 @@
   <% end %>
 
   <div>
-    <% unless wf_filter.saved_filters.empty? %>
-      <%= select_tag(:wf_key, options_for_select(wf_filter.saved_filters, wf_filter.key), {:onChange => "wfFilter.loadSavedFilter()"}) %>
-    <% end %>
+    <% unless wf_filter.filter_options.empty? %>
+      <%= select_tag(:wf_key, grouped_options_for_select(wf_filter.filter_options, wf_filter.key), {:onChange => "wfFilter.loadSavedFilter()", style: 'width:250px'}) %>
+      <script>
+        $("#wf_key").select2({
+          placeholder: "Select pre-defined or saved filter"
+        }).on("change", function (e) {
+          wfFilter.loadSavedFilter();
+        });
+      </script>
+  <% end %>
   </div>
 </div>

@@ -1,7 +1,17 @@
-<select style='width:100%' name='wf_v<%=index%>_0' id='wf_v<%=index%>_0' onChange='wfFilter.fieldChanged(this)'>
-	 <% container.options.each do |option| %>
-      <option <%= "selected" if option.last == container.value %> value="<%=option.last%>">
-        <%=option.first%>
+<div id="wf_v<%=index%>_0_border">
+  <select style='width:100%' name='wf_v<%= index %>_0' id='wf_v<%= index %>_0' onChange='wfFilter.fieldChanged(this)'>
+    <% container.options.each do |option| %>
+      <option <%= "selected" if option.last == container.value %> value="<%= option.last %>">
+        <%= option.first %>
       </option>
-	 <% end %>
-</select>
+    <% end %>
+  </select>
+</div>
+
+<script>
+  $("#wf_v<%=index%>_0").select2().on("change", function (e) {
+//    $('#wf_v<%=index%>_0_border').css({'border-width': '1px', 'border-color': 'red', 'border-style': 'solid', 'border-radius': '3px'});
+//    $('#wf_v<%=index%>_0_border').css({'background-color': 'red'});
+//    wfFilter.fieldChanged("#wf_v<%=index%>_0");
+  });
+</script>

@@ -1,16 +1,24 @@
-<table class='values' cellspacing='0px' cellpadding='0px'>
-	<tr>
-    <td width='49%'>
-			<%=text_field_tag("wf_v#{index}_0", container.sanitized_value(0), :style => 'width:98%', :onChange => 'wfFilter.fieldChanged(this)')%>
+<table class='values' cellspacing='0px' cellpadding='0px' style="width: 99%">
+  <tr>
+    <td style="width: 50%;">
+      <div class="input-group" style="width: 100%; padding-right: 5px;">
+        <%= text_field_tag("wf_v#{index}_0", container.sanitized_value(0), :class => 'form-control input-xs', 'aria-describedby' => "wf_v#{index}_0_addon", :onChange => 'wfFilter.fieldChanged(this)') %>
+        <span class="input-group-addon input-xs" id="<%= "wf_v#{index}_0_addon" %>">
+          <%= link_to("#", :onclick => "wfCalendar.selectDate('wf_v#{index}_0', this);", :style => 'color: #666;') do %>
+            <i class="fa fa-calendar" aria-hidden="true" title="Select start date and time"></i>
+          <% end %>
+        </span>
+      </div>
     </td>
-		<td width='1%'>
-			<%=link_to(image_tag("will_filter/calendar.png", :title => "Select start date", :class => "wf_calendar_trigger"), "#", :onclick => "wfCalendar.selectDate('wf_v#{index}_0', this);")%>
+    <td style="width: 50%;">
+      <div class="input-group" style="width: 100%;">
+        <%= text_field_tag("wf_v#{index}_1", container.sanitized_value(1), :class => 'form-control input-xs', 'aria-describedby' => "wf_v#{index}_1_addon", :onChange => 'wfFilter.fieldChanged(this)') %>
+        <span class="input-group-addon input-xs" id="<%= "wf_v#{index}_1_addon" %>">
+          <%= link_to("#", :onclick => "wfCalendar.selectDate('wf_v#{index}_1', this);", :style => 'color: #666;') do %>
+            <i class="fa fa-calendar" aria-hidden="true" title="Select start date and time"></i>
+          <% end %>
+        </span>
+      </div>
     </td>
-    <td width='49%'>
-			<%=text_field_tag("wf_v#{index}_1", container.sanitized_value(1), :style => 'width:98%', :onChange => 'wfFilter.fieldChanged(this)')%>
-    </td>
-    <td width='1%'>
-			<%=link_to(image_tag("will_filter/calendar.png", :title => "Select end date", :class => "wf_calendar_trigger"), "#", :onclick => "wfCalendar.selectDate('wf_v#{index}_1', this);")%>
-    </td>
-	</tr>
+  </tr>
 </table>

@@ -4,6 +4,12 @@
   -webkit-border-radius: $radius;
 }
 
+@mixin shadow($info) {
+  box-shadow: $info;
+  -moz-box-shadow: $info;
+  -webkit-box-shadow: $info;
+}
+
 .wf_container {
   padding:0px;
   margin:0px;
@@ -61,6 +67,25 @@
 
   img {
     border:0px;
+  }
+
+  .select2-container .select2-selection--single {
+    height: 25px;
+    background: #fbfbfb;
+    border-radius: 5px;
+    border-color: #dddddd;
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 22px;
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__arrow b {
+    top: 40%;
+  }
+
+  .input-group-addon {
+    padding: 4px 10px;
   }
 }
 
@@ -132,7 +157,7 @@
       white-space:nowrap;
     }
 
-    td.actions {padding:0;}
+    td.actions {padding:0; width: 45px;}
     .error {
       padding: 2px 10px;
       margin:2px;
@@ -174,3 +199,277 @@
   small {font-size:9px;}
 }
 
+
+.wf_actions_bar_yellow {
+  margin-top:10px;
+  margin-bottom:10px;
+  padding:10px;
+  background-color: #f9f8f7;
+  border-color: #E8E8E8 #BABABA #BABABA #E8E8E8;
+  border-style: solid;
+  border-width: 1px;
+  @include rounded-corners(10px);
+}
+
+.wf_actions_bar_blue {
+  margin-top:10px;
+  margin-bottom:10px;
+  padding:10px;
+  background-color: #f1f4fa;
+  border-color: #E8E8E8 #BABABA #BABABA #E8E8E8;
+  border-style: solid;
+  border-width: 1px;
+  @include rounded-corners(10px);
+}
+
+
+.wf_calendar_trigger {
+  border: 0px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.wf_calendar {
+  background-color: white;
+  position: absolute;
+  font-size: 10px;
+  border: solid 1px #e8e8e8;
+  border-color: #e8e8e8 #bababa #bababa #e8e8e8;
+  @include rounded-corners(3px);
+  @include shadow(1px 2px 2px 1px rgba(0, 0, 0, 0.6));
+
+  input {
+    border: 1px solid #ccc;
+    font-size: 12px;
+    font-family: Arial;
+    @include rounded-corners(3px);
+  }
+
+  select {
+    border: 1px solid #ccc;
+    font-size: 12px;
+    font-family: Arial;
+    padding: 2px;
+    background-color: #EDEDED;
+    @include rounded-corners(10px);
+  }
+}
+
+.wf_calendar_header {
+  font-size: 12px;
+  font-weight: bold;
+  background: #eee;
+  padding: 5px;
+}
+
+.wf_calendar_container {
+  background-color: white;
+  padding: 5px;
+  margin: 5px;
+  font-size: 10px;
+}
+
+.wf_calendar_table {
+  width: 100%;
+  td {
+    padding: 2px;
+    margin: 2px;
+    text-align: center;
+    vertical-align: top;
+  }
+  img {
+    border: 0px;
+  }
+}
+
+.wf_calendar_cells {
+  width: 100%;
+  padding: 2px;
+  margin: 0px;
+  td {
+    padding: 4px;
+    border: 0px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 8px;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+  }
+}
+
+.wf_calendar_title {
+  text-align: center;
+  background: #eee;
+  padding: 3px;
+}
+
+.wf_calendar_date_cell {
+  border: 1px solid #ccc;
+  padding: 4px;
+  margin: 1px;
+  cursor: pointer;
+  vertical-align: middle;
+  text-align: center;
+  background-color: white;
+}
+
+.wf_calendar_date_cell.today {
+  background-color: light-blue;
+}
+
+.wf_calendar_date_cell.selected {
+  background-color: #ccc;
+}
+
+.wf_calendar_date_cell:hover {
+  background-color: #ccc;
+}
+
+/* Exporter */
+
+.wf_exporter_header {
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+  background: #eee;
+  padding: 3px;
+  border-bottom: 1px solid #ccc;
+
+  .close {
+    text-decoration: none;
+    font-size: 18px;
+    color: #888;
+    &:hover {
+      color: #222;
+    }
+  }
+}
+
+.wf_exporter {
+  background-color: white;
+  position: absolute;
+  width: 230px;
+  padding: 0px;
+  font-size: 10px;
+  border: solid 1px #e8e8e8;
+  border-color: #e8e8e8 #bababa #bababa #e8e8e8;
+  @include rounded-corners(3px);
+  @include shadow(1px 2px 2px 1px rgba(0, 0, 0, 0.6));
+
+  img {
+    border: 0px;
+  }
+
+  input {
+    border: 1px solid #ccc;
+    font-size: 12px;
+    font-family: Arial;
+    @include rounded-corners(3px);
+  }
+
+  select {
+    border: 1px solid #ccc;
+    font-size: 12px;
+    font-family: Arial;
+    background-color: #EDEDED;
+    @include rounded-corners(3px);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px;
+
+    thead tr {
+      border-bottom: 1px solid #bababa;
+      font-weight: bold;
+    }
+
+    td {
+      vertical-align: top;
+      padding: 0px;
+      margin: 0px;
+    }
+
+  }
+
+  .center {
+    padding-bottom: 5px;
+  }
+
+}
+
+.wf_exporter_container {
+  background-color: white;
+  padding: 5px;
+  margin: 5px;
+  font-size: 10px;
+}
+
+/* Results Table */
+.wf_paginator { width:100%; margin-bottom: 10px; font-size: 12px; font-family: Arial;}
+
+.wf_results_table {
+  width: 100%;
+  font-size: 12px;
+  border: 1px #e5e5e5 solid;
+  border-collapse: collapse;
+  background-color: white;
+  margin-bottom: 10px;
+}
+
+.wf_results_table thead th {
+  background-color:#F5F5F5;
+  border-bottom:1px solid #CCCCCC;
+  border-top:1px solid #CCCCCC;
+  font-size:12px;
+  padding:5px 5px 5px 10px;
+  text-align:left;
+  white-space:nowrap;
+}
+.wf_results_table th,
+.wf_results_table td {padding-right:10px;padding-left:10px; border-left:1px solid #eee;}
+.wf_results_table td {padding:10px;border-bottom:solid 1px #ddd;vertical-align:top;}
+.wf_results_table th {border-left:1px solid #ccc;padding-right:0px;font-weight:normal}
+.wf_results_table th.first {border-left:none;}
+.wf_results_table th {background: transparent url(sort_bg.gif) repeat-x scroll 0 0;}
+
+.wf_results_table th.sortable:hover {background-color:#ddd;}
+.wf_results_table th.sortable:hover .sort_control {display:block;}
+.wf_results_table th.sortable .sort_link {text-decoration:none;;width:100%;display:block;}
+
+.wf_results_table th.current_sort {background: transparent url(sort_bg.gif) repeat-x scroll 0 -100px;}
+.wf_results_table th.current_sort .sort_control {display:block;}
+.wf_results_table th.current_sort .sort_link {color:#000}
+
+.wf_results_table th.desc .sort_control {display:block;}
+.wf_results_table th.asc .sort_control .up {background: url(sort_arrow_all.gif) -17px 0 no-repeat;}
+.wf_results_table th.desc .sort_control .down {background: url(sort_arrow_all.gif) -17px -13px no-repeat;}
+.wf_results_table td.current_sort {font-weight:bold;border-left:1px solid #ccc;border-right:1px solid #ccc;}
+.wf_results_table tr.data_row:hover {background-color: #eee;}
+
+.wf_results_table .sort_title {float:left;}
+.wf_results_table .table_head_container {position:relative;padding-right:20px;}
+
+.wf_results_table .edit_location th,
+.wf_results_table .edit_location td {background:none;padding:1px 2px;border:none;font-size:11px;}
+.wf_results_table .edit_location_link {font-size:11px;}
+
+.wf_results_table .sort_control {position:absolute;right:21px;margin:-5px -20px -5px 5px;display:none;height:24px;}
+.wf_results_table .sort_control .up {width:17px;height:11px;display:block;background: url(sort_arrow_all.gif) 0 0 no-repeat;}
+.wf_results_table .sort_control .up:hover {width:17px;height:11px;display:block;background: url(sort_arrow_all.gif) -17px 0 no-repeat;}
+.wf_results_table .sort_control .down {width:17px;height:11px;display:block;background: url(sort_arrow_all.gif) 0 -13px no-repeat;}
+.wf_results_table .sort_control .down:hover {width:17px;height:11px;display:block;background: url(sort_arrow_all.gif) -17px -13px no-repeat;}
+
+.wf_results_table th .sort_control .up,
+.wf_results_table th .sort_control .down {_height:12px !important;overflow:hidden;}
+
+.wf_results_table                       {width:100%;margin:0}
+.wf_results_table.short                 {margin-bottom:200px;}
+
+.wf_results_table thead th  {padding:5px 5px 5px 10px;text-align:left;font-size:12px;border-bottom:solid 1px #ccc;border-top:solid 1px #eee;background-color:#f5f5f5;white-space:nowrap;}
+.wf_results_table th.active {background:url(results_table_th_active.gif) repeat-x;color:#fff;border-left:solid 1px #ccc;border-right:solid 1px #ccc}
+.wf_results_table th.active a {color:#fff;}
