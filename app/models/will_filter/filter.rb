@@ -922,7 +922,13 @@ module WillFilter
     def results
       @results ||= begin
         handle_empty_filter!
-        recs = model_class.where(sql_conditions).order(order_clause)
+
+        if sql_conditions and !sql_conditions[0].blank?
+          recs = model_class.where(sql_conditions).order(order_clause)
+        else
+          recs = model_class.order(order_clause)
+        end
+
         inner_joins.each do |inner_join|
           recs = recs.joins(association_name(inner_join))
         end
@@ -932,8 +938,11 @@ module WillFilter
           recs = Kaminari.paginate_array(recs)
         end
 
+
         recs = recs.page(page).per(per_page)
+
         recs.wf_filter = self
+
         recs
       end
     end

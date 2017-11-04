@@ -30,36 +30,14 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-require 'rails'
-require 'pp'
-
-[
- '.',
- './containers'
-].each do |dir|
-    Dir[File.expand_path("#{File.dirname(__FILE__)}/#{dir}/*.rb")].sort.each do |file|
-      require(file)
+module ActiveRecord
+  class Relation
+    def wf_filter=(filter)
+      @wf_filter = filter
     end
-end
 
-require File.join(File.dirname(__FILE__), 'extensions/array_extension')
-require File.join(File.dirname(__FILE__), 'extensions/action_view_extension')
-require File.join(File.dirname(__FILE__), 'extensions/active_record_extension')
-require File.join(File.dirname(__FILE__), 'extensions/active_record_relation_extension')
-require File.join(File.dirname(__FILE__), 'extensions/action_controller_extension')
-
-module WillFilter
-  class Railtie < ::Rails::Railtie #:nodoc:
-    initializer 'will_filter' do |app|
-      ActiveSupport.on_load(:active_record) do
-        ::ActiveRecord::Base.send :include, WillFilter::ActiveRecordExtension
-      end
-      ActiveSupport.on_load(:action_view) do
-        ::ActionView::Base.send :include, WillFilter::ActionViewExtension
-      end
-      ActiveSupport.on_load(:action_controller) do
-        include WillFilter::ActionControllerExtension
-      end
+    def wf_filter
+      @wf_filter
     end
   end
 end

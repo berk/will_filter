@@ -33,6 +33,7 @@
 module WillFilter
   module ActiveRecordExtension
     extend ActiveSupport::Concern
+
     module ClassMethods
       def filter(opts = {})
         if ActiveRecord::Base == self.class

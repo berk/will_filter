@@ -36,7 +36,7 @@ module WillFilter
   class ExporterController < ApplicationController
     
     def index
-      @wf_filter = WillFilter::Filter.deserialize_from_params(params)
+      @wf_filter = WillFilter::Filter.deserialize_from_params(params.permit!)
       render :layout => false
     end
   
@@ -44,7 +44,7 @@ module WillFilter
       params[:page] = 1
       params[:wf_per_page] = 10000 # max export limit
   
-      @wf_filter = WillFilter::Filter.deserialize_from_params(params)
+      @wf_filter = WillFilter::Filter.deserialize_from_params(params.permit!)
       
       if @wf_filter.custom_format?
         send_data(@wf_filter.process_custom_format, :type => 'text', :charset => 'utf-8')
