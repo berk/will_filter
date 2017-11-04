@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 
   s.licenses = ['MIT']
 
-  s.add_dependency 'rails', ['>= 3.2.3']
-  s.add_dependency 'kaminari', ['>= 0']
-  s.add_dependency 'sass', ['>= 0']
+  s.add_dependency 'rails', ['~> 5.1']
+  s.add_dependency 'kaminari', ['~> 1.1']
+  s.add_dependency 'sass', ['~> 3.5']
 end
