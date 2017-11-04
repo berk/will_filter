@@ -1,17 +1,11 @@
 <%= will_filter_tag(@events)%>
 
-<%= will_filter_table_tag(@events, 
+<%= will_filter_table_tag(@events, {
 	:columns => [
-		:id, 
-		[:creator_id, :value => lambda{|obj| obj.user ? obj.user.name : 'deleted user'}, :filterable => true, :title => 'Creator'], 
-		:headline, 
-		[:rank, {:style => "text-align:right; padding:0px;"}], 
+		:id,
+		[:creator_id, :value => lambda{|obj| obj.user ? obj.user.name : 'deleted user'}, :filterable => true, :title => 'Creator'],
+		:headline,
+		[:rank, {:style => "text-align:right; padding:0px;"}],
 		:start_time
-	],
-	:header => {
-		:value => {
-			:id => "<strong>Average:</strong>".html_safe,
-			:rank => [:avg, {:style=>"color:blue; font-weight:bold; text-align:right;"}]
-		}
-	}
-) %>
+	]
+}) %>

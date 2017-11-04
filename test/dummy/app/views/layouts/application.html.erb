@@ -8,10 +8,8 @@
 </head>
 <body style="margin:0px;">
 	<%= render(:partial => '/common/menu')%>
-	<center>
-	  <div style="width:900px;text-align:left;">
-	    <%= yield %>
-	  </div>
-	</center>
+	<div style="width:900px;text-align:left; margin: auto;">
+		<%= yield %>
+	</div>
 </body>
 </html>

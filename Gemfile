@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
-gem 'rails', '4.1.5'
+gem 'rails', '5.1.4'
+gem 'puma', '~> 3.7'
 
 # Declare your gem's dependencies in will_filter.gemspec.
 gemspec

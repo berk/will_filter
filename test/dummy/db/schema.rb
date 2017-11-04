@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -13,65 +12,62 @@
 
 ActiveRecord::Schema.define(version: 20120223232000) do
 
-  create_table "event_users", force: true do |t|
-    t.integer  "event_id"
-    t.integer  "user_id"
+  create_table "event_users", force: :cascade do |t|
+    t.integer "event_id"
+    t.integer "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["event_id", "user_id"], name: "index_event_users_on_event_id_and_user_id"
+    t.index ["event_id"], name: "index_event_users_on_event_id"
+    t.index ["user_id"], name: "index_event_users_on_user_id"
   end
 
-  add_index "event_users", ["event_id", "user_id"], name: "index_event_users_on_event_id_and_user_id"
-  add_index "event_users", ["event_id"], name: "index_event_users_on_event_id"
-  add_index "event_users", ["user_id"], name: "index_event_users_on_user_id"
-
-  create_table "events", force: true do |t|
-    t.integer  "creator_id"
-    t.string   "type"
-    t.string   "name"
-    t.string   "headline"
+  create_table "events", force: :cascade do |t|
+    t.integer "creator_id"
+    t.string "type", limit: 255
+    t.string "name", limit: 255
+    t.string "headline", limit: 255
     t.datetime "start_time"
     t.datetime "end_time"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.float    "rank"
+    t.float "rank"
+    t.index ["creator_id"], name: "index_events_on_creator_id"
   end
 
-  add_index "events", ["creator_id"], name: "index_events_on_creator_id"
-
-  create_table "merchant_order_items", force: true do |t|
-    t.integer  "order_id"
-    t.string   "name"
-    t.integer  "price"
+  create_table "merchant_order_items", force: :cascade do |t|
+    t.integer "order_id"
+    t.string "name", limit: 255
+    t.integer "price"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "merchant_orders", force: true do |t|
-    t.integer  "user_id"
-    t.integer  "amount"
+  create_table "merchant_orders", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
-    t.string   "first_name"
-    t.string   "last_name"
-    t.date     "birthday"
-    t.string   "sex"
+  create_table "users", force: :cascade do |t|
+    t.string "first_name", limit: 255
+    t.string "last_name", limit: 255
+    t.date "birthday"
+    t.string "sex", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "will_filter_filters", force: true do |t|
-    t.string   "type"
-    t.string   "name"
-    t.text     "data"
-    t.integer  "user_id"
-    t.string   "model_class_name"
+  create_table "will_filter_filters", force: :cascade do |t|
+    t.string "type", limit: 255
+    t.string "name", limit: 255
+    t.text "data"
+    t.integer "user_id"
+    t.string "model_class_name", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["user_id"], name: "index_will_filter_filters_on_user_id"
   end
-
-  add_index "will_filter_filters", ["user_id"], name: "index_will_filter_filters_on_user_id"
 
 end

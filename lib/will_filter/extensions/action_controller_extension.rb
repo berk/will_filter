@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+# Copyright (c) 2017 Michael Berkovich, theiceberk@gmail.com
 #
 #  __    __  ____  _      _          _____  ____  _     ______    ___  ____
 # |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \
@@ -47,7 +47,7 @@ module WillFilter
         if WillFilter::Config.user_filters_enabled?
           begin
             wf_current_user = self.send(WillFilter::Config.current_user_method)
-          rescue Exception => ex
+          rescue => ex
             wf_current_user = nil
           end
         end
@@ -55,7 +55,7 @@ module WillFilter
         if WillFilter::Config.project_filters_enabled?
           begin
             wf_current_project = self.send(WillFilter::Config.current_project_method)
-          rescue Exception => ex
+          rescue => ex
             wf_current_project = nil
           end
         end

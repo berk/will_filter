@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2010-2016 Michael Berkovich, theiceberk@gmail.com
+# Copyright (c) 2017 Michael Berkovich, theiceberk@gmail.com
 #
 #  __    __  ____  _      _          _____  ____  _     ______    ___  ____
 # |  |__|  ||    || |    | |        |     ||    || |   |      |  /  _]|    \

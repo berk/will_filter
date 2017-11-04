@@ -1,9 +1,9 @@
 class OrdersController < ApplicationController
   def index
-    @orders = Merchant::Order.filter(:params => params, :filter => Merchant::OrderFilter)
+    @orders = Merchant::Order.filter(:params => params.permit!, :filter => Merchant::OrderFilter)
   end
   
   def items
-    @order_items = Merchant::OrderItem.filter(:params => params, :filter => Merchant::OrderItemFilter)
+    @order_items = Merchant::OrderItem.filter(:params => params.permit!, :filter => Merchant::OrderItemFilter)
   end
 end
