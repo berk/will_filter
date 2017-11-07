@@ -36,17 +36,17 @@ module WillFilter
       def self.operators
         [:is, :is_not, :is_after, :is_before]
       end
-    
+
       def validate
-        return "Value must be provided" if value.blank?
-        return "Value must be a valid date/time (2008-01-01 14:30:00)" if time.nil?
+        return 'Value must be provided' if value.blank?
+        return 'Value must be a valid date/time (2008-01-01 14:30:00)' if time.nil?
       end
-    
+
       def sql_condition
-        return [" #{condition.full_key} = ? ",   time]     if operator == :is
-        return [" #{condition.full_key} <> ? ",  time]     if operator == :is_not
-        return [" #{condition.full_key} > ? ",   time]     if operator == :is_after
-        return [" #{condition.full_key} < ? ",   time]     if operator == :is_before
+        return [" #{condition.full_key} = ? ", time] if operator == :is
+        return [" #{condition.full_key} <> ? ", time] if operator == :is_not
+        return [" #{condition.full_key} > ? ", time] if operator == :is_after
+        return [" #{condition.full_key} < ? ", time] if operator == :is_before
       end
     end
   end
