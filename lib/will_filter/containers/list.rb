@@ -36,7 +36,7 @@ module WillFilter
       def self.operators
         [:is, :is_not, :contains, :does_not_contain]
       end
-    
+
       def options
         opts = []
         filter.value_options_for(condition.key).each do |item|
@@ -52,14 +52,15 @@ module WillFilter
         end
         opts
       end
-    
+
       def sql_condition
-        return [" #{condition.full_key} = ? ", value]                if operator == :is
-        return [" #{condition.full_key} <> ? ", value]               if operator == :is_not
-        return [" #{condition.full_key} like ? ", "%#{value}%"]      if operator == :contains
-        return [" #{condition.full_key} not like ? ", "%#{value}%"]  if operator == :does_not_cotain
+        sanitized_value = value.to_s.downcase
+        return [" lower(#{condition.full_key}) = ? ", sanitized_value] if operator == :is
+        return [" lower(#{condition.full_key}) <> ? ", sanitized_value] if operator == :is_not
+        return [" lower(#{condition.full_key}) like ? ", "%#{sanitized_value}%"] if operator == :contains
+        return [" lower(#{condition.full_key}) not like ? ", "%#{sanitized_value}%"] if operator == :does_not_cotain
       end
-    
+
     end
   end
 end

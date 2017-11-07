@@ -34,28 +34,28 @@ module WillFilter
   module Containers
     class DateTimeRange < WillFilter::FilterContainer
       attr_accessor :start_value, :end_value
-    
+
       def self.operators
         [:is_in_the_range]
       end
-    
+
       def initialize(filter, criteria_key, operator, values)
         super(filter, criteria_key, operator, values)
-    
+
         @start_value = values[0]
         @end_value = values[1] if values.size > 1
       end
-    
+
       def validate
         return "Start value must be provided" if start_value.blank?
         return "Start value must be a valid date/time (2008-01-01 14:30:00)" if time(start_value).nil?
         return "End value must be provided" if end_value.blank?
         return "End value must be a valid date/time (2008-01-01 14:30:00)" if time(end_value).nil?
       end
-    
+
       def sql_condition
         return [" (#{condition.full_key} >= ? and #{condition.full_key} <= ?) ", time(start_value), time(end_value)] if operator == :is_in_the_range
       end
     end
-  end 
+  end
 end

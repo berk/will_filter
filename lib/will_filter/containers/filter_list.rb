@@ -36,39 +36,34 @@ module WillFilter
       def self.operators
         [:is_filtered_by]
       end
-
+    
       def validate
         return "Value must be provided" if value.blank?
       end
-
+    
       def template_name
         'list'
       end
 
       def linked_filter
         @linked_filter ||= begin
-          model_class = filter.model_class_for_column_key(condition.key)
-
-          if model_class
-            model_class_name = model_class.name
-          elsif condition.key == :id
+          if condition.key == :id
             model_class_name = filter.model_class_name
           else
             model_class_name = condition.key.to_s[0..-4].camelcase
           end
-
           WillFilter::Filter.new(model_class_name)
         end
       end
-
+    
       def options
         linked_filter.saved_filters(false)
       end
-
+    
       def sql_condition
         return nil unless operator == :is_filtered_by
         sub_filter = WillFilter::Filter.find_by_id(value) || linked_filter.user_filters.first
-        return [""] unless sub_filter
+        return [''] unless sub_filter
 
         sub_conds = sub_filter.sql_conditions
 
@@ -76,7 +71,7 @@ module WillFilter
           sub_conds[0] = " #{condition.full_key} IN (SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name}) "
         else
           sub_conds[0] = " #{condition.full_key} IN (SELECT #{sub_filter.table_name}.id FROM #{sub_filter.table_name} WHERE #{sub_conds[0]}) "
-        end
+        end  
 
         sub_conds
       end

@@ -33,20 +33,20 @@
 module WillFilter
   module Containers
     class Boolean < WillFilter::FilterContainer
-    
+
       def self.operators
         [:is]
       end
-    
+
       def selected?
-        value == "1"
+        value.to_s == '1'
       end
-    
+
       def sql_condition
         return [" #{condition.full_key} = ? ", (selected? ? true : false)] if operator == :is
       end
-      
-    end    
+
+    end
   end
 end
 

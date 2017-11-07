@@ -33,24 +33,24 @@
 module WillFilter
   module Containers
     class NumericDelimited < WillFilter::FilterContainer
-      NUMERIC_DELIMITER = ","   unless defined?(NUMERIC_DELIMITER)
-    
+      NUMERIC_DELIMITER = "," unless defined?(NUMERIC_DELIMITER)
+
       def self.operators
         [:is_in]
       end
-    
+
       def template_name
         'text'
       end
-    
+
       def validate
         return "Values must be provided. Separate values with '#{NUMERIC_DELIMITER}'" if value.blank?
       end
-    
+
       def split_values
-        value.split(NUMERIC_DELIMITER).collect{|v| v.strip.to_i}
+        value.split(NUMERIC_DELIMITER).collect {|v| v.strip.to_i}
       end
-    
+
       def sql_condition
         return [" #{condition.full_key} in (?) ", split_values] if operator == :is_in
       end
