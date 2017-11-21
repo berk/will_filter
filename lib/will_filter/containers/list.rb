@@ -55,8 +55,8 @@ module WillFilter
 
       def sql_condition
         sanitized_value = value.to_s.downcase
-        return [" lower(#{condition.full_key}) = ? ", sanitized_value] if operator == :is
-        return [" lower(#{condition.full_key}) <> ? ", sanitized_value] if operator == :is_not
+        return [" #{condition.full_key} = ? ", sanitized_value] if operator == :is
+        return [" #{condition.full_key} <> ? ", sanitized_value] if operator == :is_not
         return [" lower(#{condition.full_key}) like ? ", "%#{sanitized_value}%"] if operator == :contains
         return [" lower(#{condition.full_key}) not like ? ", "%#{sanitized_value}%"] if operator == :does_not_cotain
       end
