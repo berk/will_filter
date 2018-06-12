@@ -1,0 +1,168 @@
+<%= will_filter_scripts_tag %>
+
+<%= form_tag({}, {:method => :get, :name => 'wf_form', :id => 'wf_form', :class => 'wf_form'}) do %>
+
+  <div class="row">
+    <div class="col">
+      <div class="pull-right">
+        <%= select_tag(:saved_filters, options_for_select([]), class: 'form-control form-control-sm') %>
+      </div>
+      <div style="display: inline-block;">
+        <button id="wf-filter-toggle-button" class="btn btn-light btn-sm" type="button">
+          <i class="fa fa-sort-amount-asc"></i> &nbsp; Filter &nbsp; <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="wf-filter-container" style="display:none">
+          <div id="wf-filter-matcher">
+            Match
+
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-light btn-sm active">
+                <input type="radio" name="options" id="all" autocomplete="off" checked> all
+              </label>
+              <label class="btn btn-light btn-sm">
+                <input type="radio" name="options" id="any" autocomplete="off"> any
+              </label>
+            </div>
+
+            of the following conditions:
+          </div>
+          <div id="wf-filter-conditions">
+            <% if wf_filter.errors[:filter] %>
+              <div class="wf-filter-error">
+                <%= wf_filter.errors[:filter] %>
+              </div>
+            <% end %>
+
+            <% 0.upto(wf_filter.size - 1) do |index| %>
+              <% condition = wf_filter.condition_at(index) %>
+
+              <% if wf_filter.errors[index] %>
+                <div class="wf-filter-error">
+                  <%= wf_filter.errors[index] %>
+                </div>
+              <% end %>
+
+              <div class="wf-filter-row">
+                <div class="wf-filter-column" style="width: 20%">
+                  <%= select_tag "wf_c#{index}", options_for_select(wf_filter.condition_options, condition.key.to_s), {:class => "form-control", style: 'width:100%'} %>
+                  <script>
+                    $("#wf_c<%=index%>").select2().on("change", function (e) {
+                      wfFilter.updateConditionAt('<%=index%>');
+                    });
+                  </script>
+                </div>
+
+                <div class="wf-filter-column" style="width: 20%">
+                  <%= select_tag "wf_o#{index}", options_for_select(wf_filter.operator_options_for(condition.key), condition.operator.to_s), {:class => "form-control", style: 'width:100%'} %>
+                  <script>
+                    $("#wf_o<%=index%>").select2().on("change", function (e) {
+                      wfFilter.updateConditionAt('<%=index%>');
+                    });
+                  </script>
+                </div>
+
+                <div class="wf-filter-column" style="width: 50%">
+                  <%= render :partial => "/will_filter/filter/popup/containers/#{condition.container.template_name}", :locals => {:container => condition.container, :index => index} %>
+                </div>
+
+                <div class="wf-filter-column" style="width: 5%; text-align: right; font-size: 16px;">
+                  <%= link_to('#', onclick: "wfFilter.addConditionAfter(#{wf_filter.size})", style: 'color: #888;') do %>
+                    <i class="fa fa-times"></i>
+                  <% end %>
+                </div>
+              </div>
+
+            <% end %>
+
+            <div id="wf-filter-add-condition">
+              <button type="button" class="btn btn-light btn-sm" onclick="wfFilter.addConditionAfter('<%= wf_filter.size %>')">
+                <i class="fa fa-plus"></i> Add Condition
+              </button>
+            </div>
+
+            <hr>
+
+            <div>
+              <button type="button" class="btn btn-primary btn-sm" onclick="wfFilter.addConditionAfter('<%= wf_filter.size %>')">
+                Apply filters
+              </button>
+
+              <button type="button" class="btn btn-light btn-sm" onclick="wfFilter.addConditionAfter('<%= wf_filter.size %>')">
+                Clear all
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div style="display: inline-block; min-width: 300px;">
+        <%= text_field_tag(:search, '', placeholder: 'Search users...', class: 'form-control form-control-sm') %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<div id="wf-filter-current-filters">
+  <% 0.upto(wf_filter.size - 1) do |index| %>
+    <% condition = wf_filter.condition_at(index) %>
+    <div style="display: inline-block; padding: 5px; background-color: #eee; border-radius: 5px;">
+      <%= condition.key.to_s %> <%= condition.operator.to_s %>
+      &nbsp;
+      <%= link_to('#', style: 'text-decoration: none; color: #888;') do %>
+        <i class="fa fa-times"></i>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  #wf-filter-container {
+    position: absolute;
+    min-width: 600px;
+    min-height: 100px;
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 99;
+    margin-top: 5px;
+  }
+
+  #wf-filter-current-filters {
+    margin-top: 10px;
+    text-align: left;
+  }
+
+  #wf-filter-matcher {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .wf-filter-row {
+
+  }
+
+  .wf-filter-column {
+    display: inline-block;
+  }
+
+  #wf-filter-add-condition {
+    margin-top: 10px;
+  }
+
+  #wf-filter-container .select2-container {
+    z-index: 99999999;
+  }
+</style>
+
+<script>
+  $('#wf-filter-toggle-button').click(function () {
+    var container = $('#wf-filter-container');
+    if (container.is(':visible')) {
+      container.hide();
+    } else {
+      container.show();
+    }
+  });
+
+</script>

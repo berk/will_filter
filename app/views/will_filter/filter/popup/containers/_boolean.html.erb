@@ -1,0 +1,5 @@
+<div class="boolean_container">
+	<%=radio_button_tag("wf_v#{index}_0", '1', (container.value == '1'), :style => 'width:20px', :onChange => 'wfFilter.fieldChanged(this)')%>	True
+  &nbsp;&nbsp;
+	<%=radio_button_tag("wf_v#{index}_0", '0', (container.value == '0'), :style => 'width:20px', :onChange => 'wfFilter.fieldChanged(this)')%>	False
+</div>

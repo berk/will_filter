@@ -1,0 +1,8 @@
+<div class="input-group" style="width: 99%;">
+  <%= text_field_tag("wf_v#{index}_0", container.sanitized_value, :class => 'form-control input-xs', 'aria-describedby' => "wf_v#{index}_0_addon", :onChange => 'wfFilter.fieldChanged(this)') %>
+  <span class="input-group-addon input-xs" id="<%="wf_v#{index}_0_addon"%>">
+    <%= link_to("#", :onclick => "wfCalendar.selectDateTime('wf_v#{index}_0', this);", :style=>'color: #666;') do %>
+    <i class="fa fa-clock-o" aria-hidden="true"></i>
+    <% end %>
+  </span>
+</div>

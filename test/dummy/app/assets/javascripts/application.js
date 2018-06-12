@@ -5,6 +5,8 @@
 // the compiled file.
 //
 //= require jquery-2.1.3.min
-//= require bootstrap
+//= require popper.min
+//= require bootstrap.min
 //= require select2.min
+//= require_self
 //= require_tree .

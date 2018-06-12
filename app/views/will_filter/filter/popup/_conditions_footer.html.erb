@@ -1,0 +1,31 @@
+<div class="actions">
+
+  <% if wf_filter.order_configurable? %>
+    Order:
+    <%= select_tag(:wf_order, options_for_select(wf_filter.condition_options, wf_filter.order), {:onChange => "markDirty()"}) %>
+    <%= select_tag(:wf_order_type, options_for_select(wf_filter.order_type_options, wf_filter.order_type), {:onChange => "markDirty()"}) %>
+  <% end %>
+
+  <% if wf_filter.per_page_configurable? %>
+    Per Page:
+    <%= select_tag(:wf_per_page, options_for_select(wf_filter.per_page_options, wf_filter.per_page.to_s), {:onChange => "markDirty()"}) %>
+  <% end %>
+
+  &nbsp;&nbsp;
+  <button type="button" class="btn btn-primary btn-xs" onclick="wfFilter.submit()">
+    Submit
+  </button>
+</div>
+
+<div>
+  <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.addCondition()">
+    + Add Condition
+  </button>
+  <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.removeAllConditions()">
+    Clear All
+  </button>
+
+  <span id="wf_loader" class="spinner" style="display:none;">
+    <%= image_tag 'will_filter/loading.gif', style: 'height: 15px;' %>
+  </span>
+</div>

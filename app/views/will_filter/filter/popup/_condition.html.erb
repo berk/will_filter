@@ -1,0 +1,41 @@
+<% if wf_filter.errors[index] %>
+  <tr>
+    <td colspan="2"></td>
+    <td>
+      <div class="error">
+        <%= wf_filter.errors[index] %>
+      </div>
+    </td>
+    <td></td>
+  </tr>
+<% end %>
+
+<tr>
+  <td class="condition">
+    <%= select_tag "wf_c#{index}", options_for_select(wf_filter.condition_options, condition.key.to_s), {:class => "wf_input full_width", style: 'width:100%', :onChange => "wfFilter.updateConditionAt('#{index}')"} %>
+    <script>
+      $("#wf_c<%=index%>").select2().on("change", function (e) {
+        wfFilter.updateConditionAt('<%=index%>');
+      });
+    </script>
+  </td>
+  <td class="operator">
+    <%= select_tag "wf_o#{index}", options_for_select(wf_filter.operator_options_for(condition.key), condition.operator.to_s), {:class => "wf_input full_width", style: 'width:100%', :onChange => "wfFilter.updateConditionAt('#{index}')"} %>
+    <script>
+      $("#wf_o<%=index%>").select2().on("change", function (e) {
+        wfFilter.updateConditionAt('<%=index%>');
+      });
+    </script>
+  </td>
+  <td class="values">
+    <%= render :partial => "/will_filter/filter/containers/#{condition.container.template_name}", :locals => {:container => condition.container, :index => index} %>
+  </td>
+  <td class="actions">
+    <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.removeConditionAt('<%= index %>')" style="width: 20px;">
+      -
+    </button>
+    <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.addConditionAfter('<%= index %>')" style="width: 20px;">
+      +
+    </button>
+  </td>
+</tr>

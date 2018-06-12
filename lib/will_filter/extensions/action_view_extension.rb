@@ -35,38 +35,39 @@ module WillFilter
     extend ActiveSupport::Concern
 
     def will_filter_tag(results, opts = {})
-     render(:partial => '/will_filter/filter/container', :locals => {:wf_filter => results.wf_filter, :opts => opts})
+      style = opts[:style] || 'popup'
+      render(:partial => "/will_filter/filter/#{style}/container", :locals => {:wf_filter => results.wf_filter, :opts => opts})
     end
 
     def will_filter_scripts_tag(opts = {})
-     render(:partial => '/will_filter/common/scripts', :locals => {:opts => opts})
+      render(:partial => '/will_filter/common/scripts', :locals => {:opts => opts})
     end
 
     def will_filter_table_tag(results, opts = {})
-     filter = results.wf_filter
-     if results.size > 0
-        opts[:columns] ||= (filter ? filter.model_column_keys : results.first.class.columns.collect{|col| col.name.to_sym})
-     else
+      filter = results.wf_filter
+      if results.size > 0
+        opts[:columns] ||= (filter ? filter.model_column_keys : results.first.class.columns.collect {|col| col.name.to_sym})
+      else
         opts[:columns] = []
-     end
-     render(:partial => "/will_filter/common/results_table", :locals => {:results => results, :filter => filter, :opts => opts})
+      end
+      render(:partial => "/will_filter/common/results_table", :locals => {:results => results, :filter => filter, :opts => opts})
     end
 
     def will_filter_actions_bar_tag(results, actions, opts = {})
-     filter = results.wf_filter
-     opts[:class] ||= "wf_actions_bar_blue"
-     opts[:style] ||= ""
-     render(:partial => "/will_filter/common/actions_bar", :locals => {:results => results, :filter => filter, :actions => actions, :opts => opts})
-    end    
+      filter = results.wf_filter
+      opts[:class] ||= "wf_actions_bar_blue"
+      opts[:style] ||= ""
+      render(:partial => "/will_filter/common/actions_bar", :locals => {:results => results, :filter => filter, :actions => actions, :opts => opts})
+    end
 
     def will_filter_details_tag(obj, opts = {})
-      opts[:columns]      ||= obj.attribute_names.sort
-      opts[:table_class]  ||= "wf_details_table"
-      opts[:table_style]  ||= ""
-      opts[:key_style]    ||= "width:200px;"
-      opts[:value_style]  ||= "text-align:left"
+      opts[:columns] ||= obj.attribute_names.sort
+      opts[:table_class] ||= "wf_details_table"
+      opts[:table_style] ||= ""
+      opts[:key_style] ||= "width:200px;"
+      opts[:value_style] ||= "text-align:left"
       render(:partial => "/will_filter/common/details_table", :locals => {:object => obj, :opts => opts})
     end
-     
+
   end
 end

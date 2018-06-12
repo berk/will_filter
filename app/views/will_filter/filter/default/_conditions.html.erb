@@ -1,0 +1,44 @@
+<%= render :partial => '/will_filter/filter/default/conditions_header', :locals => {:wf_filter => wf_filter} %>
+
+<div class="body">
+
+  <% if wf_filter.errors[:filter] %>
+    <div class="wf_filter_error">
+      <%= wf_filter.errors[:filter] %>
+    </div>
+  <% end %>
+
+  <div class="filter_match_type">
+    <div class="end">
+      <small>
+        <%= link_to("Toggle Conditions", "#", :onclick => "wfFilter.toggleDebugger();") %>
+      </small>
+    </div>
+    Match <%= select_tag(:wf_match, options_for_select(wf_filter.match_options, wf_filter.match), {:onChange => "wfFilter.markDirty()"}) %>
+    of the following conditions:
+  </div>
+
+  <% if wf_filter.size == 0 %>
+    <div class="no_filter_hint">
+      No filter conditions have been specified and all results have been returned.
+      Use the "+ Add Condition" button in the bottom left corner to add a new condition or select
+      a predefined filter from a drop-down list above.
+    </div>
+  <% else %>
+    <table>
+      <% 0.upto(wf_filter.size - 1) do |index| %>
+        <% condition = wf_filter.condition_at(index) %>
+        <%= render :partial => '/will_filter/filter/default/condition', :locals => {
+            :wf_filter => wf_filter,
+            :condition => condition,
+            :index => index
+        } %>
+      <% end %>
+    </table>
+  <% end %>
+
+  <div id="wf_debugger" class="debugger" style="display:none;">
+    <%= raw(wf_filter.debug_sql_conditions) %>
+  </div>
+
+</div>
