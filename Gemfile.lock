@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    will_filter (5.1.1)
+    will_filter (5.1.2)
       kaminari (~> 1.1)
       rails (~> 5.1)
       sass (~> 3.5)
@@ -213,4 +213,4 @@ DEPENDENCIES
   will_filter!
 
 BUNDLED WITH
-   1.15.4
+   1.16.0

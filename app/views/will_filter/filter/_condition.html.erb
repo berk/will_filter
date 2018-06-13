@@ -31,10 +31,10 @@
     <%= render :partial => "/will_filter/filter/containers/#{condition.container.template_name}", :locals => {:container => condition.container, :index => index} %>
   </td>
   <td class="actions">
-    <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.removeConditionAt('<%= index %>')" style="width: 20px;">
+    <button type="button" class="btn btn-default btn-secondary btn-xs" onclick="wfFilter.removeConditionAt('<%= index %>')" style="width: 20px;">
       -
     </button>
-    <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.addConditionAfter('<%= index %>')" style="width: 20px;">
+    <button type="button" class="btn btn-default btn-secondary btn-xs" onclick="wfFilter.addConditionAfter('<%= index %>')" style="width: 20px;">
       +
     </button>
   </td>
