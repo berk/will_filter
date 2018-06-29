@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    will_filter (5.1.2)
+    will_filter (5.1.4)
       kaminari (~> 1.1)
       rails (~> 5.1)
       sass (~> 3.5)

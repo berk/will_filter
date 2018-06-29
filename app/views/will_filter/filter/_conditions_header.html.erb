@@ -14,7 +14,7 @@
 <div class="wf_header">
   <% if wf_filter.show_export_options? %>
     <div class="end" style="padding-left:3px;">
-      <button type="button" class="btn btn-default btn-xs" onclick="wfExporter.show(this)">
+      <button type="button" class="btn btn-default btn-secondary btn-sm" onclick="wfExporter.show(this)">
         Export Data...
       </button>
     </div>
@@ -22,15 +22,15 @@
 
   <% if wf_filter.show_save_options? %>
     <div class="end">
-      <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.saveFilter()">
+      <button type="button" class="btn btn-default btn-secondary btn-sm" onclick="wfFilter.saveFilter()">
         Save As New...
       </button>
 
       <% if wf_filter.id %>
-        <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.updateFilter()">
+        <button type="button" class="btn btn-default btn-secondary btn-sm" onclick="wfFilter.updateFilter()">
           Update
         </button>
-        <button type="button" class="btn btn-default btn-xs" onclick="wfFilter.deleteFilter()">
+        <button type="button" class="btn btn-default btn-secondary btn-sm" onclick="wfFilter.deleteFilter()">
           Delete
         </button>
       <% end %>

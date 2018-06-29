@@ -37,15 +37,13 @@
      @include rounded-corners(3px);
   }
 
-
-
   input {
     border: 1px solid #ccc;
     font-size: 12px;
     font-family: Arial;
-    margin:0px;
+    margin:0;
     padding: 2px !important;
-    height: 24px;
+    height: 26px;
     @include rounded-corners(3px);
   }
 

@@ -6,28 +6,28 @@
 </div>
 
 <div class="wf_exporter_container">
-
-  <table style="width:100%" cellpadding="0px" cellspacing="0px;">
-    <thead>
-    <tr>
-      <td><input type="checkbox" id="wf_fld_all" onClick="wfExporter.selectAllFields(this);" style="width:20px;"></td>
-      <td>Name</td>
-      <td>Type</td>
-    </tr>
-    </thead>
-    <tbody>
-    <% @wf_filter.model_class.columns.each_with_index do |col, index| %>
+  <div style="max-height: 400px; overflow: auto;">
+    <table style="width:100%" cellpadding="0px" cellspacing="0px;">
+      <thead>
       <tr>
-        <td>
-          <input type="checkbox" id="wf_fld_chk_<%= index %>" onClick="wfExporter.selectField(this);" style="width:20px;"><input type="hidden" id="wf_fld_name_<%= index %>" value="<%= col.name %>">
-        </td>
-        <td><%= col.name %></td>
-        <td><%= col.type %></td>
+        <td><input type="checkbox" id="wf_fld_all" onClick="wfExporter.selectAllFields(this);" style="width:20px;"></td>
+        <td>Name</td>
+        <td>Type</td>
       </tr>
-    <% end %>
-    </tbody>
-  </table>
-
+      </thead>
+      <tbody>
+      <% @wf_filter.model_class.columns.each_with_index do |col, index| %>
+        <tr>
+          <td>
+            <input type="checkbox" id="wf_fld_chk_<%= index %>" onClick="wfExporter.selectField(this);" style="width:20px;"><input type="hidden" id="wf_fld_name_<%= index %>" value="<%= col.name %>">
+          </td>
+          <td><%= col.name %></td>
+          <td><%= col.type %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
 
   <div class="center" style="border-top: 1px solid #ccc; padding-top: 5px; margin-top: 5px;">
     Format: <%= select_tag("wf_export_format_selector", options_for_select(@wf_filter.export_formats, @wf_filter.format)) %>
