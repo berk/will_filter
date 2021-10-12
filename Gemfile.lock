@@ -104,7 +104,8 @@ GEM
     pry (0.11.2)
       coderay (~> 1.1.0)
       method_source (~> 0.9.0)
-    puma (3.10.0)
+    puma (5.5.1)
+      nio4r (~> 2.0)
     rack (2.0.3)
     rack-test (0.7.0)
       rack (>= 1.0, < 3)
@@ -200,7 +201,7 @@ DEPENDENCIES
   jquery-ui-rails
   kaminari
   pry
-  puma (~> 3.7)
+  puma (~> 5.5)
   rails (= 5.1.4)
   rr
   rspec
